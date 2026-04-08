@@ -949,6 +949,7 @@
                         <option value="Leadership">Leadership</option>
                         <option value="HR">HR</option>
                         <option value="Marketing">Marketing</option>
+                        <option value="Technology">Technology</option>
                     </select>
                     <select class="filter-select" id="filter-status" onchange="renderMilestones()">
                         <option value="all">All Statuses</option>
@@ -989,58 +990,58 @@
 
     const INIT_DATA = [
         {
-            id: 1, title: "Register Dr. Tebeila Dental Studio Trade Name", area: "Governance",
-            short: { text: "Research CIPC requirements & check name availability", due: "2026-04-30" },
-            medium: { text: "Submit CIPC registration application", due: "2026-05-31" },
-            long: { text: "Receive registration certificate & update all branding", due: "2026-06-30" }
+            id: 1, title: "Register Trade Name — Refodile Holdings", area: "Governance",
+            short: { text: "CIPC name availability check and requirements research (Apr 2026)", due: "2026-04-30" },
+            medium: { text: "Submit CIPC registration application (May 2026)", due: "2026-05-31" },
+            long: { text: "Receive certificate and update all branding (Jun 2026)", due: "2026-06-30" }
         },
         {
-            id: 2, title: "Identify Key Drivers for the Three Dental Practices", area: "Leadership",
-            short: { text: "Conduct practice audits: financial, HR, patient volume", due: "2026-04-30" },
+            id: 2, title: "Identify Key Drivers for All Practices", area: "Leadership",
+            short: { text: "Financial audit 2023–2026 initiated; practice audits in progress", due: "2026-04-30" },
             medium: { text: "Compile consolidated key driver report per practice", due: "2026-05-31" },
             long: { text: "Embed driver KPIs into practice scorecards", due: "2026-07-31" }
         },
         {
-            id: 3, title: "Develop Roadmaps for the Three Dental Practices", area: "Leadership",
-            short: { text: "Draft individual roadmaps based on key driver analysis", due: "2026-05-31" },
-            medium: { text: "Present & agree roadmaps with practice leads", due: "2026-06-30" },
+            id: 3, title: "Develop Individual Roadmaps for Each Practice", area: "Leadership",
+            short: { text: "Draft roadmaps based on key driver analysis — post audit", due: "2026-05-31" },
+            medium: { text: "Present and agree roadmaps with clinical leads", due: "2026-06-30" },
             long: { text: "Quarterly roadmap review cadence established", due: "2026-10-31" }
         },
         {
-            id: 4, title: "Compile Partnership Agreement with Dr. Nape", area: "Governance",
-            short: { text: "Engage attorney; draft term sheet for Dr. Nape agreement", due: "2026-04-30" },
+            id: 4, title: "Compile Partnership Agreement — Dr. Nape", area: "Governance",
+            short: { text: "Engage attorney. Draft term sheet for Dr. Nape", due: "2026-04-30" },
             medium: { text: "Review, negotiate and finalise agreement", due: "2026-06-30" },
-            long: { text: "Signed agreement executed & filed", due: "2026-07-31" }
+            long: { text: "Signed agreement executed and filed", due: "2026-07-31" }
         },
         {
-            id: 5, title: "Compile Partnership Agreement with Dr. Seabi", area: "Governance",
-            short: { text: "Draft term sheet for Dr. Seabi; align on equity/profit share", due: "2026-04-30" },
+            id: 5, title: "Compile Partnership Agreement — Dr. Seabi", area: "Governance",
+            short: { text: "Draft term sheet for Dr. Seabi; align on equity and profit share", due: "2026-04-30" },
             medium: { text: "Review, negotiate and finalise agreement", due: "2026-06-30" },
-            long: { text: "Signed agreement executed & filed", due: "2026-07-31" }
+            long: { text: "Signed agreement executed and filed", due: "2026-07-31" }
         },
         {
-            id: 6, title: "Deregister the Nando's Practice", area: "Governance",
-            short: { text: "Obtain deregistration requirements from HPCSA & CIPC", due: "2026-04-30" },
-            medium: { text: "Submit deregistration application; notify all stakeholders", due: "2026-06-30" },
-            long: { text: "Deregistration confirmed; assets/records transferred", due: "2026-09-30" }
+            id: 6, title: "Appoint a Practice Administrator", area: "HR",
+            short: { text: "Linda identified; draft job profile and confirm appointment", due: "2026-04-30" },
+            medium: { text: "Conduct induction and handover", due: "2026-05-31" },
+            long: { text: "Administrator fully operational in daily management", due: "2026-07-31" }
         },
         {
-            id: 7, title: "Appoint a Practice Administrator", area: "HR",
-            short: { text: "Draft job profile; post vacancy & begin shortlisting", due: "2026-04-30" },
-            medium: { text: "Conduct interviews; make appointment offer", due: "2026-05-31" },
-            long: { text: "Administrator inducted & fully operational", due: "2026-07-31" }
+            id: 7, title: "Solicit Team Buy-in Across All Practices", area: "HR",
+            short: { text: "Run team engagement sessions; activate LabourNet for compliance", due: "2026-04-30" },
+            medium: { text: "Address concerns and implement quick-win improvements", due: "2026-05-31" },
+            long: { text: "Measure engagement and embed culture in onboarding", due: "2026-09-30" }
         },
         {
-            id: 8, title: "Solicit Current Team Buy-in", area: "HR",
-            short: { text: "Run team engagement sessions across all three practices", due: "2026-04-30" },
-            medium: { text: "Address concerns; implement quick-win improvements", due: "2026-05-31" },
-            long: { text: "Measure engagement; embed culture in onboarding", due: "2026-09-30" }
+            id: 8, title: "Roll Out Social Media Strategy", area: "Marketing",
+            short: { text: "Tshlodi to revamp and organise existing presence first", due: "2026-05-31" },
+            medium: { text: "Go live on WhatsApp, Facebook and Website with 8 weeks content", due: "2026-07-31" },
+            long: { text: "500+ followers; Active Google reviews programme", due: "2027-03-27" }
         },
         {
-            id: 9, title: "Roll Out a Social Media Strategy", area: "Marketing",
-            short: { text: "Define brand voice, platforms & content calendar", due: "2026-04-30" },
-            medium: { text: "Go live on all platforms; first 8 weeks of content posted", due: "2026-06-30" },
-            long: { text: "Monthly analytics review; 500+ followers; active reviews programme", due: "2027-03-27" }
+            id: 9, title: "Build & Deploy Intelligence System (Module Plan)", area: "Technology",
+            short: { text: "Phase 1: Workflow Engine, Error Detection, Claims Management", due: "2026-06-30" },
+            medium: { text: "Phase 2: Financial Intelligence, HR, Compliance Automation", due: "2026-09-30" },
+            long: { text: "Full clinical/inventory system live across all 5 practices", due: "2027-03-27" }
         }
     ];
 
