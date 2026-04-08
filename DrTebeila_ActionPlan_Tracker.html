@@ -1488,7 +1488,39 @@
     }
 
     window.onload = () => {
-        loadState(); // Don't await, let it load in background
+        console.log("App loaded. Starting initialization.");
+        // 1. Setup default state
+        INIT_DATA.forEach(m => {
+            if (!appState[m.id]) appState[m.id] = { status: 'Grey', comments: [] };
+        });
+
+        // 2. Initial Render
+        refreshUI();
+
+        // 3. Set Initial Tab
+        switchTab('milestones');
+
+        // 4. Background Cloud Load
+        setTimeout(async () => {
+            try {
+                if (supabase) {
+                    const { data, error } = await supabase.from('dr_tracking').select('*');
+                    if (!error && data && data.length > 0) {
+                        data.forEach(row => {
+                            appState[row.milestone_id] = { 
+                                status: row.status, 
+                                comments: row.comments || [] 
+                            };
+                        });
+                        console.log("Cloud data synced.");
+                        refreshUI();
+                        subscribeToChanges();
+                    }
+                }
+            } catch (e) {
+                console.warn("Cloud connection skipped or failed:", e);
+            }
+        }, 100);
     };
 </script>
 
