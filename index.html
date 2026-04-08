@@ -1191,59 +1191,74 @@
 
     // --- RENDERERS ---
     function renderDashboard() {
+        // Initial setup for totals
         const totals = { total: INIT_DATA.length, G: 0, R: 0, A: 0, B: 0, P: 0, Grey: 0 };
-        const areaCounts = { Governance: {tot:0, done:0}, Leadership: {tot:0, done:0}, HR: {tot:0, done:0}, Marketing: {tot:0, done:0} };
-
+        
+        // Dynamically build area counts
+        const areaCounts = {};
+        
         INIT_DATA.forEach(m => {
             const st = appState[m.id]?.status || 'Grey';
             totals[st]++;
             
-            if(areaCounts[m.area]) {
-                areaCounts[m.area].tot++;
-                if(st === 'B') areaCounts[m.area].done++;
+            // Initialize area if first time seeing it
+            if (!areaCounts[m.area]) {
+                areaCounts[m.area] = { tot: 0, done: 0 };
             }
+            
+            areaCounts[m.area].tot++;
+            if (st === 'B') areaCounts[m.area].done++;
         });
 
         // Stats UI
         const completionRate = Math.round((totals.B / totals.total) * 100) || 0;
-        document.getElementById('stats-container').innerHTML = `
-            <div class="stat-card"><div class="stat-num color-main">${totals.total}</div><div class="stat-label">Total Items</div></div>
-            <div class="stat-card"><div class="stat-num" style="color:var(--status-b-color)">${completionRate}%</div><div class="stat-label">Overall Completion</div></div>
-            <div class="stat-card"><div class="stat-num" style="color:var(--status-g-color)">${totals.G}</div><div class="stat-label">On Track</div></div>
-            <div class="stat-card"><div class="stat-num" style="color:var(--status-a-color)">${totals.A}</div><div class="stat-label">Action Needed</div></div>
-        `;
+        const statsContainer = document.getElementById('stats-container');
+        if (statsContainer) {
+            statsContainer.innerHTML = `
+                <div class="stat-card"><div class="stat-num color-main">${totals.total}</div><div class="stat-label">Total Items</div></div>
+                <div class="stat-card"><div class="stat-num" style="color:var(--status-b-color)">${completionRate}%</div><div class="stat-label">Overall Completion</div></div>
+                <div class="stat-card"><div class="stat-num" style="color:var(--status-g-color)">${totals.G}</div><div class="stat-label">On Track</div></div>
+                <div class="stat-card"><div class="stat-num" style="color:var(--status-a-color)">${totals.A}</div><div class="stat-label">Action Needed</div></div>
+            `;
+        }
 
         // Area Progress
-        document.getElementById('area-progress-list').innerHTML = Object.entries(areaCounts).map(([area, data]) => {
-            const pct = data.tot ? Math.round((data.done / data.tot) * 100) : 0;
-            return `
-            <div class="prog-row">
-                <div class="prog-label">${area}</div>
-                <div class="prog-bar-container">
-                    <div class="prog-bar-fill" style="width: ${pct}%; background: var(--primary-blue);"></div>
-                </div>
-                <div class="prog-value">${pct}%</div>
-            </div>`;
-        }).join('');
+        const areaList = document.getElementById('area-progress-list');
+        if (areaList) {
+            areaList.innerHTML = Object.entries(areaCounts).map(([area, data]) => {
+                const pct = data.tot ? Math.round((data.done / data.tot) * 100) : 0;
+                return `
+                <div class="prog-row">
+                    <div class="prog-label">${area}</div>
+                    <div class="prog-bar-container">
+                        <div class="prog-bar-fill" style="width: ${pct}%; background: var(--primary-blue);"></div>
+                    </div>
+                    <div class="prog-value">${pct}%</div>
+                </div>`;
+            }).join('');
+        }
 
         // Status Progress
+        const statusList = document.getElementById('status-progress-list');
         const distOrder = ['B', 'G', 'A', 'R', 'P', 'Grey'];
-        document.getElementById('status-progress-list').innerHTML = distOrder.map(stKey => {
-            const count = totals[stKey];
-            const pct = Math.round((count / totals.total) * 100) || 0;
-            const meta = STATUS_MAP[stKey];
-            return `
-            <div class="prog-row">
-                <div class="prog-label">
-                    <div class="status-dot" style="background:${meta.color}"></div>
-                    ${meta.label}
-                </div>
-                <div class="prog-bar-container">
-                    <div class="prog-bar-fill" style="width: ${pct}%; background: ${meta.color};"></div>
-                </div>
-                <div class="prog-value">${count}</div>
-            </div>`;
-        }).join('');
+        if (statusList) {
+            statusList.innerHTML = distOrder.map(stKey => {
+                const count = totals[stKey] || 0;
+                const pct = Math.round((count / totals.total) * 100) || 0;
+                const meta = STATUS_MAP[stKey];
+                return `
+                <div class="prog-row">
+                    <div class="prog-label">
+                        <div class="status-dot" style="background:${meta.color}"></div>
+                        ${meta.label}
+                    </div>
+                    <div class="prog-bar-container">
+                        <div class="prog-bar-fill" style="width: ${pct}%; background: ${meta.color};"></div>
+                    </div>
+                    <div class="prog-value">${count}</div>
+                </div>`;
+            }).join('');
+        }
     }
 
     function toggleCard(id) {
