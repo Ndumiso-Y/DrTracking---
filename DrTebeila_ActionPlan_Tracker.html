@@ -1052,38 +1052,52 @@
     const NOTIFICATION_EMAIL = 'sjdikhing@outlook.com';
 
     let supabase = null;
-    if (SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    try {
+        if (SUPABASE_URL !== 'YOUR_SUPABASE_URL' && window.supabase) {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        }
+    } catch (e) {
+        console.warn("Supabase initialization failed, running in local-only mode.", e);
     }
 
     // --- STATE MANAGEMENT ---
     let appState = {};
 
     async function loadState() {
-        if (supabase) {
-            // Load from Cloud
-            const { data, error } = await supabase.from('dr_tracking').select('*');
-            if (!error && data) {
-                data.forEach(row => {
-                    appState[row.milestone_id] = { 
-                        status: row.status, 
-                        comments: row.comments || [] 
-                    };
-                });
-            }
-        } else {
-            // Fallback to LocalStorage
-            const saved = localStorage.getItem('dr_tebeila_app_v2');
-            if (saved) appState = JSON.parse(saved);
+        // 1. Initial local load
+        const saved = localStorage.getItem('dr_tebeila_app_v2');
+        if (saved) {
+            appState = JSON.parse(saved);
         }
-
+        
         // Ensure every item is initialized
         INIT_DATA.forEach(m => {
             if (!appState[m.id]) appState[m.id] = { status: 'Grey', comments: [] };
         });
-        
+
+        // Render immediately with what we have
         refreshUI();
-        if (supabase) subscribeToChanges();
+
+        // 2. Try to sync with Cloud
+        if (supabase) {
+            try {
+                const { data, error } = await supabase.from('dr_tracking').select('*');
+                if (!error && data && data.length > 0) {
+                    data.forEach(row => {
+                        appState[row.milestone_id] = { 
+                            status: row.status, 
+                            comments: row.comments || [] 
+                        };
+                    });
+                    refreshUI(); // Re-render with cloud data
+                    subscribeToChanges();
+                } else if (error) {
+                    console.info("Cloud table empty or missing. Waiting for first save.");
+                }
+            } catch (cloudErr) {
+                console.warn("Cloud sync failed. Staying in local mode.", cloudErr);
+            }
+        }
     }
 
     function subscribeToChanges() {
@@ -1388,23 +1402,26 @@
     }
 
     // --- MAIN ---
-    async function switchTab(tabId, el) {
-        // Toggle Buttons
+    function switchTab(tabId, el) {
+        // 1. Clear all
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+        // 2. Activate button
         if (el) {
             el.classList.add('active');
         } else {
-            // Find button if not passed (e.g. initial load)
-            const targetBtn = Array.from(document.querySelectorAll('.tab-btn'))
-                .find(b => b.getAttribute('onclick').includes(`'${tabId}'`));
-            if(targetBtn) targetBtn.classList.add('active');
+            const btns = document.querySelectorAll('.tab-btn');
+            if (tabId === 'dashboard') btns[0].classList.add('active');
+            if (tabId === 'milestones') btns[1].classList.add('active');
+            if (tabId === 'timeline') btns[2].classList.add('active');
         }
 
-        // Toggle Pages
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        const targetPage = document.getElementById(`view-${tabId}`);
-        if(targetPage) targetPage.classList.add('active');
+        // 3. Activate Page
+        const page = document.getElementById(`view-${tabId}`);
+        if(page) page.classList.add('active');
         
+        // 4. Update visuals
         refreshUI();
     }
 
@@ -1446,13 +1463,8 @@
         a.click();
     }
 
-    window.onload = async () => {
-        try {
-            await loadState();
-        } catch (e) {
-            console.error("Initialization failed:", e);
-            refreshUI(); // Draw UI anyway with local fallback
-        }
+    window.onload = () => {
+        loadState(); // Don't await, let it load in background
     };
 </script>
 
