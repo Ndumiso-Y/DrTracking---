@@ -817,15 +817,15 @@
     <!-- NAVIGATION TABS -->
     <div class="nav-container">
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('dashboard')">
+            <button class="tab-btn active" onclick="switchTab('dashboard', this)">
                 <svg style="width:16px;height:16px;display:inline-block;vertical-align:text-bottom;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
                 My Success Dashboard
             </button>
-            <button class="tab-btn" onclick="switchTab('milestones')">
+            <button class="tab-btn" onclick="switchTab('milestones', this)">
                 <svg style="width:16px;height:16px;display:inline-block;vertical-align:text-bottom;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
                 Action Steps
             </button>
-            <button class="tab-btn" onclick="switchTab('timeline')">
+            <button class="tab-btn" onclick="switchTab('timeline', this)">
                 <svg style="width:16px;height:16px;display:inline-block;vertical-align:text-bottom;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                 Growth Timeline
             </button>
@@ -1388,20 +1388,32 @@
     }
 
     // --- MAIN ---
-    function switchTab(tabId) {
+    async function switchTab(tabId, el) {
+        // Toggle Buttons
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        if (el) {
+            el.classList.add('active');
+        } else {
+            // Find button if not passed (e.g. initial load)
+            const targetBtn = Array.from(document.querySelectorAll('.tab-btn'))
+                .find(b => b.getAttribute('onclick').includes(`'${tabId}'`));
+            if(targetBtn) targetBtn.classList.add('active');
+        }
+
+        // Toggle Pages
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        
-        event.currentTarget.classList.add('active');
-        document.getElementById(`view-${tabId}`).classList.add('active');
+        const targetPage = document.getElementById(`view-${tabId}`);
+        if(targetPage) targetPage.classList.add('active');
         
         refreshUI();
     }
 
     function refreshUI() {
         renderDashboard();
-        if(document.getElementById('view-milestones').classList.contains('active')) renderMilestones();
-        if(document.getElementById('view-timeline').classList.contains('active')) renderTimeline();
+        const milesView = document.getElementById('view-milestones');
+        const timelineView = document.getElementById('view-timeline');
+        if(milesView && milesView.classList.contains('active')) renderMilestones();
+        if(timelineView && timelineView.classList.contains('active')) renderTimeline();
     }
 
     // EXPORT FUNC
@@ -1434,9 +1446,13 @@
         a.click();
     }
 
-    window.onload = () => {
-        loadState();
-        refreshUI();
+    window.onload = async () => {
+        try {
+            await loadState();
+        } catch (e) {
+            console.error("Initialization failed:", e);
+            refreshUI(); // Draw UI anyway with local fallback
+        }
     };
 </script>
 
