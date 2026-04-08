@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dr. Tebeila Dental Practice — Strategic Action Plan Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
             --primary-blue: #0081C6;
@@ -445,6 +447,17 @@
             align-items: center;
             gap: 6px;
             box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .badge-status:hover {
+            transform: scale(1.05);
+            filter: brightness(0.95);
+        }
+
+        .badge-status:active {
+            transform: scale(0.95);
         }
 
         .chevron {
@@ -1031,30 +1044,102 @@
         }
     ];
 
+    // --- CLOUD CONFIGURATION ---
+    // STEP 1: Create a free account at Supabase.com
+    // STEP 2: Create a project and paste your keys below
+    const SUPABASE_URL = 'YOUR_SUPABASE_URL'; 
+    const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+    const NOTIFICATION_EMAIL = 'sjdikhing@outlook.com';
+
+    let supabase = null;
+    if (SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    }
+
     // --- STATE MANAGEMENT ---
     let appState = {};
 
-    function loadState() {
-        const saved = localStorage.getItem('dr_tebeila_app_v2');
-        if (saved) {
-            appState = JSON.parse(saved);
+    async function loadState() {
+        if (supabase) {
+            // Load from Cloud
+            const { data, error } = await supabase.from('dr_tracking').select('*');
+            if (!error && data) {
+                data.forEach(row => {
+                    appState[row.milestone_id] = { 
+                        status: row.status, 
+                        comments: row.comments || [] 
+                    };
+                });
+            }
         } else {
-            // Initialize empty state
-            INIT_DATA.forEach(m => {
-                appState[m.id] = { status: 'Grey', comments: [] };
-            });
-            saveState();
+            // Fallback to LocalStorage
+            const saved = localStorage.getItem('dr_tebeila_app_v2');
+            if (saved) appState = JSON.parse(saved);
+        }
+
+        // Ensure every item is initialized
+        INIT_DATA.forEach(m => {
+            if (!appState[m.id]) appState[m.id] = { status: 'Grey', comments: [] };
+        });
+        
+        refreshUI();
+        if (supabase) subscribeToChanges();
+    }
+
+    function subscribeToChanges() {
+        supabase
+            .channel('public:dr_tracking')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'dr_tracking' }, payload => {
+                const updated = payload.new;
+                appState[updated.milestone_id] = { status: updated.status, comments: updated.comments };
+                refreshUI();
+            })
+            .subscribe();
+    }
+
+    async function saveState(id) {
+        if (supabase) {
+            const { error } = await supabase
+                .from('dr_tracking')
+                .upsert({ 
+                    milestone_id: id, 
+                    status: appState[id].status, 
+                    comments: appState[id].comments 
+                }, { onConflict: 'milestone_id' });
+            
+            if (error) console.error("Cloud Save Error:", error);
+            else checkAndNotify(id);
+        } else {
+            localStorage.setItem('dr_tebeila_app_v2', JSON.stringify(appState));
         }
     }
 
-    function saveState() {
-        localStorage.setItem('dr_tebeila_app_v2', JSON.stringify(appState));
+    // Simple Notify Logic
+    function checkAndNotify(id) {
+        const milestone = INIT_DATA.find(m => m.id === id);
+        const st = appState[id].status;
+        
+        // Notify on high priority changes (e.g., Goal Met or Help Needed)
+        if (st === 'B' || st === 'R') {
+            const message = `Dr. Tebeila Update: Goal "${milestone.title}" is now "${STATUS_MAP[st].label}".`;
+            console.log(`Sending email to ${NOTIFICATION_EMAIL}: ${message}`);
+            // Note: In a production environment, this would trigger an Edge Function 
+            // to actually send the email via SendGrid/Resend.
+        }
+    }
+
+    function cycleStatus(id, event) {
+        event.stopPropagation(); // Prevent card from opening/closing
+        const stages = ['Grey', 'G', 'B', 'A', 'R', 'P'];
+        const current = appState[id]?.status || 'Grey';
+        const nextIndex = (stages.indexOf(current) + 1) % stages.length;
+        updateMilestone(id, { status: stages[nextIndex] });
     }
 
     function updateMilestone(id, dataPatch) {
         if(!appState[id]) appState[id] = { status: 'Grey', comments: [] };
         appState[id] = { ...appState[id], ...dataPatch };
-        saveState();
+        saveState(id);
         refreshUI();
     }
 
@@ -1203,7 +1288,10 @@
                     <div class="m-id">${m.id}</div>
                     <div class="m-title">Goal: ${m.title}</div>
                     <div class="badge-area">Priority: ${m.area}</div>
-                    <div class="badge-status" style="background:${sMeta.bg}; color:${sMeta.color};">
+                    <div class="badge-status" 
+                         style="background:${sMeta.bg}; color:${sMeta.color};"
+                         title="Click to quickly change status"
+                         onclick="cycleStatus(${m.id}, event)">
                         <div class="status-dot" style="background:${sMeta.color}"></div>
                         ${sMeta.label}
                     </div>
