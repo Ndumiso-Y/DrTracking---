@@ -836,7 +836,7 @@
     <main class="main-content">
 
         <!-- DASHBOARD VIEW -->
-        <div id="view-dashboard" class="page active">
+        <div id="view-dashboard" class="page">
             
             <!-- COACH'S GUIDANCE CARD -->
             <div style="grid-column: span 12; background: linear-gradient(135deg, #0081C6 0%, #005a8a 100%); color: white; border-radius: var(--radius-lg); padding: 24px; margin-bottom: 24px; box-shadow: var(--shadow-lg); position: relative; overflow: hidden;">
@@ -930,7 +930,7 @@
         </div>
 
         <!-- MILESTONES VIEW -->
-        <div id="view-milestones" class="page">
+        <div id="view-milestones" class="page active">
             
             <div class="toolbar">
                 <div class="legend-list">
@@ -1419,6 +1419,7 @@
 
     // --- MAIN ---
     function switchTab(tabId, el) {
+        console.log("Switching to tab:", tabId);
         // 1. Clear all
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1435,18 +1436,25 @@
 
         // 3. Activate Page
         const page = document.getElementById(`view-${tabId}`);
-        if(page) page.classList.add('active');
+        if (page) {
+            page.classList.add('active');
+            console.log("Page activated:", tabId);
+        }
         
         // 4. Update visuals
         refreshUI();
     }
 
     function refreshUI() {
-        renderDashboard();
-        const milesView = document.getElementById('view-milestones');
-        const timelineView = document.getElementById('view-timeline');
-        if(milesView && milesView.classList.contains('active')) renderMilestones();
-        if(timelineView && timelineView.classList.contains('active')) renderTimeline();
+        try {
+            renderDashboard();
+            const milesView = document.getElementById('view-milestones');
+            const timelineView = document.getElementById('view-timeline');
+            if(milesView && milesView.classList.contains('active')) renderMilestones();
+            if(timelineView && timelineView.classList.contains('active')) renderTimeline();
+        } catch (e) {
+            console.error("UI Refresh error:", e);
+        }
     }
 
     // EXPORT FUNC
