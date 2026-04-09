@@ -1245,62 +1245,62 @@
 
     const INIT_DATA = [
         {
-            id: 1, title: "Register Trade Name — Refodile Holdings", area: "Governance",
+            id: 1, title: "Register Trade Name — Refodile Holdings", area: "Governance", assignee: "Joy & Dr. Tebeila",
             short: { text: "CIPC name availability check and requirements research (Apr 2026)", due: "2026-04-30" },
             medium: { text: "Submit CIPC registration application (May 2026)", due: "2026-05-31" },
             long: { text: "Receive certificate and update all branding (Jun 2026)", due: "2026-06-30" }
         },
         {
-            id: 2, title: "Financial Audit & Key Driver Identification", area: "Leadership",
-            short: { text: "Audit recovery analysis (Ali/David/Tafadzwa) (May 2026)", due: "2026-05-31" },
+            id: 2, title: "Financial Audit & Key Driver Identification", area: "Leadership", assignee: "Tafadzwa, Ali & David",
+            short: { text: "Analysis draft review of the 2023–2026 Medis data (High Priority)", due: "2026-04-10" },
             medium: { text: "Compile consolidated key driver report per practice", due: "2026-06-30" },
             long: { text: "Embed driver KPIs into practice scorecards", due: "2026-07-31" }
         },
         {
-            id: 3, title: "Launch Individual Practice Roadmaps", area: "Leadership",
+            id: 3, title: "Launch Individual Practice Roadmaps", area: "Leadership", assignee: "Dr. Tebeila & Tafadzwa",
             short: { text: "Draft roadmaps based on key driver analysis (May 2026)", due: "2026-05-31" },
             medium: { text: "Present and agree roadmaps with Clinical Lead", due: "2026-06-30" },
             long: { text: "Quarterly roadmap review cadence established", due: "2026-10-31" }
         },
         {
-            id: 4, title: "Finalize Partnership Agreement — Dr. Nape", area: "Governance",
+            id: 4, title: "Finalize Partnership Agreement — Dr. Nape", area: "Governance", assignee: "Dr. Tebeila & Dr. Nape",
             short: { text: "Engage attorney. Draft term sheet for Dr. Nape", due: "2026-04-30" },
             medium: { text: "Finalise legal agreement (Jun 2026)", due: "2026-06-30" },
             long: { text: "Signed agreement executed and filed", due: "2026-07-31" }
         },
         {
-            id: 5, title: "Finalize Partnership Agreement — Dr. Seabi", area: "Governance",
+            id: 5, title: "Finalize Partnership Agreement — Dr. Seabi", area: "Governance", assignee: "Dr. Tebeila & Dr. Seabi",
             short: { text: "Draft term sheet for Dr. Seabi; align on equity", due: "2026-04-30" },
             medium: { text: "Finalise legal agreement (Jun 2026)", due: "2026-06-30" },
             long: { text: "Signed agreement executed and filed", due: "2026-07-31" }
         },
         {
-            id: 6, title: "Appoint & Induct Practice Administrator", area: "HR",
+            id: 6, title: "Appoint & Induct Practice Administrator", area: "HR", assignee: "Linda & Joy",
             short: { text: "Linda identified; draft job profile (Apr 2026)", due: "2026-04-30" },
             medium: { text: "Administrator fully operational (Jul 2026)", due: "2026-07-31" },
             long: { text: "Quarterly performance management established", due: "2026-09-30" }
         },
         {
-            id: 7, title: "Standardize HR & LabourNet Contracts", area: "HR",
+            id: 7, title: "Standardize HR & LabourNet Contracts", area: "HR", assignee: "Joy & Dr. Tebeila",
             short: { text: "Activate LabourNet for compliance monitoring (Apr 2026)", due: "2026-04-30" },
             medium: { text: "Address audit concerns and contract gaps", due: "2026-06-30" },
             long: { text: "Audit & sign all standardized employment contracts (Sep 2026)", due: "2026-09-30" }
         },
         {
-            id: 8, title: "Uniform Brand Identity (Refodile Dental)", area: "Marketing",
-            short: { text: "Establish brand guide (Tshidi) (May 2026)", due: "2026-05-31" },
+            id: 8, title: "Uniform Brand Identity (Refodile Dental)", area: "Marketing", assignee: "Ndumiso & Tshlodi",
+            short: { text: "Final Brand Identity Kit Review for Refodile Dental Studio", due: "2026-04-10" },
             medium: { text: "Go-live on signage & unified digital assets (Jul 2026)", due: "2026-07-31" },
             long: { text: "Social Media Strategy Phase 2: Active programs", due: "2027-03-27" }
         },
         {
-            id: 9, title: "Intelligence System Phase 1 (Core Focus)", area: "Technology",
-            short: { text: "Claims, Errors & Workflow logic (High Priority) (Jun 2026)", due: "2026-06-30" },
+            id: 9, title: "Intelligence System Phase 1 (Core Focus)", area: "Technology", assignee: "Ndumiso & Tafadzwa",
+            short: { text: "System Workflow Logic Draft approval (High Priority)", due: "2026-04-10" },
             medium: { text: "Phase 2: Management Intelligence & HR Dashboards", due: "2026-09-30" },
             long: { text: "Automated practice health trigger notifications", due: "2026-12-31" }
         },
         {
-            id: 10, title: "Intelligence System Phases 2–4 (Global)", area: "Technology",
-            short: { text: "Hardware deployment (2 Computer Purchase Completed)", due: "2026-04-30" },
+            id: 10, title: "Intelligence System Phases 2–4 (Global)", area: "Technology", assignee: "Tafadzwa & Ndumiso",
+            short: { text: "Confirmation of deployment for 2x Laptops to Pic N Pay", due: "2026-04-10" },
             medium: { text: "Medis & Clinical System Integration", due: "2026-10-31" },
             long: { text: "Full Clinical/Financial intelligence live (Mar 2027)", due: "2027-03-31" }
         }
@@ -1523,6 +1523,8 @@
     function getCountdownBadge(dueStr) {
         const days = calcDays(dueStr);
         if (days < 0) return `<span class="countdown-pill overdue">Overdue (${Math.abs(days)}d)</span>`;
+        if (days === 0) return `<span class="countdown-pill soon" style="background:#fff3cd; color:#856404; border-color:#ffeeba;">Due TODAY</span>`;
+        if (days === 1) return `<span class="countdown-pill soon">Due Tomorrow</span>`;
         if (days <= 14) return `<span class="countdown-pill soon">${days}d left</span>`;
         return `<span class="countdown-pill ok">${days}d left</span>`;
     }
@@ -1552,9 +1554,13 @@
             var sMeta = STATUS_MAP[item.st];
             var daysLabel = item.days < 0 ? Math.abs(item.days) + 'd overdue' : item.days + 'd left';
             var dotColor = item.days < 0 ? 'var(--status-r-color)' : 'var(--status-a-color)';
+            var assignee = item.m.assignee || 'Unassigned';
             return '<div class="focus-item" onclick="switchTab(\'milestones\');setTimeout(function(){toggleCard(' + item.m.id + ');}, 200)">' +
                 '<div style="width:10px;height:10px;border-radius:50%;background:' + dotColor + ';flex-shrink:0;"></div>' +
-                '<div style="flex:1;">' + item.m.title + '</div>' +
+                '<div style="flex:1;">' +
+                    '<div style="font-weight:600;">' + item.m.title + '</div>' +
+                    '<div style="font-size:11px;color:var(--text-muted);">Lead: ' + assignee + '</div>' +
+                '</div>' +
                 '<div style="font-size:12px;color:var(--text-muted);">' + daysLabel + '</div>' +
                 '</div>';
         }).join('');
@@ -1729,6 +1735,7 @@
                     <div class="m-title">${m.title}</div>
                     <div class="m-header-badges">
                         ${overdueChip}
+                        <div class="badge-area" style="background:#f0f7ff; color:#005a8a; border:1px solid #cce3ff;">Lead: ${m.assignee || 'Unassigned'}</div>
                         <div class="badge-area">Area: ${m.area}</div>
                         ${commentBadge}
                         <div class="badge-status" 
