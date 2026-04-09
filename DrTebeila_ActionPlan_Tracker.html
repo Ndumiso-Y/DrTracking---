@@ -1052,10 +1052,10 @@
     const SUPABASE_KEY = 'sb_publishable_y9O47dwZTA2Ha_STUP5UUg_OvWj0G_V';
     const NOTIFICATION_EMAIL = 'sjdikhing@outlook.com';
 
-    let supabase = null;
+    let supabaseClient = null;
     try {
         if (SUPABASE_URL !== 'YOUR_SUPABASE_URL' && window.supabase) {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         }
     } catch (e) {
         console.warn("Supabase initialization failed, running in local-only mode.", e);
@@ -1080,9 +1080,9 @@
         refreshUI();
 
         // 2. Try to sync with Cloud
-        if (supabase) {
+        if (supabaseClient) {
             try {
-                const { data, error } = await supabase.from('dr_tracking').select('*');
+                const { data, error } = await supabaseClient.from('dr_tracking').select('*');
                 if (!error && data && data.length > 0) {
                     data.forEach(row => {
                         appState[row.milestone_id] = { 
@@ -1102,7 +1102,8 @@
     }
 
     function subscribeToChanges() {
-        supabase
+        if (!supabaseClient) return;
+        supabaseClient
             .channel('public:dr_tracking')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'dr_tracking' }, payload => {
                 const updated = payload.new;
@@ -1113,8 +1114,8 @@
     }
 
     async function saveState(id) {
-        if (supabase) {
-            const { error } = await supabase
+        if (supabaseClient) {
+            const { error } = await supabaseClient
                 .from('dr_tracking')
                 .upsert({ 
                     milestone_id: id, 
@@ -1514,8 +1515,8 @@
         // 4. Background Cloud Load
         setTimeout(async () => {
             try {
-                if (supabase) {
-                    const { data, error } = await supabase.from('dr_tracking').select('*');
+                if (supabaseClient) {
+                    const { data, error } = await supabaseClient.from('dr_tracking').select('*');
                     if (!error && data && data.length > 0) {
                         data.forEach(row => {
                             appState[row.milestone_id] = { 
