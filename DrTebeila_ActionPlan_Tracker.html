@@ -402,14 +402,17 @@
             padding: 20px 24px;
             display: flex;
             align-items: center;
-            gap: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
             cursor: pointer;
             user-select: none;
+            min-height: 44px;
         }
 
         .m-id {
             width: 36px;
             height: 36px;
+            min-width: 36px;
             background: var(--secondary-blue);
             color: var(--primary-blue);
             border-radius: var(--radius-md);
@@ -423,25 +426,38 @@
 
         .m-title {
             flex: 1;
+            min-width: 120px;
             font-size: 16px;
             font-weight: 600;
             color: var(--text-main);
         }
 
+        .m-header-badges {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
         .badge-area {
             background: #F1F5F9;
             color: var(--dark-grey);
-            padding: 4px 12px;
+            padding: 6px 12px;
             border-radius: var(--radius-full);
             font-size: 12px;
             font-weight: 600;
             letter-spacing: 0.5px;
+            white-space: nowrap;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
         }
 
         .badge-status {
-            padding: 6px 16px;
+            padding: 6px 14px;
             border-radius: var(--radius-full);
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             display: flex;
             align-items: center;
@@ -449,6 +465,8 @@
             box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
             cursor: pointer;
             transition: all 0.2s ease;
+            white-space: nowrap;
+            min-height: 32px;
         }
 
         .badge-status:hover {
@@ -465,9 +483,12 @@
             transition: transform 0.3s ease;
             width: 20px;
             height: 20px;
+            min-width: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
+            margin-left: auto;
         }
 
         .m-content {
@@ -573,7 +594,7 @@
         }
 
         .status-btn-selector {
-            padding: 8px 16px;
+            padding: 10px 14px;
             border-radius: var(--radius-full);
             font-size: 12px;
             font-weight: 600;
@@ -582,6 +603,9 @@
             transition: all 0.2s ease;
             opacity: 0.6;
             filter: grayscale(0.5);
+            min-height: 44px;
+            white-space: nowrap;
+            touch-action: manipulation;
         }
 
         .status-btn-selector:hover {
@@ -788,10 +812,53 @@
         @media(max-width: 768px) {
             .header-content { flex-direction: column; align-items: flex-start; padding: 16px 20px; }
             .header-meta { text-align: left; width: 100%; margin-top: 12px; }
-            .nav-container { padding: 0 20px; }
-            .main-content { padding: 0 20px; margin: 24px auto; }
-            .toolbar { flex-direction: column; align-items: stretch; }
-            .filter-group { flex-direction: column; align-items: stretch; }
+            .nav-container { padding: 0 16px; }
+            .main-content { padding: 0 16px; margin: 16px auto; }
+            .toolbar { flex-direction: column; align-items: stretch; gap: 12px; }
+            .filter-group { flex-direction: column; align-items: stretch; gap: 8px; }
+            .filter-select { width: 100%; padding: 12px 36px 12px 16px; min-height: 44px; }
+            .m-header { padding: 14px 16px; gap: 10px; }
+            .m-title { font-size: 14px; }
+            .badge-area { font-size: 11px; padding: 5px 10px; }
+            .badge-status { font-size: 11px; padding: 5px 10px; }
+            .phases-grid { padding: 0 16px 20px; }
+            .controls-section { padding: 14px 16px; }
+            .status-buttons { gap: 6px; }
+            .status-btn-selector { font-size: 11px; padding: 8px 10px; }
+            .tab-btn { padding: 10px 14px; font-size: 13px; }
+            .timeline-container { padding-left: 24px; }
+            .timeline-cards { grid-template-columns: 1fr; }
+        }
+
+        @media(max-width: 425px) {
+            .m-header { padding: 12px 14px; flex-wrap: wrap; }
+            .m-title { font-size: 13px; min-width: 100%; order: 2; }
+            .m-id { order: 1; }
+            .m-header-badges { order: 3; width: 100%; }
+            .chevron { order: 1; margin-left: 0; }
+            .status-btn-selector { width: 100%; justify-content: center; text-align: center; }
+            .status-buttons { flex-direction: column; }
+            .header-titles h1 { font-size: 16px; }
+            .tabs { gap: 0; }
+            .tab-btn { padding: 10px 12px; font-size: 12px; }
+        }
+
+        @media(max-width: 375px) {
+            .nav-container { padding: 0 12px; }
+            .main-content { padding: 0 12px; }
+            .m-header { padding: 10px 12px; }
+            .phases-grid { padding: 0 12px 16px; }
+            .controls-section { padding: 12px; }
+        }
+
+        /* Fix gallery images */
+        .gallery-img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            display: block;
+            border-radius: inherit;
         }
     </style>
 </head>
@@ -903,13 +970,13 @@
                 <!-- Practice Gallery Section -->
                 <div class="progress-card" style="grid-column: span 12;">
                     <div class="card-header">Practice & Team Gallery</div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
                         <div style="border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-color); position: relative;">
-                            <img src="DrTebeila.png" alt="Dr Tebeila & Team" style="width: 100%; height: 300px; object-fit: cover; display: block;">
+                            <img src="DrTebeila.png" alt="Dr Tebeila & Team" class="gallery-img" onerror="this.style.display='none'">
                             <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); padding: 15px; color: white; font-size: 14px; font-weight: 600;">Dr. Tebeila & The Clinical Team</div>
                         </div>
                         <div style="border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-color); position: relative;">
-                            <img src="StudioDrT.png" alt="Dental Studio in Action" style="width: 100%; height: 300px; object-fit: cover; display: block;">
+                            <img src="StudioDrT.png" alt="Dental Studio in Action" class="gallery-img" onerror="this.style.display='none'">
                             <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); padding: 15px; color: white; font-size: 14px; font-weight: 600;">State-of-the-Art Dental Studio</div>
                         </div>
                     </div>
@@ -1174,13 +1241,21 @@
     }
 
     // --- UTILITIES ---
+    // Single source of truth for date parsing — prevents timezone off-by-one errors.
+    // ISO date strings like "2026-04-30" are treated as UTC midnight by default,
+    // which can shift to the previous day in UTC+2 timezones. We force local noon.
+    function parseLocalDate(dueStr) {
+        const [y, m, d] = dueStr.split('-').map(Number);
+        return new Date(y, m - 1, d, 12, 0, 0); // local noon — timezone safe
+    }
+
     function calcDays(dueStr) {
-        const diff = new Date(dueStr) - new Date();
+        const diff = parseLocalDate(dueStr) - new Date();
         return Math.ceil(diff / (1000 * 60 * 60 * 24));
     }
 
     function formatDate(dueStr) {
-        return new Date(dueStr).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' });
+        return parseLocalDate(dueStr).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' });
     }
 
     function getCountdownBadge(dueStr) {
@@ -1318,13 +1393,15 @@
                 <div class="m-header" onclick="toggleCard(${m.id})">
                     <div class="m-id">${m.id}</div>
                     <div class="m-title">Goal: ${m.title}</div>
-                    <div class="badge-area">Priority: ${m.area}</div>
-                    <div class="badge-status" 
-                         style="background:${sMeta.bg}; color:${sMeta.color};"
-                         title="Click to quickly change status"
-                         onclick="cycleStatus(${m.id}, event)">
-                        <div class="status-dot" style="background:${sMeta.color}"></div>
-                        ${sMeta.label}
+                    <div class="m-header-badges">
+                        <div class="badge-area">Priority: ${m.area}</div>
+                        <div class="badge-status" 
+                             style="background:${sMeta.bg}; color:${sMeta.color};"
+                             title="Click to quickly change status"
+                             onclick="cycleStatus(${m.id}, event)">
+                            <div class="status-dot" style="background:${sMeta.color}"></div>
+                            ${sMeta.label}
+                        </div>
                     </div>
                     <div class="chevron">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
