@@ -392,23 +392,21 @@
             background: var(--card-bg);
             border-radius: var(--radius-lg);
             border: 1px solid var(--border-color);
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            box-shadow: var(--shadow-sm);
             overflow: hidden;
-            transition: all 0.3s ease;
-            position: relative;
+            transition: all 0.2s ease;
         }
 
         .milestone-card:hover {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
 
         .milestone-card.overdue {
-            border-left: 4px solid #e11d48 !important;
+            border-left: 4px solid var(--status-r-color) !important;
         }
 
         .milestone-card.achieved-card {
-            border-left: 4px solid #2563eb;
+            border-left: 4px solid var(--status-b-color);
             opacity: 0.9;
         }
 
@@ -638,8 +636,9 @@
 
         /* Today's Focus Highlight */
         .today-focus-highlight {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
-            background: linear-gradient(135deg, #ffffff 0%, #fffef4 100%) !important;
+            background: #f0f9ff !important;
+            border-color: #bae6fd !important;
+            box-shadow: var(--shadow-sm) !important;
         }
 
         .comments-section {
@@ -1268,12 +1267,12 @@
 <script>
     // --- DATA & CONFIGURATION ---
     const STATUS_MAP = {
-        'G':    { label: 'On Track',          color: '#059669', bg: '#ecfdf5' }, // Vibrant Green
-        'R':    { label: 'Escalate to Coach', color: '#e11d48', bg: '#fff1f2' }, // Warning Red
-        'A':    { label: 'Action Needed',     color: '#d97706', bg: '#fffbeb' }, // Bold Amber
-        'B':    { label: 'Completed',         color: '#2563eb', bg: '#eff6ff' }, // Tech Blue
-        'P':    { label: 'On Hold',           color: '#4b5563', bg: '#f3f4f6' }, // Grey
-        'Grey': { label: 'Not Started',       color: '#9ca3af', bg: '#f9fafb' }
+        'G':    { label: 'On Track',          color: 'var(--status-g-color)', bg: 'var(--status-g-bg)' },
+        'R':    { label: 'Escalate to Coach', color: 'var(--status-r-color)', bg: 'var(--status-r-bg)' },
+        'A':    { label: 'Action Needed',     color: 'var(--status-a-color)', bg: 'var(--status-a-bg)' },
+        'B':    { label: 'Completed',         color: 'var(--status-b-color)', bg: 'var(--status-b-bg)' },
+        'P':    { label: 'On Hold',           color: 'var(--status-p-color)', bg: 'var(--status-p-bg)' },
+        'Grey': { label: 'Not Started',       color: 'var(--status-grey-color)', bg: 'var(--status-grey-bg)' }
     };
 
     const INIT_DATA = [
@@ -1615,20 +1614,20 @@
         const statsContainer = document.getElementById('stats-container');
         if (statsContainer) {
             statsContainer.innerHTML = `
-                <div class="stat-card" style="border-top: 4px solid var(--primary-blue);">
-                    <div class="stat-num color-main">${totals.total}</div>
+                <div class="stat-card" style="border-top: 3px solid var(--primary-blue);">
+                    <div class="stat-num" style="color:var(--primary-blue)">${totals.total}</div>
                     <div class="stat-label">Total Goals</div>
                 </div>
-                <div class="stat-card" style="border-top: 4px solid #2563eb;">
-                    <div class="stat-num" style="color:#2563eb">${completionRate}%</div>
+                <div class="stat-card" style="border-top: 3px solid var(--status-b-color);">
+                    <div class="stat-num" style="color:var(--status-b-color)">${completionRate}%</div>
                     <div class="stat-label">Overall Success</div>
                 </div>
-                <div class="stat-card" style="border-top: 4px solid #059669;">
-                    <div class="stat-num" style="color:#059669">${totals.G}</div>
-                    <div class="stat-label">Running Smooth</div>
+                <div class="stat-card" style="border-top: 3px solid var(--status-g-color);">
+                    <div class="stat-num" style="color:var(--status-g-color)">${totals.G}</div>
+                    <div class="stat-label">On Track</div>
                 </div>
-                <div class="stat-card" style="border-top: 4px solid #e11d48;">
-                    <div class="stat-num" style="color:#e11d48">${totals.R + totals.A}</div>
+                <div class="stat-card" style="border-top: 3px solid var(--status-r-color);">
+                    <div class="stat-num" style="color:var(--status-r-color)">${totals.R + totals.A}</div>
                     <div class="stat-label">Action Needed</div>
                 </div>
             `;
@@ -1765,10 +1764,7 @@
             return `
             <div class="${cardClass}" id="m-card-${m.id}">
                 <div class="m-header" onclick="toggleCard(${m.id})">
-                    <div class="m-id" style="font-size:10px; flex-direction:column; gap:0;">
-                        <span style="font-size:8px; opacity:0.7;">REF</span>
-                        #${m.id}
-                    </div>
+                    <div class="m-id">${m.id}</div>
                     <div class="m-title">${m.title}</div>
                     <div class="m-header-badges">
                         ${overdueChip}
