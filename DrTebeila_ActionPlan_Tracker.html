@@ -139,7 +139,8 @@
 
         .tab-btn.active {
             color: var(--primary-blue);
-            border-bottom: 2px solid var(--primary-blue);
+            border-bottom: 4px solid var(--primary-blue);
+            font-weight: 700;
         }
 
         /* MAIN CONTENT AREA */
@@ -182,15 +183,15 @@
             background: var(--card-bg);
             border-radius: var(--radius-lg);
             padding: 24px;
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             border: 1px solid var(--border-color);
             text-align: center;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
         .stat-num {
@@ -389,13 +390,26 @@
             background: var(--card-bg);
             border-radius: var(--radius-lg);
             border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
             overflow: hidden;
-            transition: box-shadow 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
         .milestone-card:hover {
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transform: translateY(-1px);
+        }
+
+        .milestone-card.overdue {
+            border-left: 8px solid #e11d48 !important;
+            background: linear-gradient(to right, #fff1f2 0%, #ffffff 100px);
+        }
+
+        .milestone-card.achieved-card {
+            border-left: 8px solid #2563eb;
+            opacity: 0.85;
+            background: linear-gradient(to right, #eff6ff 0%, #ffffff 100px);
         }
 
         .m-header {
@@ -441,37 +455,40 @@
         }
 
         .badge-area {
-            background: #F1F5F9;
-            color: var(--dark-grey);
-            padding: 6px 12px;
-            border-radius: var(--radius-full);
-            font-size: 12px;
-            font-weight: 600;
+            background: #f1f5f9;
+            color: #475569;
+            padding: 4px 10px;
+            border-radius: 6px; /* Rectangular for info */
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
             letter-spacing: 0.5px;
             white-space: nowrap;
-            min-height: 32px;
+            min-height: 28px;
             display: flex;
             align-items: center;
+            border: 1px solid #e2e8f0;
         }
 
         .badge-status {
-            padding: 6px 14px;
-            border-radius: var(--radius-full);
-            font-size: 12px;
-            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 99px; /* Pill for action */
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
             display: flex;
             align-items: center;
-            gap: 6px;
-            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+            gap: 8px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             white-space: nowrap;
             min-height: 32px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
         .badge-status:hover {
-            transform: scale(1.05);
-            filter: brightness(0.95);
+            transform: scale(1.08);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         .badge-status:active {
@@ -594,31 +611,35 @@
         }
 
         .status-btn-selector {
-            padding: 10px 14px;
-            border-radius: var(--radius-full);
-            font-size: 12px;
-            font-weight: 600;
-            border: 1px solid transparent;
+            padding: 8px 16px;
+            border-radius: 99px;
+            font-size: 11px;
+            font-weight: 700;
+            border: 2px solid transparent;
             cursor: pointer;
-            transition: all 0.2s ease;
-            opacity: 0.6;
-            filter: grayscale(0.5);
-            min-height: 44px;
-            white-space: nowrap;
-            touch-action: manipulation;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .status-btn-selector:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         .status-btn-selector.selected {
-            opacity: 1;
-            filter: grayscale(0);
-            box-shadow: var(--shadow-sm);
-            transform: scale(1.05);
             border-color: currentColor;
+            box-shadow: 0 0 0 2px white, 0 0 0 4px currentColor;
+            transform: scale(1.05) translateY(-2px);
+        }
+
+        /* Today's Focus Highlight */
+        .today-focus-highlight {
+            border: 2px solid #fbbf24 !important;
+            box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.1), var(--shadow-lg) !important;
         }
 
         .comments-section {
@@ -660,23 +681,35 @@
             font-weight: 500;
         }
 
-        .comment-input-wrapper {
+        .comment-input-area {
             display: flex;
             gap: 8px;
         }
 
-        .comment-input {
+        .comment-input-area input {
             flex: 1;
             padding: 10px 14px;
             border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
+            border-radius: 8px;
             font-size: 13px;
             outline: none;
-            transition: border-color 0.2s;
         }
 
-        .comment-input:focus {
-            border-color: var(--primary-blue);
+        .save-note-btn {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .save-note-btn:hover {
+            background: #006aa3;
+            transform: translateY(-1px);
         }
 
         /* TIMELINE VIEW */
@@ -1235,12 +1268,12 @@
 <script>
     // --- DATA & CONFIGURATION ---
     const STATUS_MAP = {
-        'G':    { label: 'Perfectly on Track', color: 'var(--status-g-color)', bg: 'var(--status-g-bg)' },
-        'R':    { label: 'I Need Help',        color: 'var(--status-r-color)', bg: 'var(--status-r-bg)' },
-        'A':    { label: 'Needs Attention',    color: 'var(--status-a-color)', bg: 'var(--status-a-bg)' },
-        'B':    { label: 'Success / Goal Met', color: 'var(--status-b-color)', bg: 'var(--status-b-bg)' },
-        'P':    { label: 'Let\'s Hold Off',    color: 'var(--status-p-color)', bg: 'var(--status-p-bg)' },
-        'Grey': { label: 'Not Started Yet',    color: 'var(--status-grey-color)', bg: 'var(--status-grey-bg)' }
+        'G':    { label: 'On Track',          color: '#059669', bg: '#ecfdf5' }, // Vibrant Green
+        'R':    { label: 'Escalate to Coach', color: '#e11d48', bg: '#fff1f2' }, // Warning Red
+        'A':    { label: 'Action Needed',     color: '#d97706', bg: '#fffbeb' }, // Bold Amber
+        'B':    { label: 'Completed',         color: '#2563eb', bg: '#eff6ff' }, // Tech Blue
+        'P':    { label: 'On Hold',           color: '#4b5563', bg: '#f3f4f6' }, // Grey
+        'Grey': { label: 'Not Started',       color: '#9ca3af', bg: '#f9fafb' }
     };
 
     const INIT_DATA = [
@@ -1555,13 +1588,13 @@
             var daysLabel = item.days < 0 ? Math.abs(item.days) + 'd overdue' : item.days + 'd left';
             var dotColor = item.days < 0 ? 'var(--status-r-color)' : 'var(--status-a-color)';
             var assignee = item.m.assignee || 'Unassigned';
-            return '<div class="focus-item" onclick="switchTab(\'milestones\');setTimeout(function(){toggleCard(' + item.m.id + ');}, 200)">' +
+            return '<div class="focus-item today-focus-highlight" onclick="switchTab(\'milestones\');setTimeout(function(){toggleCard(' + item.m.id + ');}, 200)">' +
                 '<div style="width:10px;height:10px;border-radius:50%;background:' + dotColor + ';flex-shrink:0;"></div>' +
                 '<div style="flex:1;">' +
                     '<div style="font-weight:600;">' + item.m.title + '</div>' +
                     '<div style="font-size:11px;color:var(--text-muted);">Lead: ' + assignee + '</div>' +
                 '</div>' +
-                '<div style="font-size:12px;color:var(--text-muted);">' + daysLabel + '</div>' +
+                '<div style="font-size:12px;color:var(--text-muted);">' + (item.days === 1 ? 'Due Tomorrow' : item.days === 0 ? 'Due TODAY' : daysLabel) + '</div>' +
                 '</div>';
         }).join('');
 
@@ -1569,38 +1602,37 @@
     }
 
     function renderDashboard() {
-        renderFocusSection();
-
         // Initial setup for totals
         const totals = { total: INIT_DATA.length, G: 0, R: 0, A: 0, B: 0, P: 0, Grey: 0 };
-        
-        // Dynamically build area counts
-        const areaCounts = {};
-        
         INIT_DATA.forEach(m => {
             const st = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
             totals[st]++;
-            
-            // Initialize area if first time seeing it
-            if (!areaCounts[m.area]) {
-                areaCounts[m.area] = { tot: 0, done: 0 };
-            }
-            
-            areaCounts[m.area].tot++;
-            if (st === 'B') areaCounts[m.area].done++;
         });
 
-        // Stats UI
         const completionRate = Math.round((totals.B / totals.total) * 100) || 0;
         const statsContainer = document.getElementById('stats-container');
         if (statsContainer) {
             statsContainer.innerHTML = `
-                <div class="stat-card"><div class="stat-num color-main">${totals.total}</div><div class="stat-label">Total Items</div></div>
-                <div class="stat-card"><div class="stat-num" style="color:var(--status-b-color)">${completionRate}%</div><div class="stat-label">Overall Completion</div></div>
-                <div class="stat-card"><div class="stat-num" style="color:var(--status-g-color)">${totals.G}</div><div class="stat-label">On Track</div></div>
-                <div class="stat-card"><div class="stat-num" style="color:var(--status-a-color)">${totals.A}</div><div class="stat-label">Action Needed</div></div>
+                <div class="stat-card" style="border-top: 4px solid var(--primary-blue);">
+                    <div class="stat-num color-main">${totals.total}</div>
+                    <div class="stat-label">Total Goals</div>
+                </div>
+                <div class="stat-card" style="border-top: 4px solid #2563eb;">
+                    <div class="stat-num" style="color:#2563eb">${completionRate}%</div>
+                    <div class="stat-label">Overall Success</div>
+                </div>
+                <div class="stat-card" style="border-top: 4px solid #059669;">
+                    <div class="stat-num" style="color:#059669">${totals.G}</div>
+                    <div class="stat-label">Running Smooth</div>
+                </div>
+                <div class="stat-card" style="border-top: 4px solid #e11d48;">
+                    <div class="stat-num" style="color:#e11d48">${totals.R + totals.A}</div>
+                    <div class="stat-label">Action Needed</div>
+                </div>
             `;
         }
+
+        renderFocusSection();
 
         // Area Progress
         const areaList = document.getElementById('area-progress-list');
@@ -1731,7 +1763,10 @@
             return `
             <div class="${cardClass}" id="m-card-${m.id}">
                 <div class="m-header" onclick="toggleCard(${m.id})">
-                    <div class="m-id">${m.id}</div>
+                    <div class="m-id" style="font-size:10px; flex-direction:column; gap:0;">
+                        <span style="font-size:8px; opacity:0.7;">REF</span>
+                        #${m.id}
+                    </div>
                     <div class="m-title">${m.title}</div>
                     <div class="m-header-badges">
                         ${overdueChip}
@@ -1755,7 +1790,7 @@
                     <div class="m-content-inner">
                         <!-- Guidance Box -->
                         <div style="margin: 0 24px 20px; background: var(--secondary-blue); border-radius: var(--radius-md); padding: 16px; border-left: 4px solid var(--primary-blue); font-size: 14px;">
-                            <strong style="color: var(--primary-blue); display: block; margin-bottom: 4px;">🎯 What should I do here?</strong>
+                            <strong style="color: var(--primary-blue); display: block; margin-bottom: 4px;">🎯 Instructions & Guidance</strong>
                             Focus on the <strong>current phase</strong> below. Talk to your coach if you feel stuck or need to move a date.
                         </div>
 
@@ -1787,9 +1822,9 @@
                                 <div class="comments-list">
                                     ${commentsHTML}
                                 </div>
-                                <div class="comment-input-wrapper">
-                                    <input type="text" class="comment-input" id="comment-in-${m.id}" placeholder="Type a message or note..." onkeydown="if(event.key==='Enter') addComment(${m.id})">
-                                    <button class="btn btn-primary" style="padding: 8px 16px;" onclick="addComment(${m.id})">Send</button>
+                                <div class="comment-input-area">
+                                    <input type="text" id="comment-in-${m.id}" placeholder="Type a note for your coach..." onkeypress="if(event.key==='Enter') addComment(${m.id})">
+                                    <button class="save-note-btn" onclick="addComment(${m.id})">Save Note</button>
                                 </div>
                             </div>
                         </div>
