@@ -7,6 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Supabase Client Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
             --primary-blue: #0081C6;
@@ -402,14 +404,12 @@
         }
 
         .milestone-card.overdue {
-            border-left: 8px solid #e11d48 !important;
-            background: linear-gradient(to right, #fff1f2 0%, #ffffff 100px);
+            border-left: 4px solid #e11d48 !important;
         }
 
         .milestone-card.achieved-card {
-            border-left: 8px solid #2563eb;
-            opacity: 0.85;
-            background: linear-gradient(to right, #eff6ff 0%, #ffffff 100px);
+            border-left: 4px solid #2563eb;
+            opacity: 0.9;
         }
 
         .m-header {
@@ -455,12 +455,12 @@
         }
 
         .badge-area {
-            background: #f1f5f9;
-            color: #475569;
-            padding: 4px 10px;
-            border-radius: 6px; /* Rectangular for info */
+            background: #f8fafc;
+            color: #64748b;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             white-space: nowrap;
@@ -638,8 +638,8 @@
 
         /* Today's Focus Highlight */
         .today-focus-highlight {
-            border: 2px solid #fbbf24 !important;
-            box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.1), var(--shadow-lg) !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+            background: linear-gradient(135deg, #ffffff 0%, #fffef4 100%) !important;
         }
 
         .comments-section {
@@ -1579,7 +1579,8 @@
         }).slice(0, 3);
 
         if (urgent.length === 0) {
-            focusEl.innerHTML = '<div class="focus-title">&#9989; All Goals on Track — Keep Going!</div>';
+            focusEl.innerHTML = '<div class="focus-title"><i data-lucide="check-circle" style="width:20px;height:20px;color:#059669;margin-right:8px;"></i>All Goals on Track — Keep Going!</div>';
+            lucide.createIcons();
             return;
         }
 
@@ -1598,7 +1599,8 @@
                 '</div>';
         }).join('');
 
-        focusEl.innerHTML = '<div class="focus-title">&#9889; Today\'s Focus &mdash; ' + urgent.length + ' item' + (urgent.length > 1 ? 's' : '') + ' need your attention</div>' + items;
+        focusEl.innerHTML = '<div class="focus-title"><i data-lucide="zap" style="width:20px;height:20px;color:#facc15;margin-right:8px;"></i>Today\'s Focus &mdash; ' + urgent.length + ' item' + (urgent.length > 1 ? 's' : '') + ' need your attention</div>' + items;
+        lucide.createIcons();
     }
 
     function renderDashboard() {
@@ -1755,10 +1757,10 @@
             var isOverdue = st !== 'B' && st !== 'P' && calcDays(m.short.due) < 0;
             var isAchieved = st === 'B';
             var cardClass = 'milestone-card' + (isOverdue ? ' overdue' : '') + (isAchieved ? ' achieved-card' : '');
-            var overdueChip = isOverdue ? '<span class="overdue-chip">⚠ Overdue</span>' : '';
+            var overdueChip = isOverdue ? '<span class="overdue-chip"><i data-lucide="alert-circle" style="width:14px;height:14px;margin-right:4px;"></i>Overdue</span>' : '';
             var commentCount = comments.length;
             var commentBadgeClass = commentCount > 0 ? 'comment-badge has-comments' : 'comment-badge';
-            var commentBadge = '<span class="' + commentBadgeClass + '">💬 ' + commentCount + '</span>';
+            var commentBadge = '<span class="' + commentBadgeClass + '"><i data-lucide="message-square" style="width:14px;height:14px;margin-right:4px;"></i>' + commentCount + '</span>';
 
             return `
             <div class="${cardClass}" id="m-card-${m.id}">
@@ -1770,7 +1772,7 @@
                     <div class="m-title">${m.title}</div>
                     <div class="m-header-badges">
                         ${overdueChip}
-                        <div class="badge-area" style="background:#f0f7ff; color:#005a8a; border:1px solid #cce3ff;">Lead: ${m.assignee || 'Unassigned'}</div>
+                        <div class="badge-area" style="background:#f0f9ff; color:#0369a1; border-color:#bae6fd;">Lead: ${m.assignee || 'Unassigned'}</div>
                         <div class="badge-area">Area: ${m.area}</div>
                         ${commentBadge}
                         <div class="badge-status" 
@@ -1789,9 +1791,11 @@
                 <div class="m-content">
                     <div class="m-content-inner">
                         <!-- Guidance Box -->
-                        <div style="margin: 0 24px 20px; background: var(--secondary-blue); border-radius: var(--radius-md); padding: 16px; border-left: 4px solid var(--primary-blue); font-size: 14px;">
-                            <strong style="color: var(--primary-blue); display: block; margin-bottom: 4px;">🎯 Instructions & Guidance</strong>
-                            Focus on the <strong>current phase</strong> below. Talk to your coach if you feel stuck or need to move a date.
+                        <div style="margin: 0 24px 20px; background: #f0f9ff; border-radius: var(--radius-md); padding: 16px; border-left: 4px solid var(--primary-blue); font-size: 14px;">
+                            <strong style="color: var(--primary-blue); display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                <i data-lucide="target" style="width:18px;height:18px;"></i> Instructions & Guidance
+                            </strong>
+                            Focus on the <strong>current phase</strong> below. Talk to your coach if you feel stuck.
                         </div>
 
                         <div class="phases-grid">
@@ -1920,6 +1924,10 @@
             if(timelineView && timelineView.classList.contains('active')) renderTimeline();
         } catch (e) {
             console.error("Timeline Render error:", e);
+        }
+
+        if (window.lucide) {
+            lucide.createIcons();
         }
     }
 
