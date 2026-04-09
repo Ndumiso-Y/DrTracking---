@@ -1146,7 +1146,7 @@
     function cycleStatus(id, event) {
         event.stopPropagation(); // Prevent card from opening/closing
         const stages = ['Grey', 'G', 'B', 'A', 'R', 'P'];
-        const current = appState[id]?.status || 'Grey';
+        const current = (appState[id] && appState[id].status) ? appState[id].status : 'Grey';
         const nextIndex = (stages.indexOf(current) + 1) % stages.length;
         updateMilestone(id, { status: stages[nextIndex] });
     }
@@ -1198,7 +1198,7 @@
         const areaCounts = {};
         
         INIT_DATA.forEach(m => {
-            const st = appState[m.id]?.status || 'Grey';
+            const st = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
             totals[st]++;
             
             // Initialize area if first time seeing it
@@ -1273,7 +1273,7 @@
         const statusF = document.getElementById('filter-status').value;
 
         const filtered = INIT_DATA.filter(m => {
-            const st = appState[m.id]?.status || 'Grey';
+            const st = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
             const matchArea = areaF === 'all' || m.area === areaF;
             const matchStatus = statusF === 'all' || st === statusF;
             return matchArea && matchStatus;
@@ -1292,9 +1292,9 @@
         }
 
         container.innerHTML = filtered.map(m => {
-            const st = appState[m.id]?.status || 'Grey';
+            const st = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
             const sMeta = STATUS_MAP[st];
-            const comments = appState[m.id]?.comments || [];
+            const comments = (appState[m.id] && appState[m.id].comments) ? appState[m.id].comments : [];
             
             // Build Status Selectors
             const statusBtns = Object.entries(STATUS_MAP).map(([k, v]) => `
@@ -1387,7 +1387,7 @@
 
         document.getElementById('timeline-container').innerHTML = phasesDef.map(phase => {
             const cards = INIT_DATA.map(m => {
-                const st = appState[m.id]?.status || 'Grey';
+                const st = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
                 const sMeta = STATUS_MAP[st];
                 return `
                 <div class="tl-card">
@@ -1474,8 +1474,8 @@
         if (format === 'csv') {
             const head = ['ID', 'Milestone', 'Area', 'Status', 'Short Term Due', 'Medium Term Due', 'Long Term Due', 'NotesCount'].join(',');
             const rows = INIT_DATA.map(m => {
-                const st = STATUS_MAP[appState[m.id]?.status || 'Grey'].label;
-                const cCount = (appState[m.id]?.comments || []).length;
+                const st = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
+                const cCount = (appState[m.id] && appState[m.id].comments) ? appState[m.id].comments.length : 0;
                 return `"${m.id}","${m.title}","${m.area}","${st}","${m.short.due}","${m.medium.due}","${m.long.due}","${cCount}"`;
             });
             content = [head, ...rows].join('\n');
@@ -1484,7 +1484,8 @@
         } else {
             content = "DR. TEBEILA ACTION PLAN SUMMARY\n" + "=".repeat(40) + "\n\n";
             INIT_DATA.forEach(m => {
-                const st = STATUS_MAP[appState[m.id]?.status || 'Grey'].label;
+                const stKey = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
+                const st = STATUS_MAP[stKey].label;
                 content += `[${m.id}] ${m.title}\nArea: ${m.area} | Status: ${st}\n\n`;
             });
             mime = 'text/plain';
