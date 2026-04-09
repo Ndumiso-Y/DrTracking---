@@ -817,11 +817,11 @@
     <!-- NAVIGATION TABS -->
     <div class="nav-container">
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('dashboard', this)">
+            <button class="tab-btn" onclick="switchTab('dashboard', this)">
                 <svg style="width:16px;height:16px;display:inline-block;vertical-align:text-bottom;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
                 My Success Dashboard
             </button>
-            <button class="tab-btn" onclick="switchTab('milestones', this)">
+            <button class="tab-btn active" onclick="switchTab('milestones', this)">
                 <svg style="width:16px;height:16px;display:inline-block;vertical-align:text-bottom;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
                 Action Steps
             </button>
@@ -1448,12 +1448,22 @@
     function refreshUI() {
         try {
             renderDashboard();
+        } catch (e) {
+            console.error("Dashboard Render error:", e);
+        }
+
+        try {
             const milesView = document.getElementById('view-milestones');
-            const timelineView = document.getElementById('view-timeline');
             if(milesView && milesView.classList.contains('active')) renderMilestones();
+        } catch (e) {
+            console.error("Milestones Render error:", e);
+        }
+
+        try {
+            const timelineView = document.getElementById('view-timeline');
             if(timelineView && timelineView.classList.contains('active')) renderTimeline();
         } catch (e) {
-            console.error("UI Refresh error:", e);
+            console.error("Timeline Render error:", e);
         }
     }
 
@@ -1487,8 +1497,8 @@
         a.click();
     }
 
-    window.onload = () => {
-        console.log("App loaded. Starting initialization.");
+    function initApp() {
+        console.log("App loaded. Starting initialization immediately.");
         // 1. Setup default state
         INIT_DATA.forEach(m => {
             if (!appState[m.id]) appState[m.id] = { status: 'Grey', comments: [] };
@@ -1521,7 +1531,11 @@
                 console.warn("Cloud connection skipped or failed:", e);
             }
         }, 100);
-    };
+    }
+
+    // Initialize immediately without waiting for window.onload
+    // DOM is already parsed since this script is at the bottom of the body.
+    initApp();
 </script>
 
 </body>
