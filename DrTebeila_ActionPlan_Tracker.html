@@ -1474,6 +1474,14 @@
         showToast('Note saved ✓', 'success');
     }
 
+    function deleteComment(id, index) {
+        if (!confirm('Are you sure you want to delete this note?')) return;
+        const currentComments = appState[id].comments || [];
+        const updatedComments = currentComments.filter((_, i) => i !== index);
+        updateMilestone(id, { comments: updatedComments });
+        showToast('Note deleted', 'info');
+    }
+
     // === TAB BADGE: OVERDUE COUNT ===
     function updateTabBadge() {
         const badge = document.getElementById('overdue-badge');
@@ -1679,7 +1687,25 @@
 
             // Build Comments
             const commentsHTML = comments.length > 0 
-                ? comments.map(c => `<div class="comment-entry"><div class="comment-date">${c.date}</div><div>${c.text}</div></div>`).join('')
+                ? comments.map((c, idx) => `
+                    <div class="comment-entry" style="display:flex; align-items:flex-start; gap:8px;">
+                        <div style="flex:1;">
+                            <div class="comment-date">${c.date}</div>
+                            <div>${c.text}</div>
+                        </div>
+                        <button 
+                            onclick="deleteComment(${m.id}, ${idx})"
+                            title="Delete this note"
+                            style="
+                                background: none; border: none; cursor: pointer;
+                                color: var(--text-muted); font-size: 16px; line-height: 1;
+                                padding: 2px 4px; border-radius: 4px; flex-shrink: 0;
+                                transition: color 0.2s, background 0.2s;
+                            "
+                            onmouseover="this.style.color='var(--status-r-color)';this.style.background='var(--status-r-bg)';"
+                            onmouseout="this.style.color='var(--text-muted)';this.style.background='none';"
+                        >&times;</button>
+                    </div>`).join('')
                 : `<div style="color:var(--text-muted); font-size:13px; font-style:italic;">No notes yet. Add your thoughts below for your coach.</div>`;
 
             var isOverdue = st !== 'B' && st !== 'P' && calcDays(m.short.due) < 0;
