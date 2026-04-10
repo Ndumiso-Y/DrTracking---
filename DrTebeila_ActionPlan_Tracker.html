@@ -711,106 +711,109 @@
             transform: translateY(-1px);
         }
 
-        /* TIMELINE VIEW */
-        .timeline-container {
+        /* GANTT TIMELINE VIEW */
+        .gantt-wrapper {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            padding: 0;
+            overflow-x: auto;
             position: relative;
-            padding-left: 32px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 24px;
         }
 
-        .timeline-container::before {
-            content: '';
-            position: absolute;
-            left: 15px;
+        .gantt-chart {
+            display: grid;
+            grid-template-columns: 240px repeat(13, 1fr); /* Title + 13 Months */
+            min-width: 1200px;
+        }
+
+        .gantt-header {
+            background: #f8fafc;
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
             top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--border-color);
+            z-index: 10;
         }
 
-        .timeline-phase {
-            margin-bottom: 40px;
-            position: relative;
-        }
-
-        .timeline-phase-marker {
-            position: absolute;
-            left: -32px;
-            top: 0;
-            width: 32px;
+        .gantt-cell {
+            padding: 12px 16px;
+            border-right: 1px solid #f1f5f9;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             display: flex;
-            justify-content: center;
+            align-items: center;
         }
 
-        .timeline-phase-marker .dot {
-            width: 16px;
-            height: 16px;
-            background: var(--card-bg);
-            border: 4px solid var(--primary-blue);
-            border-radius: 50%;
+        .gantt-cell.sticky-col {
+            position: sticky;
+            left: 0;
+            background: #f8fafc;
+            border-right: 2px solid var(--border-color);
+            z-index: 5;
+            font-size: 13px;
+            color: var(--text-main);
+        }
+
+        .gantt-row {
+            display: contents;
+        }
+
+        .gantt-row:hover .gantt-cell {
+            background-color: #f1f5f9;
+        }
+
+        .gantt-bar-container {
+            grid-column: 2 / span 13;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            position: relative;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .gantt-bar {
+            height: 28px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+
+        .gantt-bar:hover {
+            transform: scaleY(1.1);
+            filter: brightness(1.05);
             z-index: 2;
         }
 
-        .timeline-phase-header {
-            background: var(--card-bg);
-            padding: 12px 20px;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-color);
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-            transform: translateY(-8px);
+        .gantt-bar-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
-        .timeline-phase-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--dark-grey);
-        }
-
-        .timeline-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 16px;
-        }
-
-        .tl-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            padding: 16px;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .tl-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .tl-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-
-        .tl-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-main);
-            padding-right: 12px;
-        }
-
-        .tl-date {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-muted);
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px dashed var(--border-color);
-            display: flex;
-            justify-content: space-between;
+        .gantt-grid-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: #f1f5f9;
+            pointer-events: none;
         }
 
         /* UTILS */
@@ -1835,42 +1838,70 @@
     }
 
     function renderTimeline() {
-        const phasesDef = [
-            { key: 'short', title: 'Short Term Goals', target: '26 Jun 2026' },
-            { key: 'medium', title: 'Medium Term Goals', target: '31 Jul 2026' },
-            { key: 'long', title: 'Long Term Goals', target: '27 Mar 2027' }
-        ];
+        const ganttContainer = document.getElementById('timeline-container');
+        if (!ganttContainer) return;
 
-        document.getElementById('timeline-container').innerHTML = phasesDef.map(phase => {
-            const cards = INIT_DATA.map(m => {
-                const st = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
-                const sMeta = STATUS_MAP[st];
-                return `
-                <div class="tl-card">
-                    <div class="tl-card-header">
-                        <span class="badge-area" style="font-size:10px;">${m.area}</span>
-                        <div class="badge-status" style="background:${sMeta.bg}; color:${sMeta.color}; font-size:11px; padding: 2px 8px;">${sMeta.label}</div>
-                    </div>
-                    <div class="tl-title">${m.title}</div>
-                    <div class="tl-date">
-                        <span>Due Date</span>
-                        <strong>${formatDate(m[phase.key].due)}</strong>
-                    </div>
-                </div>`;
-            }).join('');
+        // Define timescale: Apr 2026 to Apr 2027
+        const startDate = new Date(2026, 3, 1); // Apr 1 2026
+        const totalMonths = 13;
+        
+        const months = [];
+        for (let i = 0; i < totalMonths; i++) {
+            const d = new Date(2026, 3 + i, 1);
+            months.push(d.toLocaleDateString('en-ZA', { month: 'short', year: '2-digit' }));
+        }
+
+        const headerHTML = `
+            <div class="gantt-header gantt-row">
+                <div class="gantt-cell sticky-col">Strategic Objective</div>
+                ${months.map(m => `<div class="gantt-cell">${m}</div>`).join('')}
+            </div>
+        `;
+
+        const rowsHTML = INIT_DATA.map(m => {
+            const st = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
+            const sMeta = STATUS_MAP[st];
+            const due = parseLocalDate(m.long.due);
+            
+            // Calculate position
+            const diffMonths = (due.getFullYear() - startDate.getFullYear()) * 12 + (due.getMonth() - startDate.getMonth());
+            const dayOffset = due.getDate() / 30; // approx
+            const startCol = 1; // All start from Apr 2026 for phase visibility
+            const endCol = Math.min(totalMonths, diffMonths + 1 + dayOffset);
+            const widthPct = (endCol / totalMonths) * 100;
 
             return `
-            <div class="timeline-phase">
-                <div class="timeline-phase-marker"><div class="dot"></div></div>
-                <div class="timeline-phase-header">
-                    <div class="timeline-phase-title">${phase.title}</div>
-                    <span style="font-size:13px; color:var(--text-muted); font-weight:500;">By ${phase.target}</span>
+                <div class="gantt-row">
+                    <div class="gantt-cell sticky-col" onclick="switchTab('milestones');toggleCard(${m.id})" style="cursor:pointer; font-weight:600;">
+                        ${m.title}
+                    </div>
+                    <div class="gantt-bar-container">
+                        ${months.map((_, i) => `<div class="gantt-grid-line" style="left: ${(i/totalMonths)*100}%"></div>`).join('')}
+                        <div class="gantt-bar" 
+                             onclick="switchTab('milestones');toggleCard(${m.id})"
+                             style="width: ${widthPct}%; background-color: ${sMeta.color};"
+                             title="${m.title} | Status: ${sMeta.label} | Due: ${m.long.due}">
+                            <span class="gantt-bar-title">${m.title}</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="timeline-cards">
-                    ${cards}
-                </div>
-            </div>`;
+            `;
         }).join('');
+
+        ganttContainer.innerHTML = `
+            <div class="gantt-wrapper">
+                <div class="gantt-chart">
+                    ${headerHTML}
+                    ${rowsHTML}
+                </div>
+            </div>
+            <p style="margin-top:16px; font-size:12px; color:var(--text-muted);">
+                <i data-lucide="info" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"></i>
+                Strategic bars span from Project Start (Apr 2026) to the Long-Term completion date. Click a bar to view the detailed Action Plan.
+            </p>
+        `;
+        
+        if (window.lucide) lucide.createIcons();
     }
 
     // --- MAIN ---
