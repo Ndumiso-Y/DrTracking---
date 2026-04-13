@@ -1070,6 +1070,472 @@
         }
         .focus-item:last-child { border-bottom: none; }
         .focus-item:hover { color: var(--primary-blue); }
+
+        /* === OWNERSHIP BOARD VIEW === */
+        .projects-board-wrapper {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .projects-board-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            background: #FAFBFC;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .projects-board-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark-grey);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .projects-board-title .board-count {
+            font-size: 12px;
+            font-weight: 600;
+            background: var(--secondary-blue);
+            color: var(--primary-blue);
+            padding: 3px 10px;
+            border-radius: var(--radius-full);
+        }
+
+        .projects-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .pf-select {
+            padding: 7px 30px 7px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: white;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-main);
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23718096' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .pf-select:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px var(--secondary-blue);
+        }
+
+        /* TABLE */
+        .projects-table-scroll {
+            overflow-x: auto;
+        }
+
+        .projects-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 780px;
+        }
+
+        .projects-table thead {
+            background: #F8FAFC;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .projects-table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        .projects-table th:hover {
+            color: var(--primary-blue);
+        }
+
+        .projects-table th .sort-icon {
+            display: inline-block;
+            margin-left: 4px;
+            font-size: 10px;
+            opacity: 0.4;
+            transition: opacity 0.2s;
+        }
+
+        .projects-table th.sorted .sort-icon {
+            opacity: 1;
+            color: var(--primary-blue);
+        }
+
+        .projects-table tbody tr {
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.15s;
+            cursor: pointer;
+        }
+
+        .projects-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .projects-table tbody tr:hover {
+            background: #F0F9FF;
+        }
+
+        .projects-table td {
+            padding: 14px 16px;
+            font-size: 14px;
+            color: var(--text-main);
+            vertical-align: middle;
+        }
+
+        .projects-table .pt-id {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            background: var(--secondary-blue);
+            color: var(--primary-blue);
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .projects-table .pt-title {
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.3;
+        }
+
+        .projects-table .pt-title:hover {
+            color: var(--primary-blue);
+        }
+
+        .pt-owner-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #F0F9FF;
+            color: #0369A1;
+            border: 1px solid #BAE6FD;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .pt-area-tag {
+            display: inline-block;
+            background: #F8FAFC;
+            color: #64748B;
+            border: 1px solid #E2E8F0;
+            padding: 3px 10px;
+            border-radius: var(--radius-full);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .pt-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: var(--radius-full);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        .pt-due-cell {
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .pt-due-cell .due-date-text {
+            display: block;
+            color: var(--text-main);
+        }
+
+        .pt-due-cell .due-countdown {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .pt-activity-cell {
+            font-size: 12px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .pt-notes-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .pt-notes-count.has-notes {
+            color: var(--primary-blue);
+        }
+
+        /* Board Summary Strip */
+        .projects-summary-strip {
+            display: flex;
+            gap: 16px;
+            padding: 16px 24px;
+            background: #FAFBFC;
+            border-top: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+
+        .pss-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .pss-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .pss-num {
+            font-weight: 700;
+            min-width: 16px;
+        }
+
+        /* MOBILE CARD MODE for projects */
+        .projects-mobile-cards {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            padding: 16px;
+        }
+
+        .pm-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pm-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .pm-card.overdue {
+            border-left: 4px solid var(--status-r-color);
+        }
+
+        .pm-card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .pm-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.3;
+            flex: 1;
+        }
+
+        .pm-card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .pm-card-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            padding-top: 8px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media(max-width: 768px) {
+            .projects-table-scroll { display: none; }
+            .projects-mobile-cards { display: flex; }
+            .projects-board-header { padding: 16px; }
+            .projects-filters { width: 100%; }
+            .pf-select { flex: 1; min-width: 0; }
+        }
+
+        /* === OWNERSHIP BOARD ENHANCEMENTS === */
+        .ob-priority-critical {
+            border-left: 3px solid var(--status-r-color) !important;
+        }
+        .ob-priority-warning {
+            border-left: 3px solid var(--status-a-color) !important;
+        }
+
+        .priority-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 9px;
+            border-radius: var(--radius-full);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            white-space: nowrap;
+        }
+        .priority-badge.p-critical  { background: var(--status-r-bg);    color: var(--status-r-color); }
+        .priority-badge.p-action    { background: var(--status-a-bg);    color: var(--status-a-color); }
+        .priority-badge.p-watch     { background: var(--status-p-bg);    color: var(--status-p-color); }
+        .priority-badge.p-track     { background: var(--status-g-bg);    color: var(--status-g-color); }
+        .priority-badge.p-done      { background: var(--status-b-bg);    color: var(--status-b-color); }
+        .priority-badge.p-none      { background: var(--status-grey-bg); color: var(--status-grey-color); }
+
+        .ob-status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 13px;
+            border-radius: var(--radius-full);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .ob-status-pill:hover {
+            transform: scale(1.05);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+        }
+
+        .ob-status-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+        }
+
+        /* Inline status dropdown popover */
+        .ob-status-dropdown {
+            position: absolute;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            z-index: 200;
+            padding: 6px;
+            min-width: 180px;
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .ob-status-dropdown.open {
+            display: flex;
+        }
+        .ob-status-option {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.15s;
+        }
+        .ob-status-option:hover {
+            background: var(--bg-color);
+        }
+
+        .ob-table-wrapper {
+            position: relative;
+        }
+
+        /* Sticky header for board table */
+        .projects-table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: #F8FAFC;
+        }
+
+        .ob-last-updated {
+            font-size: 11px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .ob-last-updated.recent {
+            color: var(--status-g-color);
+            font-weight: 600;
+        }
+
+        /* Zebra rows */
+        .projects-table tbody tr:nth-child(even) {
+            background: #FAFBFC;
+        }
+        .projects-table tbody tr:nth-child(even):hover {
+            background: #F0F9FF;
+        }
+
+        /* Overdue row treatment */
+        .projects-table tbody tr.ob-row-overdue td:first-child {
+            border-left: 3px solid var(--status-r-color);
+        }
+        .projects-table tbody tr.ob-row-overdue {
+            background: #FFFAFB;
+        }
+        .projects-table tbody tr.ob-row-overdue:hover {
+            background: #FFF0F0;
+        }
+
+        /* Board summary strip upgrade */
+        .projects-summary-strip {
+            background: linear-gradient(135deg, #FAFBFC 0%, #F1F5F9 100%);
+        }
+        .pss-item {
+            letter-spacing: 0.2px;
+        }
     </style>
 </head>
 <body>
@@ -1104,6 +1570,11 @@
             <button class="tab-btn active" onclick="switchTab('dashboard', this)">
                 <svg style="width:16px;height:16px;display:inline-block;vertical-align:text-bottom;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
                 Overview
+            </button>
+            <button class="tab-btn" onclick="switchTab('projects', this)">
+                <svg style="width:16px;height:16px;display:inline-block;vertical-align:text-bottom;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                Ownership Board
+                <span class="tab-badge hidden" id="overdue-badge-ob">0</span>
             </button>
             <button class="tab-btn" onclick="switchTab('milestones', this)">
                 <svg style="width:16px;height:16px;display:inline-block;vertical-align:text-bottom;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
@@ -1258,6 +1729,13 @@
             </div>
         </div>
 
+        <!-- PROJECTS BOARD VIEW -->
+        <div id="view-projects" class="page">
+            <div id="projects-container">
+                <!-- Populated via JS -->
+            </div>
+        </div>
+
         <!-- TIMELINE VIEW -->
         <div id="view-timeline" class="page">
             <div class="timeline-container" id="timeline-container">
@@ -1348,6 +1826,8 @@
     const SUPABASE_KEY = 'sb_publishable_y9O47dwZTA2Ha_STUP5UUg_OvWj0G_V';
     const NOTIFICATION_EMAIL = 'sjdikhing@outlook.com';
 
+    // --- PHASE 1.5: lastUpdated timestamp tracking ---
+    // Stored in appState[id].lastUpdated as ISO string. Backward compatible — undefined = never updated.
     let supabaseClient = null;
     try {
         if (SUPABASE_URL !== 'YOUR_SUPABASE_URL' && window.supabase) {
@@ -1410,6 +1890,9 @@
     }
 
     async function saveState(id) {
+        // Phase 1.5: stamp lastUpdated on every save
+        appState[id].lastUpdated = new Date().toISOString();
+
         setSyncStatus('syncing', 'Saving...');
         if (supabaseClient) {
             try {
@@ -1418,7 +1901,8 @@
                     .upsert({ 
                         milestone_id: id, 
                         status: appState[id].status, 
-                        comments: appState[id].comments 
+                        comments: appState[id].comments,
+                        last_updated_at: appState[id].lastUpdated
                     }, { onConflict: 'milestone_id' });
                 if (error) {
                     console.error('Cloud Save Error:', error);
@@ -1525,16 +2009,24 @@
 
     // === TAB BADGE: OVERDUE COUNT ===
     function updateTabBadge() {
-        const badge = document.getElementById('overdue-badge');
-        if (!badge) return;
         const overdueCount = INIT_DATA.filter(m => {
             const st = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
-            if (st === 'B' || st === 'P') return false; // achieved or postponed don't count
-            // Overdue if the short-term due date has passed and still not achieved
+            if (st === 'B' || st === 'P') return false;
             return calcDays(m.short.due) < 0;
         }).length;
-        badge.textContent = overdueCount;
-        badge.className = overdueCount > 0 ? 'tab-badge' : 'tab-badge hidden';
+
+        // Goals tab badge
+        const badge = document.getElementById('overdue-badge');
+        if (badge) {
+            badge.textContent = overdueCount;
+            badge.className = overdueCount > 0 ? 'tab-badge' : 'tab-badge hidden';
+        }
+        // Ownership Board tab badge
+        const badgeOb = document.getElementById('overdue-badge-ob');
+        if (badgeOb) {
+            badgeOb.textContent = overdueCount;
+            badgeOb.className = overdueCount > 0 ? 'tab-badge' : 'tab-badge hidden';
+        }
     }
 
     // --- UTILITIES ---
@@ -1904,30 +2396,369 @@
         if (window.lucide) lucide.createIcons();
     }
 
+    // --- OWNERSHIP BOARD ---
+    let projectsSortCol = 'priority';
+    let projectsSortDir = 'asc';
+
+    // Helper: compute numeric priority rank for sorting (lower = more urgent)
+    function getPriorityRank(r) {
+        if (r.status === 'B') return 5; // Achieved — bottom
+        if (r.status === 'P') return 4; // On Hold
+        if (r.isOverdue)      return 0; // Overdue — top
+        if (r.daysLeft <= 14) return 1; // Due soon
+        if (r.status === 'R') return 1; // Jeopardy, same urgency as due-soon
+        if (r.status === 'A') return 2; // Action needed
+        return 3;                        // On track / Not started
+    }
+
+    // Helper: priority badge HTML
+    function priorityBadgeHTML(r) {
+        if (r.status === 'B') return '<span class="priority-badge p-done">Done</span>';
+        if (r.status === 'P') return '<span class="priority-badge p-none">On Hold</span>';
+        if (r.isOverdue)      return '<span class="priority-badge p-critical">⚠ Overdue</span>';
+        if (r.daysLeft <= 7)  return '<span class="priority-badge p-action">Due Soon</span>';
+        if (r.daysLeft <= 14) return '<span class="priority-badge p-watch">Watch</span>';
+        if (r.status === 'R') return '<span class="priority-badge p-critical">Jeopardy</span>';
+        if (r.status === 'A') return '<span class="priority-badge p-action">Action</span>';
+        if (r.status === 'G') return '<span class="priority-badge p-track">On Track</span>';
+        return '<span class="priority-badge p-none">Not Started</span>';
+    }
+
+    // Helper: format lastUpdated for display
+    function formatLastUpdated(isoStr) {
+        if (!isoStr) return '<span class="ob-last-updated">—</span>';
+        const d = new Date(isoStr);
+        const now = new Date();
+        const diffMs = now - d;
+        const diffH = Math.floor(diffMs / 3600000);
+        const diffD = Math.floor(diffMs / 86400000);
+        let label;
+        if (diffH < 1) label = 'Just now';
+        else if (diffH < 24) label = diffH + 'h ago';
+        else if (diffD === 1) label = 'Yesterday';
+        else if (diffD < 7) label = diffD + 'd ago';
+        else label = d.toLocaleDateString('en-ZA', { day: 'numeric', month: 'short' });
+        const isRecent = diffH < 48;
+        return '<span class="ob-last-updated' + (isRecent ? ' recent' : '') + '">' + label + '</span>';
+    }
+
+    // Inline status update from board (no tab switch needed)
+    let _obDropdownOpen = null;
+    function obOpenStatusMenu(id, event) {
+        event.stopPropagation();
+        // Close any open dropdown first
+        if (_obDropdownOpen && _obDropdownOpen !== id) {
+            const prev = document.getElementById('ob-dd-' + _obDropdownOpen);
+            if (prev) prev.classList.remove('open');
+        }
+        const dd = document.getElementById('ob-dd-' + id);
+        if (!dd) return;
+        const isOpen = dd.classList.contains('open');
+        dd.classList.toggle('open', !isOpen);
+        _obDropdownOpen = isOpen ? null : id;
+    }
+
+    function obSetStatus(id, newStatus) {
+        updateMilestone(id, { status: newStatus });
+        const dd = document.getElementById('ob-dd-' + id);
+        if (dd) dd.classList.remove('open');
+        _obDropdownOpen = null;
+        // Re-render board
+        renderProjects();
+    }
+
+    // Close dropdowns when clicking elsewhere
+    document.addEventListener('click', function() {
+        if (_obDropdownOpen !== null) {
+            const dd = document.getElementById('ob-dd-' + _obDropdownOpen);
+            if (dd) dd.classList.remove('open');
+            _obDropdownOpen = null;
+        }
+    });
+
+    function renderProjects() {
+        const container = document.getElementById('projects-container');
+        if (!container) return;
+
+        // Get filter values
+        const areaFilter = document.getElementById('pf-area');
+        const statusFilter = document.getElementById('pf-status');
+        const ownerFilter = document.getElementById('pf-owner');
+        const areaVal = areaFilter ? areaFilter.value : 'all';
+        const statusVal = statusFilter ? statusFilter.value : 'all';
+        const ownerVal = ownerFilter ? ownerFilter.value : 'all';
+
+        // Build enriched data
+        let rows = INIT_DATA.map(function(m) {
+            var st = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
+            var comments = (appState[m.id] && appState[m.id].comments) ? appState[m.id].comments : [];
+            var daysLeft = calcDays(m.short.due);
+            var lastUpdated = (appState[m.id] && appState[m.id].lastUpdated) ? appState[m.id].lastUpdated : null;
+            // Split assignee for partial owner matching: "Joy & Dr. Tebeila" -> ["Joy", "Dr. Tebeila"]
+            var assigneeParts = (m.assignee || 'Unassigned').split(' & ').map(function(s) { return s.trim(); });
+            return {
+                id: m.id,
+                title: m.title,
+                area: m.area,
+                assignee: m.assignee || 'Unassigned',
+                assigneeParts: assigneeParts,
+                status: st,
+                statusLabel: STATUS_MAP[st].label,
+                statusColor: STATUS_MAP[st].color,
+                statusBg: STATUS_MAP[st].bg,
+                dueDate: m.short.due,
+                dueDateFormatted: formatDate(m.short.due),
+                daysLeft: daysLeft,
+                notesCount: comments.length,
+                lastUpdated: lastUpdated,
+                isOverdue: st !== 'B' && st !== 'P' && daysLeft < 0
+            };
+        });
+
+        // Build unique owner list from individual parts (e.g. Joy from "Joy & Dr. Tebeila")
+        var allOwnerParts = [];
+        INIT_DATA.forEach(function(m) {
+            (m.assignee || 'Unassigned').split(' & ').forEach(function(part) {
+                var p = part.trim();
+                if (p && allOwnerParts.indexOf(p) === -1) allOwnerParts.push(p);
+            });
+        });
+        allOwnerParts.sort();
+
+        // Apply filters
+        rows = rows.filter(function(r) {
+            var matchArea = areaVal === 'all' || r.area === areaVal;
+            var matchStatus = statusVal === 'all' || r.status === statusVal;
+            // Partial owner match: filter matches if owner part is in the assigneeParts array
+            var matchOwner = ownerVal === 'all' || r.assigneeParts.indexOf(ownerVal) !== -1;
+            return matchArea && matchStatus && matchOwner;
+        });
+
+        // Apply sorting
+        rows.sort(function(a, b) {
+            var valA, valB;
+            switch (projectsSortCol) {
+                case 'id':       valA = a.id;                    valB = b.id; break;
+                case 'title':    valA = a.title.toLowerCase();   valB = b.title.toLowerCase(); break;
+                case 'owner':    valA = a.assignee.toLowerCase(); valB = b.assignee.toLowerCase(); break;
+                case 'area':     valA = a.area.toLowerCase();    valB = b.area.toLowerCase(); break;
+                case 'status':   valA = a.status;                valB = b.status; break;
+                case 'due':      valA = a.daysLeft;              valB = b.daysLeft; break;
+                case 'notes':    valA = a.notesCount;            valB = b.notesCount; break;
+                case 'priority': valA = getPriorityRank(a);      valB = getPriorityRank(b); break;
+                case 'updated':  valA = a.lastUpdated || '';     valB = b.lastUpdated || ''; break;
+                default:         valA = getPriorityRank(a);      valB = getPriorityRank(b);
+            }
+            if (valA < valB) return projectsSortDir === 'asc' ? -1 : 1;
+            if (valA > valB) return projectsSortDir === 'asc' ? 1 : -1;
+            return 0;
+        });
+
+        // Count stats for summary strip (always from full dataset)
+        var counts = { G: 0, R: 0, A: 0, B: 0, P: 0, Grey: 0 };
+        INIT_DATA.forEach(function(m) {
+            var st = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
+            counts[st] = (counts[st] || 0) + 1;
+        });
+
+        // Sort indicator helpers
+        function sortIcon(col) {
+            if (projectsSortCol === col) {
+                return '<span class="sort-icon">' + (projectsSortDir === 'asc' ? '▲' : '▼') + '</span>';
+            }
+            return '<span class="sort-icon">▲</span>';
+        }
+        function sortClass(col) {
+            return projectsSortCol === col ? 'sorted' : '';
+        }
+
+        // Due date HTML
+        function dueHTML(r) {
+            var dateText = '<span class="due-date-text">' + r.dueDateFormatted + '</span>';
+            var countdownClass, countdownText;
+            if (r.status === 'B') {
+                countdownClass = 'color:var(--status-b-color)';
+                countdownText = 'Completed';
+            } else if (r.daysLeft < 0) {
+                countdownClass = 'color:var(--status-r-color);font-weight:700';
+                countdownText = Math.abs(r.daysLeft) + 'd overdue';
+            } else if (r.daysLeft === 0) {
+                countdownClass = 'color:#856404;font-weight:700';
+                countdownText = 'Due TODAY';
+            } else if (r.daysLeft <= 14) {
+                countdownClass = 'color:var(--status-a-color);font-weight:600';
+                countdownText = r.daysLeft + 'd left';
+            } else {
+                countdownClass = 'color:var(--status-g-color)';
+                countdownText = r.daysLeft + 'd left';
+            }
+            return dateText + '<span class="due-countdown" style="' + countdownClass + '">' + countdownText + '</span>';
+        }
+
+        // Inline status dropdown for a row
+        function statusDropdownHTML(r) {
+            var options = Object.entries(STATUS_MAP).map(function(entry) {
+                var k = entry[0], v = entry[1];
+                return '<div class="ob-status-option" onclick="obSetStatus(' + r.id + ', \'' + k + '\')" style="color:' + v.color + ';">' +
+                    '<span style="width:8px;height:8px;border-radius:50%;background:' + v.color + ';display:inline-block;"></span>' +
+                    v.label +
+                '</div>';
+            }).join('');
+            return '<div class="ob-status-dropdown" id="ob-dd-' + r.id + '">' + options + '</div>';
+        }
+
+        // === TABLE ROWS ===
+        var tableRows = rows.map(function(r) {
+            var rowClass = r.isOverdue ? 'ob-row-overdue' : '';
+            return '<tr class="' + rowClass + '" onclick="switchTab(\'milestones\');setTimeout(function(){toggleCard(' + r.id + ');},200)" title="Click to open full goal details">' +
+                '<td>' + priorityBadgeHTML(r) + '</td>' +
+                '<td><span class="pt-id" style="margin-right:8px;">' + r.id + '</span><span class="pt-title">' + r.title + '</span></td>' +
+                '<td><span class="pt-owner-pill"><i data-lucide="user" style="width:12px;height:12px;"></i>' + r.assignee + '</span></td>' +
+                '<td><span class="pt-area-tag">' + r.area + '</span></td>' +
+                '<td style="position:relative;" onclick="event.stopPropagation();">' +
+                    '<div style="position:relative;display:inline-block;">' +
+                        '<span class="ob-status-pill" style="background:' + r.statusBg + ';color:' + r.statusColor + ';" onclick="obOpenStatusMenu(' + r.id + ', event)" title="Click to update status">' +
+                            '<span class="ob-status-dot" style="background:' + r.statusColor + ';"></span>' +
+                            r.statusLabel +
+                            ' <span style="font-size:9px;opacity:0.6;">▾</span>' +
+                        '</span>' +
+                        statusDropdownHTML(r) +
+                    '</div>' +
+                '</td>' +
+                '<td class="pt-due-cell">' + dueHTML(r) + '</td>' +
+                '<td>' + formatLastUpdated(r.lastUpdated) + '</td>' +
+                '<td><span class="pt-notes-count ' + (r.notesCount > 0 ? 'has-notes' : '') + '"><i data-lucide="message-square" style="width:13px;height:13px;"></i> ' + r.notesCount + '</span></td>' +
+            '</tr>';
+        }).join('');
+
+        // === MOBILE CARDS ===
+        var mobileCards = rows.map(function(r) {
+            return '<div class="pm-card ' + (r.isOverdue ? 'overdue' : '') + '" onclick="switchTab(\'milestones\');setTimeout(function(){toggleCard(' + r.id + ');},200)">' +
+                '<div class="pm-card-top">' +
+                    '<div>' +
+                        '<div class="pm-card-title">' + r.title + '</div>' +
+                        '<div style="margin-top:4px;">' + priorityBadgeHTML(r) + '</div>' +
+                    '</div>' +
+                    '<span class="ob-status-pill" style="background:' + r.statusBg + ';color:' + r.statusColor + ';font-size:10px;padding:3px 10px;">' +
+                        '<span class="ob-status-dot" style="background:' + r.statusColor + ';width:6px;height:6px;"></span>' + r.statusLabel +
+                    '</span>' +
+                '</div>' +
+                '<div class="pm-card-meta">' +
+                    '<span class="pt-owner-pill" style="font-size:11px;padding:3px 10px;"><i data-lucide="user" style="width:11px;height:11px;"></i>' + r.assignee + '</span>' +
+                    '<span class="pt-area-tag">' + r.area + '</span>' +
+                '</div>' +
+                '<div class="pm-card-row">' +
+                    '<span>Due: ' + r.dueDateFormatted + '</span>' +
+                    '<span style="font-weight:600;' + (r.isOverdue ? 'color:var(--status-r-color)' : '') + '">' + (r.isOverdue ? Math.abs(r.daysLeft) + 'd overdue' : r.status === 'B' ? 'Completed ✓' : r.daysLeft + 'd left') + '</span>' +
+                '</div>' +
+                (r.lastUpdated ? '<div style="font-size:11px;color:var(--text-muted);margin-top:6px;border-top:1px solid var(--border-color);padding-top:6px;">Updated: ' + formatLastUpdated(r.lastUpdated) + '</div>' : '') +
+            '</div>';
+        }).join('');
+
+        // === OWNER FILTER OPTIONS (individual parts) ===
+        var ownerOptions = '<option value="all"' + (ownerVal === 'all' ? ' selected' : '') + '>All Owners</option>' +
+            allOwnerParts.map(function(o) {
+                return '<option value="' + o + '"' + (ownerVal === o ? ' selected' : '') + '>' + o + '</option>';
+            }).join('');
+
+        // === FULL BOARD HTML ===
+        container.innerHTML =
+            '<div class="projects-board-wrapper">' +
+                '<div class="projects-board-header">' +
+                    '<div class="projects-board-title">' +
+                        '<i data-lucide="users" style="width:20px;height:20px;color:var(--primary-blue);"></i>' +
+                        'Ownership Board' +
+                        '<span class="board-count">' + rows.length + ' of ' + INIT_DATA.length + ' goals</span>' +
+                    '</div>' +
+                    '<div class="projects-filters">' +
+                        '<select class="pf-select" id="pf-area" onchange="renderProjects()">' +
+                            '<option value="all"' + (areaVal === 'all' ? ' selected' : '') + '>All Areas</option>' +
+                            '<option value="Governance"' + (areaVal === 'Governance' ? ' selected' : '') + '>Governance</option>' +
+                            '<option value="Leadership"' + (areaVal === 'Leadership' ? ' selected' : '') + '>Leadership</option>' +
+                            '<option value="HR"' + (areaVal === 'HR' ? ' selected' : '') + '>HR</option>' +
+                            '<option value="Marketing"' + (areaVal === 'Marketing' ? ' selected' : '') + '>Marketing</option>' +
+                            '<option value="Technology"' + (areaVal === 'Technology' ? ' selected' : '') + '>Technology</option>' +
+                        '</select>' +
+                        '<select class="pf-select" id="pf-status" onchange="renderProjects()">' +
+                            '<option value="all"' + (statusVal === 'all' ? ' selected' : '') + '>All Statuses</option>' +
+                            '<option value="Grey"' + (statusVal === 'Grey' ? ' selected' : '') + '>Not Started</option>' +
+                            '<option value="G"' + (statusVal === 'G' ? ' selected' : '') + '>On Track</option>' +
+                            '<option value="A"' + (statusVal === 'A' ? ' selected' : '') + '>Needs Attention</option>' +
+                            '<option value="R"' + (statusVal === 'R' ? ' selected' : '') + '>In Jeopardy</option>' +
+                            '<option value="B"' + (statusVal === 'B' ? ' selected' : '') + '>Achieved</option>' +
+                            '<option value="P"' + (statusVal === 'P' ? ' selected' : '') + '>On Hold</option>' +
+                        '</select>' +
+                        '<select class="pf-select" id="pf-owner" onchange="renderProjects()">' +
+                            ownerOptions +
+                        '</select>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="projects-table-scroll ob-table-wrapper">' +
+                    '<table class="projects-table">' +
+                        '<thead><tr>' +
+                            '<th class="' + sortClass('priority') + '" onclick="sortProjects(\'priority\')" style="width:100px;">Priority ' + sortIcon('priority') + '</th>' +
+                            '<th class="' + sortClass('title') + '" onclick="sortProjects(\'title\')" style="min-width:220px;">Goal ' + sortIcon('title') + '</th>' +
+                            '<th class="' + sortClass('owner') + '" onclick="sortProjects(\'owner\')">Owner ' + sortIcon('owner') + '</th>' +
+                            '<th class="' + sortClass('area') + '" onclick="sortProjects(\'area\')">Area ' + sortIcon('area') + '</th>' +
+                            '<th class="' + sortClass('status') + '" onclick="sortProjects(\'status\')">Status ' + sortIcon('status') + '</th>' +
+                            '<th class="' + sortClass('due') + '" onclick="sortProjects(\'due\')">Next Due ' + sortIcon('due') + '</th>' +
+                            '<th class="' + sortClass('updated') + '" onclick="sortProjects(\'updated\')">Last Updated ' + sortIcon('updated') + '</th>' +
+                            '<th class="' + sortClass('notes') + '" onclick="sortProjects(\'notes\')">Notes ' + sortIcon('notes') + '</th>' +
+                        '</tr></thead>' +
+                        '<tbody>' + (tableRows || '<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-muted);">No goals match your filters.</td></tr>') + '</tbody>' +
+                    '</table>' +
+                '</div>' +
+                '<div class="projects-mobile-cards">' +
+                    (mobileCards || '<div style="text-align:center;padding:32px;color:var(--text-muted);">No goals match your filters.</div>') +
+                '</div>' +
+                '<div class="projects-summary-strip">' +
+                    '<div class="pss-item"><span class="pss-dot" style="background:var(--status-g-color);"></span>On Track <span class="pss-num">' + counts.G + '</span></div>' +
+                    '<div class="pss-item"><span class="pss-dot" style="background:var(--status-a-color);"></span>Attention <span class="pss-num">' + counts.A + '</span></div>' +
+                    '<div class="pss-item"><span class="pss-dot" style="background:var(--status-r-color);"></span>Jeopardy <span class="pss-num">' + counts.R + '</span></div>' +
+                    '<div class="pss-item"><span class="pss-dot" style="background:var(--status-b-color);"></span>Achieved <span class="pss-num">' + counts.B + '</span></div>' +
+                    '<div class="pss-item"><span class="pss-dot" style="background:var(--status-p-color);"></span>On Hold <span class="pss-num">' + counts.P + '</span></div>' +
+                    '<div class="pss-item"><span class="pss-dot" style="background:var(--status-grey-color);"></span>Not Started <span class="pss-num">' + counts.Grey + '</span></div>' +
+                '</div>' +
+            '</div>' +
+            '<p style="margin-top:16px; font-size:12px; color:var(--text-muted); display:flex; align-items:center; gap:6px;">' +
+                '<i data-lucide="info" style="width:14px;height:14px;"></i>' +
+                'Click the status badge to update inline. Click a row to open the full goal. Sort by any column header.' +
+            '</p>';
+
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function sortProjects(col) {
+        if (projectsSortCol === col) {
+            projectsSortDir = projectsSortDir === 'asc' ? 'desc' : 'asc';
+        } else {
+            projectsSortCol = col;
+            projectsSortDir = 'asc';
+        }
+        renderProjects();
+    }
+
     // --- MAIN ---
     function switchTab(tabId, el) {
-        console.log("Switching to tab:", tabId);
         // 1. Clear all
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
 
-        // 2. Activate button
+        // 2. Activate button — by tab order: dashboard(0), projects(1), milestones(2), timeline(3)
         if (el) {
             el.classList.add('active');
         } else {
             const btns = document.querySelectorAll('.tab-btn');
-            if (tabId === 'dashboard') btns[0].classList.add('active');
-            if (tabId === 'milestones') btns[1].classList.add('active');
-            if (tabId === 'timeline') btns[2].classList.add('active');
+            if (tabId === 'dashboard')  btns[0] && btns[0].classList.add('active');
+            if (tabId === 'projects')   btns[1] && btns[1].classList.add('active');
+            if (tabId === 'milestones') btns[2] && btns[2].classList.add('active');
+            if (tabId === 'timeline')   btns[3] && btns[3].classList.add('active');
         }
 
         // 3. Activate Page
         const page = document.getElementById(`view-${tabId}`);
-        if (page) {
-            page.classList.add('active');
-            console.log("Page activated:", tabId);
-        }
-        
+        if (page) page.classList.add('active');
+
         // 4. Update visuals
         refreshUI();
     }
@@ -1944,6 +2775,13 @@
             if(milesView && milesView.classList.contains('active')) renderMilestones();
         } catch (e) {
             console.error("Milestones Render error:", e);
+        }
+
+        try {
+            const projectsView = document.getElementById('view-projects');
+            if(projectsView && projectsView.classList.contains('active')) renderProjects();
+        } catch (e) {
+            console.error("Projects Render error:", e);
         }
 
         try {
@@ -2001,6 +2839,7 @@
 
         // 3. Set Initial Tab — Dashboard first
         switchTab('dashboard');
+        updateTabBadge();
 
         // 4. Update tab badge
         updateTabBadge();
