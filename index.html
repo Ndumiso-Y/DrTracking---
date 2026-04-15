@@ -1902,7 +1902,7 @@
                         milestone_id: id, 
                         status: appState[id].status, 
                         comments: appState[id].comments,
-                        last_updated_at: appState[id].lastUpdated
+                        updated_at: appState[id].lastUpdated
                     }, { onConflict: 'milestone_id' });
                 if (error) {
                     console.error('Cloud Save Error:', error);
@@ -2131,6 +2131,14 @@
         renderFocusSection();
 
         // Area Progress
+        const areaCounts = {};
+        INIT_DATA.forEach(m => {
+            const st = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
+            if (!areaCounts[m.area]) areaCounts[m.area] = { done: 0, tot: 0 };
+            areaCounts[m.area].tot++;
+            if (st === 'B') areaCounts[m.area].done++;
+        });
+
         const areaList = document.getElementById('area-progress-list');
         if (areaList) {
             areaList.innerHTML = Object.entries(areaCounts).map(([area, data]) => {
@@ -2846,29 +2854,44 @@
 
         // 5. Background Cloud Load
         setTimeout(async () => {
+            if (supabaseClient) {
+                setSyncStatus('syncing', 'Connecting to Cloud...');
+            }
             try {
                 if (supabaseClient) {
                     const { data, error } = await supabaseClient.from('dr_tracking').select('*');
-                    if (!error && data && data.length > 0) {
-                        data.forEach(row => {
-                            appState[row.milestone_id] = { 
-                                status: row.status, 
-                                comments: row.comments || [] 
-                            };
-                        });
-                        console.log("Cloud data synced.");
+                    if (!error) {
+                        if (data && data.length > 0) {
+                            data.forEach(row => {
+                                appState[row.milestone_id] = { 
+                                    status: row.status, 
+                                    comments: row.comments || [] 
+                                };
+                            });
+                        }
+                        console.log("Cloud connection successful. Status synced.");
+                        setSyncStatus('synced', 'Synced');
                         refreshUI();
                         subscribeToChanges();
+                    } else {
+                        console.error('Cloud fetch Error:', error);
+                        setSyncStatus('error', 'Cloud sync failed');
                     }
                 }
             } catch (e) {
                 console.warn("Cloud connection skipped or failed:", e);
+                setSyncStatus('error', 'Offline');
             }
         }, 100);
     }
 
     // Initialize immediately without waiting for window.onload
     // DOM is already parsed since this script is at the bottom of the body.
+    // Also try to load localStorage first before the cloud fetch
+    const saved = localStorage.getItem('dr_tebeila_app_v2');
+    if (saved) {
+        appState = JSON.parse(saved);
+    }
     initApp();
 </script>
 
