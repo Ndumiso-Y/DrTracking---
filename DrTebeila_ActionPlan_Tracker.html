@@ -2207,6 +2207,15 @@
 
         const container = document.getElementById('milestone-container');
         
+        // Preserve currently open cards to prevent them from snapping shut on save
+        const openCards = new Set();
+        if (container) {
+            container.querySelectorAll('.milestone-card.open').forEach(el => {
+                const match = el.id.match(/m-card-(\d+)/);
+                if (match) openCards.add(parseInt(match[1]));
+            });
+        }
+        
         if (filtered.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
@@ -2258,7 +2267,8 @@
 
             var isOverdue = st !== 'B' && st !== 'P' && calcDays(m.short.due) < 0;
             var isAchieved = st === 'B';
-            var cardClass = 'milestone-card' + (isOverdue ? ' overdue' : '') + (isAchieved ? ' achieved-card' : '');
+            var isOpen = openCards.has(m.id);
+            var cardClass = 'milestone-card' + (isOverdue ? ' overdue' : '') + (isAchieved ? ' achieved-card' : '') + (isOpen ? ' open' : '');
             var overdueChip = isOverdue ? '<span class="overdue-chip"><i data-lucide="alert-circle" style="width:14px;height:14px;margin-right:4px;"></i>Overdue</span>' : '';
             var commentCount = comments.length;
             var commentBadgeClass = commentCount > 0 ? 'comment-badge has-comments' : 'comment-badge';
