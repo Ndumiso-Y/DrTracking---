@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr. Tebeila Dental Practice — Strategic Action Plan Tracker</title>
+    <title>Dr. Tebeila Dental Practice — Strategic Action Plan Tracker (Accountability UI v2026-05-14)</title>
+    <!-- Accountability UI Version Marker: v2026-05-14 -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Supabase Client Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -35,6 +36,115 @@
             --status-b-color: #0081C6; --status-b-bg: #E5F3FA;
             --status-p-color: #805AD5; --status-p-bg: #E9D8FD;
             --status-grey-color: #718096; --status-grey-bg: #EDF2F7;
+            --status-c-color: #4A5568; --status-c-bg: #E2E8F0;
+            --status-d-color: #A0AEC0; --status-d-bg: #F7FAFC;
+        }
+
+        /* ACCOUNTABILITY UI */
+        .accountability-section {
+            margin: 0 24px 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .acc-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .acc-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .acc-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
+            transition: border-color 0.2s;
+        }
+
+        .acc-input:focus {
+            border-color: var(--primary-blue);
+            outline: none;
+            box-shadow: 0 0 0 2px var(--secondary-blue);
+        }
+
+        .comment-tag {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .comment-entry.note-coach {
+            background: linear-gradient(90deg, #fff7ed 0%, #ffffff 72%);
+            border-left: 3px solid #d97706;
+        }
+
+        .comment-entry.note-team {
+            background: #ffffff;
+            border-left: 3px solid #cbd5e1;
+        }
+
+        .tag-coach { background: #FEF3C7; color: #92400E; border: 1px solid #F59E0B; }
+        .tag-team { background: #F1F5F9; color: #475569; border: 1px solid #CBD5E1; }
+
+        .note-filter-toggle {
+            display: flex;
+            gap: 4px;
+            margin: 8px 0;
+            flex-wrap: wrap;
+        }
+
+        .nf-btn {
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            background: white;
+            color: var(--text-muted);
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .nf-btn.active {
+            background: var(--dark-grey);
+            color: white;
+            border-color: var(--dark-grey);
+        }
+
+        .note-type-select {
+            width: 104px;
+            padding: 10px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: white;
+            color: var(--text-main);
+            font-size: 12px;
+            font-weight: 700;
+            outline: none;
+        }
+
+        .note-type-select:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 2px var(--secondary-blue);
         }
 
         * {
@@ -1704,6 +1814,8 @@
                     <div class="legend-item"><div class="status-dot" style="background:var(--status-a-color)"></div> Needs Attention</div>
                     <div class="legend-item"><div class="status-dot" style="background:var(--status-b-color)"></div> Achieved</div>
                     <div class="legend-item"><div class="status-dot" style="background:var(--status-p-color)"></div> Postponed</div>
+                    <div class="legend-item"><div class="status-dot" style="background:var(--status-c-color)"></div> Cancelled</div>
+                    <div class="legend-item"><div class="status-dot" style="background:var(--status-d-color)"></div> Discontinued</div>
                     <div class="legend-item"><div class="status-dot" style="background:var(--status-grey-color)"></div> Not Started</div>
                 </div>
 
@@ -1724,6 +1836,8 @@
                         <option value="R">In Jeopardy</option>
                         <option value="B">Achieved</option>
                         <option value="P">Postponed</option>
+                        <option value="C">Cancelled</option>
+                        <option value="D">Discontinued</option>
                     </select>
                 </div>
             </div>
@@ -1771,8 +1885,42 @@
         'A':    { label: 'Action Needed',     color: 'var(--status-a-color)', bg: 'var(--status-a-bg)' },
         'B':    { label: 'Completed',         color: 'var(--status-b-color)', bg: 'var(--status-b-bg)' },
         'P':    { label: 'On Hold',           color: 'var(--status-p-color)', bg: 'var(--status-p-bg)' },
-        'Grey': { label: 'Not Started',       color: 'var(--status-grey-color)', bg: 'var(--status-grey-bg)' }
+        'Grey': { label: 'Not Started',       color: 'var(--status-grey-color)', bg: 'var(--status-grey-bg)' },
+        'C':    { label: 'Cancelled',         color: 'var(--status-c-color)', bg: 'var(--status-c-bg)' },
+        'D':    { label: 'Discontinued',      color: 'var(--status-d-color)', bg: 'var(--status-d-bg)' }
     };
+
+    // Canonical metadata contract (non-destructive: legacy aliases are still read)
+    const META_KEYS = {
+        strategyNorthStar: 'strategyNorthStar',
+        responsiblePerson: 'responsiblePerson',
+        responsiblePersonMode: 'responsiblePersonMode',
+        responsiblePersonOther: 'responsiblePersonOther',
+        reasonForDelay: 'reasonForDelay',
+        correctiveAction: 'correctiveAction',
+        achievedDate: 'achievedDate',
+        successEvidence: 'successEvidence'
+    };
+
+    const META_ALIASES = {
+        strategyNorthStar: ['strategyNorthStar', 'strategy'],
+        responsiblePerson: ['responsiblePerson', 'responsible'],
+        responsiblePersonMode: ['responsiblePersonMode'],
+        responsiblePersonOther: ['responsiblePersonOther'],
+        reasonForDelay: ['reasonForDelay', 'reason_missed'],
+        correctiveAction: ['correctiveAction', 'corrective_action'],
+        achievedDate: ['achievedDate', 'achieved_at'],
+        successEvidence: ['successEvidence', 'evidence']
+    };
+
+    function getMetaValue(meta, canonicalKey) {
+        const keys = META_ALIASES[canonicalKey] || [canonicalKey];
+        for (let i = 0; i < keys.length; i++) {
+            const v = meta ? meta[keys[i]] : undefined;
+            if (v !== undefined && v !== null && v !== '') return v;
+        }
+        return '';
+    }
 
     const INIT_DATA = [
         {
@@ -1837,6 +1985,10 @@
         }
     ];
 
+    function getResponsiblePeopleOptions() {
+        return ['Dr Tebeila', 'Tafadzwa', 'Ndumiso', 'Joy', 'Coach'];
+    }
+
     // --- CLOUD CONFIGURATION ---
     // STEP 1: Create a free account at Supabase.com
     // STEP 2: Create a project and paste your keys below
@@ -1879,9 +2031,12 @@
                 const { data, error } = await supabaseClient.from('dr_tracking').select('*');
                 if (!error && data && data.length > 0) {
                     data.forEach(row => {
+                        const prev = appState[row.milestone_id] || {};
                         appState[row.milestone_id] = { 
+                            ...prev,
                             status: row.status, 
-                            comments: row.comments || [] 
+                            comments: row.comments || [],
+                            metadata: row.metadata || prev.metadata || {}
                         };
                     });
                     refreshUI(); // Re-render with cloud data
@@ -1901,7 +2056,13 @@
             .channel('public:dr_tracking')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'dr_tracking' }, payload => {
                 const updated = payload.new;
-                appState[updated.milestone_id] = { status: updated.status, comments: updated.comments };
+                const prev = appState[updated.milestone_id] || {};
+                appState[updated.milestone_id] = {
+                    ...prev,
+                    status: updated.status,
+                    comments: updated.comments || [],
+                    metadata: updated.metadata || prev.metadata || {}
+                };
                 refreshUI();
             })
             .subscribe();
@@ -1920,6 +2081,7 @@
                         milestone_id: id, 
                         status: appState[id].status, 
                         comments: appState[id].comments,
+                        metadata: appState[id].metadata || {},
                         updated_at: appState[id].lastUpdated
                     }, { onConflict: 'milestone_id' });
                 if (error) {
@@ -2002,7 +2164,73 @@
         updateTabBadge();
     }
 
-    function addComment(id) {
+    function updateAccountability(id, field, value) {
+        if(!appState[id].metadata) appState[id].metadata = {};
+        appState[id].metadata[field] = value;
+        
+        // Auto-stamp "When Achieved" if status is B
+        if (field === 'status' && value === 'B' && !appState[id].metadata.achieved_at) {
+            appState[id].metadata.achieved_at = new Date().toISOString().split('T')[0];
+        }
+
+        saveState(id);
+        // Do not full refreshUI to prevent scroll jump, just silent save
+    }
+
+    function updateAccountabilityBatch(id, patch) {
+        if (!appState[id]) appState[id] = { status: 'Grey', comments: [], metadata: {} };
+        if (!appState[id].metadata) appState[id].metadata = {};
+        appState[id].metadata = { ...appState[id].metadata, ...patch };
+        saveState(id);
+    }
+
+    function getNoteType(comment) {
+        return comment && comment.type === 'coach' ? 'coach' : 'team';
+    }
+
+    function getNoteTypeMeta(comment) {
+        const type = getNoteType(comment);
+        return type === 'coach'
+            ? { type: 'coach', tagClass: 'tag-coach', entryClass: 'note-coach', label: 'Coach / Strategic' }
+            : { type: 'team', tagClass: 'tag-team', entryClass: 'note-team', label: 'Team / Operational' };
+    }
+
+    function toggleResponsibleOther(id) {
+        const sel = document.getElementById(`acc-responsible-${id}`);
+        const wrap = document.getElementById(`acc-responsible-other-wrap-${id}`);
+        if (!sel || !wrap) return;
+        wrap.style.display = sel.value === '__other__' ? 'block' : 'none';
+    }
+
+    function saveAccountabilityForm(id) {
+        const strategyEl = document.getElementById(`acc-strategy-${id}`);
+        const responsibleSel = document.getElementById(`acc-responsible-${id}`);
+        const responsibleOtherEl = document.getElementById(`acc-responsible-other-${id}`);
+        const reasonEl = document.getElementById(`acc-reason-${id}`);
+        const correctiveEl = document.getElementById(`acc-corrective-${id}`);
+        const achievedEl = document.getElementById(`acc-achieved-${id}`);
+        const evidenceEl = document.getElementById(`acc-evidence-${id}`);
+
+        const selectedResponsible = responsibleSel ? responsibleSel.value : '';
+        const otherResponsible = responsibleOtherEl ? responsibleOtherEl.value.trim() : '';
+        const isOther = selectedResponsible === '__other__';
+        const resolvedResponsible = isOther ? otherResponsible : selectedResponsible;
+
+        const patch = {};
+        patch[META_KEYS.strategyNorthStar] = strategyEl ? strategyEl.value.trim() : '';
+        patch[META_KEYS.responsiblePerson] = resolvedResponsible;
+        patch[META_KEYS.responsiblePersonMode] = isOther ? 'other' : 'known';
+        patch[META_KEYS.responsiblePersonOther] = isOther ? otherResponsible : '';
+        patch[META_KEYS.reasonForDelay] = reasonEl ? reasonEl.value.trim() : '';
+        patch[META_KEYS.correctiveAction] = correctiveEl ? correctiveEl.value.trim() : '';
+        patch[META_KEYS.achievedDate] = achievedEl ? achievedEl.value : '';
+        patch[META_KEYS.successEvidence] = evidenceEl ? evidenceEl.value.trim() : '';
+
+        updateAccountabilityBatch(id, patch);
+        showToast('Accountability details saved', 'success');
+    }
+
+    function addComment(id, type = 'team') {
         const input = document.getElementById(`comment-in-${id}`);
         const text = input.value.trim();
         if(!text) return;
@@ -2012,7 +2240,7 @@
         });
         
         const currentComments = appState[id].comments || [];
-        updateMilestone(id, { comments: [...currentComments, { text, date: dateStr }] });
+        updateMilestone(id, { comments: [...currentComments, { text, date: dateStr, type: type }] });
         input.value = '';
         showToast('Note saved ✓', 'success');
     }
@@ -2041,7 +2269,7 @@
     function updateTabBadge() {
         const overdueCount = INIT_DATA.filter(m => {
             const st = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
-            if (st === 'B' || st === 'P') return false;
+            if (st === 'B' || st === 'P' || st === 'C' || st === 'D') return false;
             return calcDays(m.short.due) < 0;
         }).length;
 
@@ -2129,10 +2357,29 @@
 
     function renderDashboard() {
         // Initial setup for totals
-        const totals = { total: INIT_DATA.length, G: 0, R: 0, A: 0, B: 0, P: 0, Grey: 0 };
+        const totals = { total: INIT_DATA.length, G: 0, R: 0, A: 0, B: 0, P: 0, Grey: 0, C: 0, D: 0 };
+        let accountabilityGaps = 0;
+        let earlyCompletions = 0;
+
         INIT_DATA.forEach(m => {
             const st = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
+            const meta = (appState[m.id] && appState[m.id].metadata) ? appState[m.id].metadata : {};
             totals[st]++;
+            const reasonForDelay = getMetaValue(meta, 'reasonForDelay');
+            const achievedDateVal = getMetaValue(meta, 'achievedDate');
+
+            // Count Accountability Gaps: Overdue goals missing a "Reason Missed"
+            const days = calcDays(m.short.due);
+            if (st !== 'B' && st !== 'P' && st !== 'C' && st !== 'D' && days < 0) {
+                if (!reasonForDelay) accountabilityGaps++;
+            }
+
+            // Count Early Completions
+            if (st === 'B' && achievedDateVal) {
+                const achievedDate = new Date(achievedDateVal);
+                const dueDate = parseLocalDate(m.short.due);
+                if (achievedDate < dueDate) earlyCompletions++;
+            }
         });
 
         const completionRate = Math.round((totals.B / totals.total) * 100) || 0;
@@ -2140,16 +2387,16 @@
         if (statsContainer) {
             statsContainer.innerHTML = `
                 <div class="stat-card" style="border-top: 3px solid var(--primary-blue);">
-                    <div class="stat-num" style="color:var(--primary-blue)">${totals.total}</div>
-                    <div class="stat-label">Total Goals</div>
+                    <div class="stat-num" style="color:var(--primary-blue)">${totals.total - totals.C - totals.D}</div>
+                    <div class="stat-label">Active Goals</div>
                 </div>
                 <div class="stat-card" style="border-top: 3px solid var(--status-b-color);">
-                    <div class="stat-num" style="color:var(--status-b-color)">${completionRate}%</div>
-                    <div class="stat-label">Overall Success</div>
+                    <div class="stat-num" style="color:var(--status-b-color)">${totals.B}</div>
+                    <div class="stat-label">Achieved ${earlyCompletions > 0 ? `<span style="font-size:10px;display:block;color:var(--status-g-color)">(${earlyCompletions} Early)</span>` : ''}</div>
                 </div>
-                <div class="stat-card" style="border-top: 3px solid var(--status-g-color);">
-                    <div class="stat-num" style="color:var(--status-g-color)">${totals.G}</div>
-                    <div class="stat-label">On Track</div>
+                <div class="stat-card" style="border-top: 3px solid ${accountabilityGaps > 0 ? 'var(--status-r-color)' : 'var(--status-g-color)'};">
+                    <div class="stat-num" style="color:${accountabilityGaps > 0 ? 'var(--status-r-color)' : 'var(--status-g-color)'}">${accountabilityGaps}</div>
+                    <div class="stat-label">Reporting Gaps</div>
                 </div>
                 <div class="stat-card" style="border-top: 3px solid var(--status-r-color);">
                     <div class="stat-num" style="color:var(--status-r-color)">${totals.R + totals.A}</div>
@@ -2228,8 +2475,8 @@
         // Sort: overdue (not achieved/postponed) first, then the rest
         const getSort = function(m) {
             var st = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
-            if (st === 'B') return 3; // achieved last
-            if (st === 'P') return 2; // postponed second last
+            if (st === 'B') return 4; // achieved last
+            if (st === 'P' || st === 'C' || st === 'D') return 3; // parked items
             if (calcDays(m.short.due) < 0) return 0; // overdue first
             return 1;
         };
@@ -2258,8 +2505,21 @@
 
         container.innerHTML = filtered.map(m => {
             const st = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
+            const meta = (appState[m.id] && appState[m.id].metadata) ? appState[m.id].metadata : {};
             const sMeta = STATUS_MAP[st];
             const comments = (appState[m.id] && appState[m.id].comments) ? appState[m.id].comments : [];
+            const noteFilter = activeNoteFilters[m.id] || 'all';
+            const strategyNorthStar = getMetaValue(meta, 'strategyNorthStar');
+            const responsiblePerson = getMetaValue(meta, 'responsiblePerson');
+            const responsibleMode = getMetaValue(meta, 'responsiblePersonMode');
+            const responsiblePersonOther = getMetaValue(meta, 'responsiblePersonOther');
+            const reasonForDelay = getMetaValue(meta, 'reasonForDelay');
+            const correctiveAction = getMetaValue(meta, 'correctiveAction');
+            const achievedDate = getMetaValue(meta, 'achievedDate');
+            const successEvidence = getMetaValue(meta, 'successEvidence');
+            const responsibleOptions = getResponsiblePeopleOptions();
+            const useOtherResponsible = responsibleMode === 'other' || (responsiblePerson && responsibleOptions.indexOf(responsiblePerson) === -1);
+            const selectedResponsible = useOtherResponsible ? '__other__' : responsiblePerson;
             
             // Build Status Selectors
             const statusBtns = Object.entries(STATUS_MAP).map(([k, v]) => `
@@ -2273,11 +2533,22 @@
             `).join('');
 
             // Build Comments
-            const commentsHTML = comments.length > 0 
-                ? comments.map((c, idx) => `
-                    <div class="comment-entry" style="display:flex; align-items:flex-start; gap:8px;">
+            const visibleComments = comments
+                .map((c, idx) => ({ comment: c, idx: idx }))
+                .filter(item => noteFilter === 'all' || getNoteType(item.comment) === noteFilter);
+
+            const commentsHTML = visibleComments.length > 0 
+                ? visibleComments.map((item) => {
+                    const c = item.comment;
+                    const idx = item.idx;
+                    const noteMeta = getNoteTypeMeta(c);
+                    return `
+                    <div class="comment-entry ${noteMeta.entryClass}" style="display:flex; align-items:flex-start; gap:8px;">
                         <div style="flex:1;">
-                            <div class="comment-date">${c.date}</div>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                                <div class="comment-date">${c.date}</div>
+                                <span class="comment-tag ${noteMeta.tagClass}">${noteMeta.label}</span>
+                            </div>
                             <div>${c.text}</div>
                         </div>
                         <div style="display: flex; gap: 4px; flex-shrink: 0; flex-direction: column;">
@@ -2296,10 +2567,10 @@
                                 onmouseout="this.style.color='var(--text-muted)';this.style.background='none';"
                             >&times;</button>
                         </div>
-                    </div>`).join('')
-                : `<div style="color:var(--text-muted); font-size:13px; font-style:italic;">No notes yet. Add your thoughts below for your coach.</div>`;
+                    </div>`;}).join('')
+                : `<div style="color:var(--text-muted); font-size:13px; font-style:italic;">${comments.length > 0 ? 'No notes match this filter.' : 'No notes yet. Add your thoughts below.'}</div>`;
 
-            var isOverdue = st !== 'B' && st !== 'P' && calcDays(m.short.due) < 0;
+            var isOverdue = st !== 'B' && st !== 'P' && st !== 'C' && st !== 'D' && calcDays(m.short.due) < 0;
             var isAchieved = st === 'B';
             var isOpen = openCards.has(m.id);
             var cardClass = 'milestone-card' + (isOverdue ? ' overdue' : '') + (isAchieved ? ' achieved-card' : '') + (isOpen ? ' open' : '');
@@ -2341,20 +2612,48 @@
                             Focus on the <strong>current phase</strong> below. Talk to your coach if you feel stuck.
                         </div>
 
-                        <div class="phases-grid">
-                            ${['short', 'medium', 'long'].map(pKey => `
-                                <div class="phase-box">
-                                    <div class="phase-name">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                                        ${pKey.toUpperCase()} TERM
-                                    </div>
-                                    <div class="phase-desc">${m[pKey].text}</div>
-                                    <div class="phase-meta">
-                                        <div class="date-label">Due: ${formatDate(m[pKey].due)}</div>
-                                        ${getCountdownBadge(m[pKey].due)}
-                                    </div>
+                        </div>
+
+                        <!-- Strategic Accountability Section -->
+                        <div class="accountability-section">
+                            <div class="acc-field">
+                                <label class="acc-label">Strategy / North Star</label>
+                                <input type="text" id="acc-strategy-${m.id}" class="acc-input" placeholder="e.g. Practice Expansion" value="${strategyNorthStar}">
+                            </div>
+                            <div class="acc-field">
+                                <label class="acc-label">Responsible Person</label>
+                                <select id="acc-responsible-${m.id}" class="acc-input" onchange="toggleResponsibleOther(${m.id})">
+                                    <option value="">Select person</option>
+                                    ${responsibleOptions.map(name => `<option value="${name}" ${selectedResponsible === name ? 'selected' : ''}>${name}</option>`).join('')}
+                                    <option value="__other__" ${useOtherResponsible ? 'selected' : ''}>Other</option>
+                                </select>
+                                <div id="acc-responsible-other-wrap-${m.id}" style="margin-top:8px; display:${useOtherResponsible ? 'block' : 'none'};">
+                                    <input type="text" id="acc-responsible-other-${m.id}" class="acc-input" placeholder="Enter responsible person" value="${useOtherResponsible ? (responsiblePersonOther || responsiblePerson) : ''}">
                                 </div>
-                            `).join('')}
+                            </div>
+                            ${isOverdue ? `
+                            <div class="acc-field" style="grid-column: span 2;">
+                                <label class="acc-label" style="color:var(--status-r-color)">Reason for Delay</label>
+                                <textarea id="acc-reason-${m.id}" class="acc-input" style="height:60px;resize:none;" placeholder="Explain why this deadline was missed...">${reasonForDelay}</textarea>
+                            </div>
+                            <div class="acc-field" style="grid-column: span 2;">
+                                <label class="acc-label" style="color:var(--primary-blue)">Corrective Action</label>
+                                <textarea id="acc-corrective-${m.id}" class="acc-input" style="height:60px;resize:none;" placeholder="What steps are being taken to get back on track?">${correctiveAction}</textarea>
+                            </div>
+                            ` : ''}
+                            ${st === 'B' ? `
+                            <div class="acc-field">
+                                <label class="acc-label">Achieved Date</label>
+                                <input type="date" id="acc-achieved-${m.id}" class="acc-input" value="${achievedDate}">
+                            </div>
+                            <div class="acc-field" style="grid-column: span 3;">
+                                <label class="acc-label">Success Note & Evidence</label>
+                                <input type="text" id="acc-evidence-${m.id}" class="acc-input" placeholder="How was this achieved? Add link to evidence if applicable." value="${successEvidence}">
+                            </div>
+                            ` : ''}
+                            <div class="acc-field" style="grid-column: 1 / -1; align-items:flex-start;">
+                                <button class="save-note-btn" onclick="saveAccountabilityForm(${m.id})">Save</button>
+                            </div>
                         </div>
 
                         <div class="controls-section">
@@ -2365,13 +2664,22 @@
                                 </div>
                             </div>
                             <div class="comments-section">
-                                <div class="status-update-label">My Private Notes & Coach Chat</div>
+                                <div class="status-update-label">Goal Notes & Communication</div>
+                                <div class="note-filter-toggle">
+                                    <button class="nf-btn ${noteFilter === 'all' ? 'active' : ''}" id="nf-all-${m.id}" onclick="setNoteFilter(${m.id}, 'all')">All Notes</button>
+                                    <button class="nf-btn ${noteFilter === 'team' ? 'active' : ''}" id="nf-team-${m.id}" onclick="setNoteFilter(${m.id}, 'team')">Team Notes</button>
+                                    <button class="nf-btn ${noteFilter === 'coach' ? 'active' : ''}" id="nf-coach-${m.id}" onclick="setNoteFilter(${m.id}, 'coach')">Coach Notes</button>
+                                </div>
                                 <div class="comments-list">
                                     ${commentsHTML}
                                 </div>
                                 <div class="comment-input-area">
-                                    <input type="text" id="comment-in-${m.id}" placeholder="Type a note for your coach..." onkeypress="if(event.key==='Enter') addComment(${m.id})">
-                                    <button class="save-note-btn" onclick="addComment(${m.id})">Save Note</button>
+                                    <select id="comment-type-${m.id}" class="note-type-select" aria-label="Note type">
+                                        <option value="team" selected>Team</option>
+                                        <option value="coach">Coach</option>
+                                    </select>
+                                    <input type="text" id="comment-in-${m.id}" placeholder="Type a note..." onkeypress="if(event.key==='Enter') triggerAddComment(${m.id})">
+                                    <button class="save-note-btn" onclick="triggerAddComment(${m.id})">Save</button>
                                 </div>
                             </div>
                         </div>
@@ -2414,8 +2722,10 @@
             const endCol = Math.min(totalMonths, diffMonths + 1 + dayOffset);
             const widthPct = (endCol / totalMonths) * 100;
 
+            const isFaded = st === 'C' || st === 'D';
+
             return `
-                <div class="gantt-row">
+                <div class="gantt-row" style="${isFaded ? 'opacity:0.4;' : ''}">
                     <div class="gantt-cell sticky-col" onclick="switchTab('milestones');toggleCard(${m.id})" style="cursor:pointer; font-weight:600;">
                         ${m.title}
                     </div>
@@ -2454,11 +2764,12 @@
 
     // Helper: compute numeric priority rank for sorting (lower = more urgent)
     function getPriorityRank(r) {
-        if (r.status === 'B') return 5; // Achieved — bottom
-        if (r.status === 'P') return 4; // On Hold
+        if (r.status === 'B') return 7; // Achieved — bottom
+        if (r.status === 'P') return 6; // On Hold
+        if (r.status === 'C' || r.status === 'D') return 8; // Removed
         if (r.isOverdue)      return 0; // Overdue — top
         if (r.daysLeft <= 14) return 1; // Due soon
-        if (r.status === 'R') return 1; // Jeopardy, same urgency as due-soon
+        if (r.status === 'R') return 1; // Jeopardy
         if (r.status === 'A') return 2; // Action needed
         return 3;                        // On track / Not started
     }
@@ -2563,7 +2874,7 @@
                 daysLeft: daysLeft,
                 notesCount: comments.length,
                 lastUpdated: lastUpdated,
-                isOverdue: st !== 'B' && st !== 'P' && daysLeft < 0
+                isOverdue: st !== 'B' && st !== 'P' && st !== 'C' && st !== 'D' && daysLeft < 0
             };
         });
 
@@ -2607,7 +2918,7 @@
         });
 
         // Count stats for summary strip (always from full dataset)
-        var counts = { G: 0, R: 0, A: 0, B: 0, P: 0, Grey: 0 };
+        var counts = { G: 0, R: 0, A: 0, B: 0, P: 0, Grey: 0, C: 0, D: 0 };
         INIT_DATA.forEach(function(m) {
             var st = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
             counts[st] = (counts[st] || 0) + 1;
@@ -2739,6 +3050,8 @@
                             '<option value="R"' + (statusVal === 'R' ? ' selected' : '') + '>In Jeopardy</option>' +
                             '<option value="B"' + (statusVal === 'B' ? ' selected' : '') + '>Achieved</option>' +
                             '<option value="P"' + (statusVal === 'P' ? ' selected' : '') + '>On Hold</option>' +
+                            '<option value="C"' + (statusVal === 'C' ? ' selected' : '') + '>Cancelled</option>' +
+                            '<option value="D"' + (statusVal === 'D' ? ' selected' : '') + '>Discontinued</option>' +
                         '</select>' +
                         '<select class="pf-select" id="pf-owner" onchange="renderProjects()">' +
                             ownerOptions +
@@ -2769,6 +3082,8 @@
                     '<div class="pss-item"><span class="pss-dot" style="background:var(--status-r-color);"></span>Jeopardy <span class="pss-num">' + counts.R + '</span></div>' +
                     '<div class="pss-item"><span class="pss-dot" style="background:var(--status-b-color);"></span>Achieved <span class="pss-num">' + counts.B + '</span></div>' +
                     '<div class="pss-item"><span class="pss-dot" style="background:var(--status-p-color);"></span>On Hold <span class="pss-num">' + counts.P + '</span></div>' +
+                    '<div class="pss-item"><span class="pss-dot" style="background:var(--status-c-color);"></span>Cancelled <span class="pss-num">' + (counts.C || 0) + '</span></div>' +
+                    '<div class="pss-item"><span class="pss-dot" style="background:var(--status-d-color);"></span>Discontinued <span class="pss-num">' + (counts.D || 0) + '</span></div>' +
                     '<div class="pss-item"><span class="pss-dot" style="background:var(--status-grey-color);"></span>Not Started <span class="pss-num">' + counts.Grey + '</span></div>' +
                 '</div>' +
             '</div>' +
@@ -2788,6 +3103,20 @@
             projectsSortDir = 'asc';
         }
         renderProjects();
+    }
+
+    // --- UI HELPERS ---
+    let activeNoteFilters = {}; // id -> all|team|coach
+
+    function setNoteFilter(id, filter) {
+        activeNoteFilters[id] = filter;
+        renderMilestones();
+    }
+
+    function triggerAddComment(id) {
+        const typeEl = document.getElementById(`comment-type-${id}`);
+        const type = typeEl && typeEl.value === 'coach' ? 'coach' : 'team';
+        addComment(id, type);
     }
 
     // --- MAIN ---
@@ -2876,15 +3205,20 @@
             return;
         }
 
-        container.innerHTML = allNotes.map(n => `
-            <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:var(--radius-md); padding:16px;">
+        container.innerHTML = allNotes.map(n => {
+            const noteMeta = getNoteTypeMeta(n);
+            const noteStyle = noteMeta.type === 'coach'
+                ? 'background:#fffaf0; border:1px solid #fbbf24; border-left:4px solid #d97706;'
+                : 'background:#F8FAFC; border:1px solid #E2E8F0; border-left:4px solid #CBD5E1;';
+            return `
+            <div style="${noteStyle} border-radius:var(--radius-md); padding:16px;">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; border-bottom:1px solid #E2E8F0; padding-bottom:12px;">
                     <div>
                         <div style="font-weight:700; color:var(--primary-blue); font-size:14px; margin-bottom:4px; cursor:pointer;" onclick="switchTab('milestones');setTimeout(function(){toggleCard(${n.goalId});},200)" title="View in Goals">
                             <span style="opacity:0.7;margin-right:4px;">#${n.goalId}</span> <span style="text-decoration:underline;">${n.goalTitle}</span>
                         </div>
                         <div style="font-size:12px; color:var(--text-muted); display:flex; align-items:center; gap:8px;">
-                            ${n.date} <span style="color:#CBD5E1;">|</span> <span style="background:#F1F5F9; border:1px solid #E2E8F0; padding:2px 6px; border-radius:4px; font-weight:600; font-size:10px; text-transform:uppercase;">${n.area}</span>
+                            ${n.date} <span style="color:#CBD5E1;">|</span> <span style="background:#F1F5F9; border:1px solid #E2E8F0; padding:2px 6px; border-radius:4px; font-weight:600; font-size:10px; text-transform:uppercase;">${n.area}</span> <span class="comment-tag ${noteMeta.tagClass}">${noteMeta.label}</span>
                         </div>
                     </div>
                     <div style="display:flex; gap: 8px;">
@@ -2894,7 +3228,7 @@
                 </div>
                 <div style="font-size:14px; color:var(--text-main); white-space:pre-wrap; line-height:1.5;">${n.text}</div>
             </div>
-        `).join('');
+        `;}).join('');
 
         if (window.lucide) lucide.createIcons();
     }
@@ -2924,6 +3258,10 @@
             filename = 'Dr_Tebeila_Summary.txt';
         }
 
+        // Check for Metadata Column Support (Experimental)
+        // If the user hasn't added the 'metadata' column in Supabase, 
+        // the app will still save it into localStorage.
+        
         const a = document.createElement('a');
         a.href = URL.createObjectURL(new Blob([content], {type: mime}));
         a.download = filename;
@@ -2934,7 +3272,8 @@
         console.log('App loaded. Starting initialization.');
         // 1. Setup default state
         INIT_DATA.forEach(function(m) {
-            if (!appState[m.id]) appState[m.id] = { status: 'Grey', comments: [] };
+            if (!appState[m.id]) appState[m.id] = { status: 'Grey', comments: [], metadata: {} };
+            if (!appState[m.id].metadata) appState[m.id].metadata = {};
         });
 
         // 2. Initial Render
@@ -2960,7 +3299,8 @@
                             data.forEach(row => {
                                 appState[row.milestone_id] = { 
                                     status: row.status, 
-                                    comments: row.comments || [] 
+                                    comments: row.comments || [],
+                                    metadata: row.metadata || {}
                                 };
                             });
                         }
