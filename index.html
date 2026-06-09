@@ -130,21 +130,12 @@
             border-color: var(--dark-grey);
         }
 
-        .note-type-select {
-            width: 104px;
-            padding: 10px 8px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: white;
-            color: var(--text-main);
-            font-size: 12px;
+        .note-type-helper {
+            font-size: 11px;
             font-weight: 700;
-            outline: none;
-        }
-
-        .note-type-select:focus {
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 2px var(--secondary-blue);
+            color: var(--text-muted);
+            white-space: nowrap;
+            align-self: center;
         }
 
         * {
@@ -1512,6 +1503,9 @@
             .projects-board-header { padding: 16px; }
             .projects-filters { width: 100%; }
             .pf-select { flex: 1; min-width: 0; }
+            .exec-grid { grid-template-columns: 1fr; }
+            .exec-panel, .exec-panel.full { grid-column: 1; }
+            .exec-list-item { grid-template-columns: 1fr; }
         }
 
         /* === OWNERSHIP BOARD ENHANCEMENTS === */
@@ -1540,6 +1534,143 @@
         .priority-badge.p-track     { background: var(--status-g-bg);    color: var(--status-g-color); }
         .priority-badge.p-done      { background: var(--status-b-bg);    color: var(--status-b-color); }
         .priority-badge.p-none      { background: var(--status-grey-bg); color: var(--status-grey-color); }
+        .priority-badge.p-p1        { background: var(--status-r-bg);    color: var(--status-r-color); }
+        .priority-badge.p-p2        { background: var(--status-a-bg);    color: var(--status-a-color); }
+        .priority-badge.p-dep       { background: #FFF7ED; color: #C2410C; border: 1px solid #FDBA74; }
+        .priority-badge.p-scope     { background: var(--secondary-blue); color: var(--primary-blue); }
+
+        .exec-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .exec-panel {
+            grid-column: span 6;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .exec-panel.full {
+            grid-column: span 12;
+        }
+
+        .exec-panel h3 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            margin-bottom: 14px;
+            color: var(--text-main);
+        }
+
+        .exec-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .exec-list-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 10px;
+            align-items: start;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+        }
+
+        .exec-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .exec-kicker {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--primary-blue);
+            background: var(--secondary-blue);
+            border-radius: var(--radius-full);
+            padding: 4px 8px;
+            white-space: nowrap;
+        }
+
+        .exec-main {
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .exec-sub {
+            color: var(--text-muted);
+            font-size: 12px;
+            margin-top: 2px;
+            line-height: 1.4;
+        }
+
+        .exec-health-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .exec-health-item {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 10px;
+            background: #F8FAFC;
+        }
+
+        .exec-health-area {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .exec-health-state {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .exec-narrative {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.55;
+        }
+
+        .dependency-strip {
+            margin: 0 24px 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .dependency-note {
+            margin: 0 24px 20px;
+            padding: 12px 14px;
+            border-left: 4px solid var(--status-a-color);
+            background: #FFFBEB;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            color: #92400E;
+            line-height: 1.45;
+        }
+
+        .pt-title-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .pt-badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
 
         .ob-status-pill {
             display: inline-flex;
@@ -1721,7 +1852,7 @@
                         <span>👋 Welcome, Dr. Tebeila</span>
                     </h2>
                     <p style="font-size: 16px; opacity: 0.9; line-height: 1.5; margin-bottom: 20px;">
-                        This is your personal roadmap for practice growth. It helps us track your strategic goals and celebrate achievements together.
+                        This is your Clinic Command Center for the June 8 execution window. It keeps decisions, dependencies, accountability, and Control Room follow-through visible.
                     </p>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
                         <div style="background: rgba(255,255,255,0.15); padding: 16px; border-radius: var(--radius-md); backdrop-filter: blur(5px);">
@@ -1738,6 +1869,13 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="exec-grid">
+                <div class="exec-panel full" id="project-narrative-panel"></div>
+                <div class="exec-panel" id="leadership-actions-panel"></div>
+                <div class="exec-panel" id="executive-bottlenecks-panel"></div>
+                <div class="exec-panel full" id="strategic-health-panel"></div>
             </div>
 
             <div class="dashboard-grid">
@@ -1824,8 +1962,10 @@
                         <option value="all">All Functional Areas</option>
                         <option value="Governance">Governance</option>
                         <option value="Leadership">Leadership</option>
+                        <option value="Finance">Finance</option>
                         <option value="HR">HR</option>
                         <option value="Marketing">Marketing</option>
+                        <option value="Operations">Operations</option>
                         <option value="Technology">Technology</option>
                     </select>
                     <select class="filter-select" id="filter-status" onchange="renderMilestones()">
@@ -1930,10 +2070,10 @@
             long: { text: "Receive certificate and update all branding", due: "2026-06-08" }
         },
         {
-            id: 2, title: "Financial Audit & Key Driver Identification", area: "Leadership", assignee: "Tafadzwa, Ali & David",
+            id: 2, title: "Financial Audit 2023-2026", area: "Finance", assignee: "Tafadzwa, Ali & David",
             short: { text: "Analysis draft review of the 2023–2026 Medis data", due: "2026-05-12" },
-            medium: { text: "Compile consolidated key driver report per practice", due: "2026-05-26" },
-            long: { text: "Embed driver KPIs into practice scorecards", due: "2026-06-08" }
+            medium: { text: "Produce and circulate final consolidated audit document", due: "2026-05-26" },
+            long: { text: "Use audit clarity to support practice roadmaps and bank-account registration", due: "2026-06-08" }
         },
         {
             id: 3, title: "Launch Individual Practice Roadmaps", area: "Leadership", assignee: "Dr. Tebeila & Tafadzwa",
@@ -1942,9 +2082,9 @@
             long: { text: "Roadmap review cadence established", due: "2026-06-08" }
         },
         {
-            id: 4, title: "Finalize Partnership Agreement — Dr. Nape", area: "Governance", assignee: "Dr. Tebeila & Dr. Nape",
-            short: { text: "Engage attorney. Draft term sheet for Dr. Nape", due: "2026-05-12" },
-            medium: { text: "Finalise legal agreement", due: "2026-05-26" },
+            id: 4, title: "Finalize Partnership Agreement — Dr. Eddy (UK)", area: "Governance", assignee: "Dr. Tebeila & Dr. Eddy",
+            short: { text: "Brief attorney and initiate first conversation for Dr. Eddy", due: "2026-05-12" },
+            medium: { text: "Finalise legal agreement for Refodile & Partners", due: "2026-05-26" },
             long: { text: "Signed agreement executed and filed", due: "2026-06-08" }
         },
         {
@@ -1967,23 +2107,128 @@
         },
         {
             id: 8, title: "Uniform Brand Identity (Refodile Dental)", area: "Marketing", assignee: "Ndumiso & Tshlodi",
-            short: { text: "Final Brand Identity Kit Review for Refodile Dental Studio", due: "2026-05-12" },
-            medium: { text: "Go-live on signage & unified digital assets", due: "2026-05-26" },
-            long: { text: "Social Media Strategy Phase 2: Active programs", due: "2026-06-08" }
+            short: { text: "Receive Dr. Tebeila's marketing document to resume strategy", due: "2026-05-12" },
+            medium: { text: "Align Tshlodi, M Sebeka, and digital assets after document is received", due: "2026-05-26" },
+            long: { text: "Resume social media and brand strategy programs", due: "2026-06-08" }
         },
         {
             id: 9, title: "Intelligence System Phase 1 (Core Focus)", area: "Technology", assignee: "Ndumiso & Tafadzwa",
-            short: { text: "System Workflow Logic Draft approval", due: "2026-05-12" },
-            medium: { text: "Phase 2: Management Intelligence & HR Dashboards", due: "2026-05-26" },
-            long: { text: "Automated practice health trigger notifications live", due: "2026-06-08" }
+            short: { text: "Confirm scoped rollout: HR management and medical aid outstanding-payment reconciliation", due: "2026-05-12" },
+            medium: { text: "Activate focused operational workflow with Dr. Tebeila, Ndumiso, and Tafadzwa", due: "2026-05-26" },
+            long: { text: "Use scoped HR and payment-reconciliation tracking in practice operations", due: "2026-06-08" }
         },
         {
-            id: 10, title: "Intelligence System Phases 2–4 (Global)", area: "Technology", assignee: "Tafadzwa & Ndumiso",
-            short: { text: "Confirmation of deployment for 2x Laptops to Pic N Pay", due: "2026-05-12" },
-            medium: { text: "Medis & Clinical System Integration", due: "2026-05-26" },
-            long: { text: "Full Clinical/Financial intelligence live", due: "2026-06-08" }
+            id: 10, title: "Infrastructure & Hardware Readiness", area: "Operations", assignee: "Tafadzwa & Ndumiso",
+            short: { text: "Confirm deployment for 2x laptops, business phone, and tracker access", due: "2026-05-12" },
+            medium: { text: "Set up business environment on Dr. Tebeila's new phone and laptop", due: "2026-05-26" },
+            long: { text: "Confirm operational plan for the new dental studio", due: "2026-06-08" }
         }
     ];
+
+    const EXECUTIVE_CONTEXT = {
+        deadline: '2026-06-08',
+        channel: 'The Control Room',
+        projectHead: 'Tafadzwa',
+        preparedBy: 'Ndumiso / Embark Digitals',
+        vision: 'A practice that runs through systems, processes, and team capacity without depending entirely on Dr. Tebeila daily.',
+        milestoneContext: {
+            1: {
+                priority: 'P2',
+                waitingOn: 'CIPC registration application',
+                decisionOwner: 'Joy + Tafadzwa',
+                dependencyReason: 'Name availability check is done; application is overdue since May 26.',
+                position: 'Governance progress depends on submitting the overdue CIPC application.'
+            },
+            2: {
+                priority: 'P1',
+                waitingOn: 'Final consolidated audit document',
+                decisionOwner: 'Tafadzwa + David',
+                dependencyReason: 'Audits are complete; consolidated document is still outstanding.',
+                position: 'Finance clarity is needed before the group picture can be formally presented.'
+            },
+            3: {
+                priority: 'P1',
+                waitingOn: 'Final audit document and financial clarity',
+                decisionOwner: 'Tafadzwa + David',
+                dependencyReason: 'Practice roadmaps are blocked until the audit document is finalised.',
+                position: 'Roadmaps need the final financial picture before sign-off.'
+            },
+            4: {
+                priority: 'P2',
+                waitingOn: 'Attorney briefing on Dr. Eddy',
+                decisionOwner: 'Dr. Tebeila',
+                dependencyReason: 'Dr. Eddy replaces Dr. Nape; no agreement work has started.',
+                position: 'Refodile & Partners cannot open or operate without a formal agreement.'
+            },
+            5: {
+                priority: 'P2',
+                waitingOn: 'Agreement committed to paper',
+                decisionOwner: 'Dr. Tebeila + Dr. Seabi + Attorney',
+                dependencyReason: 'Equity and profit-sharing negotiations are progressing.',
+                position: 'Negotiations need to become a signed partnership agreement.'
+            },
+            6: {
+                priority: 'P1',
+                waitingOn: 'Handover completion',
+                decisionOwner: 'Joy + Linda',
+                dependencyReason: 'Linda is appointed and inducted; handover is in progress.',
+                position: 'Administrator capacity is improving and should be stabilised.'
+            },
+            7: {
+                priority: 'P1',
+                waitingOn: 'Staff contract meeting',
+                decisionOwner: 'Dr. Tebeila + Joy',
+                dependencyReason: 'LabourNet is active; contracts need staff review and sign-off.',
+                position: 'Employment contract signing reduces HR and compliance risk.'
+            },
+            8: {
+                priority: 'P1',
+                waitingOn: 'Marketing document',
+                decisionOwner: 'Dr. Tebeila',
+                dependencyReason: 'Marketing is postponed until the document is sent to the team.',
+                position: 'Social media and brand strategy resume once the document is received.'
+            },
+            9: {
+                priority: 'P1',
+                waitingOn: 'Scoped rollout confirmation',
+                decisionOwner: 'Dr. Tebeila + Ndumiso + Tafadzwa',
+                dependencyReason: 'Immediate scope is HR management plus medical aid outstanding-payment reconciliation tracking.',
+                position: 'The system is built and ready; activation needs direct scope confirmation.',
+                scopedFocus: 'HR management + medical aid outstanding-payment reconciliation'
+            },
+            10: {
+                priority: 'P1/P2',
+                waitingOn: 'Business device setup and studio operational plan',
+                decisionOwner: 'Dr. Tebeila + Ndumiso + Tafadzwa',
+                dependencyReason: 'Laptops are deployed, tracker is live, phone is purchased, and studio construction is complete.',
+                position: 'Operations now need device configuration and studio activation confirmation.'
+            }
+        },
+        leadershipActions: [
+            { priority: 'P1', action: 'Send marketing document to the team', owner: 'Dr. Tebeila', unlocks: 'Resumes Milestone 8 social media and brand strategy.' },
+            { priority: 'P1', action: 'Confirm Intelligence System scope', owner: 'Dr. Tebeila + Ndumiso + Tafadzwa', unlocks: 'Activates the focused HR management and medical aid reconciliation rollout.' },
+            { priority: 'P1', action: 'Produce final financial audit document', owner: 'Tafadzwa + David', unlocks: 'Unblocks practice roadmaps and financial clarity.' },
+            { priority: 'P1', action: 'Register business bank accounts under entities', owner: 'Dr. Tebeila', unlocks: 'Separates business finances under the confirmed corporate structure.' },
+            { priority: 'P1', action: 'Meet staff to sign employment contracts', owner: 'Dr. Tebeila + Joy', unlocks: 'Completes LabourNet contract standardisation.' },
+            { priority: 'P2', action: 'Brief attorney on Dr. Eddy', owner: 'Dr. Tebeila', unlocks: 'Starts Refodile & Partners agreement process.' },
+            { priority: 'P2', action: 'Confirm operational plan for new dental studio', owner: 'Dr. Tebeila', unlocks: 'Moves the completed studio toward activation.' }
+        ],
+        bottlenecks: [
+            { milestoneId: 3, blocker: 'Final consolidated audit document outstanding', impact: 'Blocks practice roadmaps and financial clarity.' },
+            { milestoneId: 8, blocker: 'Marketing document outstanding', impact: 'Blocks social media and brand strategy.' },
+            { milestoneId: 9, blocker: 'Scoped rollout confirmation outstanding', impact: 'Blocks HR management and medical aid reconciliation activation.' },
+            { milestoneId: 4, blocker: 'Attorney not briefed on Dr. Eddy', impact: 'Blocks Refodile & Partners agreement process.' },
+            { milestoneId: 1, blocker: 'CIPC application overdue', impact: 'Slows governance progress.' }
+        ],
+        strategicHealth: [
+            { area: 'HR', health: 'Good', trend: 'Improving', note: 'Linda appointed; LabourNet active; contracts need staff sign-off.' },
+            { area: 'Governance', health: 'Action Needed', trend: 'Moving', note: 'Entity structure confirmed; CIPC overdue; partnerships not yet signed.' },
+            { area: 'Finance', health: 'In Progress', trend: 'Moving', note: 'Audits done; final document and entity banking still outstanding.' },
+            { area: 'Technology', health: 'Blocked', trend: 'Moving', note: 'System built; scoped HR and medical aid reconciliation rollout awaiting confirmation.' },
+            { area: 'Operations', health: 'Mixed', trend: 'Moving', note: 'Hardware deployed and studio ready; operational setup still pending.' },
+            { area: 'Marketing', health: 'On Hold', trend: 'Paused', note: 'Marketing document is the single key to resuming.' }
+        ]
+    };
 
     function getResponsiblePeopleOptions() {
         return ['Dr Tebeila', 'Tafadzwa', 'Ndumiso', 'Joy', 'Coach'];
@@ -2068,9 +2313,14 @@
             .subscribe();
     }
 
+    function saveLocalState() {
+        localStorage.setItem('dr_tebeila_app_v2', JSON.stringify(appState));
+    }
+
     async function saveState(id) {
         // Phase 1.5: stamp lastUpdated on every save
         appState[id].lastUpdated = new Date().toISOString();
+        saveLocalState();
 
         setSyncStatus('syncing', 'Saving...');
         if (supabaseClient) {
@@ -2088,17 +2338,16 @@
                     console.error('Cloud Save Error:', error);
                     setSyncStatus('error', 'Sync failed');
                     showToast('Could not save to cloud — kept locally.', 'error');
-                    localStorage.setItem('dr_tebeila_app_v2', JSON.stringify(appState));
+                    saveLocalState();
                 } else {
                     setSyncStatus('synced', 'Synced');
                     checkAndNotify(id);
                 }
             } catch(e) {
                 setSyncStatus('error', 'Offline');
-                localStorage.setItem('dr_tebeila_app_v2', JSON.stringify(appState));
+                saveLocalState();
             }
         } else {
-            localStorage.setItem('dr_tebeila_app_v2', JSON.stringify(appState));
             setSyncStatus('', 'Saved locally');
             checkAndNotify(id);
         }
@@ -2234,13 +2483,17 @@
         const input = document.getElementById(`comment-in-${id}`);
         const text = input.value.trim();
         if(!text) return;
+        const noteType = type === 'coach' ? 'coach' : 'team';
         
         const dateStr = new Date().toLocaleDateString('en-ZA', {
             day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
         });
         
         const currentComments = appState[id].comments || [];
-        updateMilestone(id, { comments: [...currentComments, { text, date: dateStr, type: type }] });
+        if (activeNoteFilters[id] && activeNoteFilters[id] !== 'all' && activeNoteFilters[id] !== noteType) {
+            activeNoteFilters[id] = noteType;
+        }
+        updateMilestone(id, { comments: [...currentComments, { text, date: dateStr, type: noteType }] });
         input.value = '';
         showToast('Note saved ✓', 'success');
     }
@@ -2314,6 +2567,73 @@
         return `<span class="countdown-pill ok">${days}d left</span>`;
     }
 
+    function getExecutiveContext(milestoneId) {
+        return EXECUTIVE_CONTEXT.milestoneContext[milestoneId] || {};
+    }
+
+    function executivePriorityBadgesHTML(ctx) {
+        if (!ctx || !ctx.priority) return '';
+        return String(ctx.priority).split('/').map(function(priority) {
+            var key = priority.trim();
+            if (!key) return '';
+            var cls = key === 'P1' ? 'p-p1' : 'p-p2';
+            return '<span class="priority-badge ' + cls + '">' + key + '</span>';
+        }).join('');
+    }
+
+    function dependencyBadgesHTML(ctx) {
+        if (!ctx) return '';
+        var html = executivePriorityBadgesHTML(ctx);
+        if (ctx.waitingOn) html += '<span class="priority-badge p-dep">Waiting On: ' + ctx.waitingOn + '</span>';
+        if (ctx.scopedFocus) html += '<span class="priority-badge p-scope">Scope: ' + ctx.scopedFocus + '</span>';
+        return html;
+    }
+
+    function renderExecutiveDashboardSections() {
+        var narrativePanel = document.getElementById('project-narrative-panel');
+        if (narrativePanel) {
+            narrativePanel.innerHTML = '<h3><i data-lucide="compass" style="width:18px;height:18px;color:var(--primary-blue);"></i>Project Narrative</h3>' +
+                '<div class="exec-narrative">Foundations are strong: the team is positioned, the corporate structure is confirmed, the tracker is live, and the focused operational system is built. The remaining work is concentrated around decisions and execution before June 8, especially final audit clarity, leadership approvals, contract sign-off, business setup, and the narrowed HR management plus medical aid outstanding-payment reconciliation rollout.</div>';
+        }
+
+        var actionsPanel = document.getElementById('leadership-actions-panel');
+        if (actionsPanel) {
+            actionsPanel.innerHTML = '<h3><i data-lucide="flag" style="width:18px;height:18px;color:var(--status-a-color);"></i>Leadership Actions Required</h3>' +
+                '<div class="exec-list">' + EXECUTIVE_CONTEXT.leadershipActions.map(function(item) {
+                    var cls = item.priority === 'P1' ? 'p-p1' : 'p-p2';
+                    return '<div class="exec-list-item">' +
+                        '<span class="priority-badge ' + cls + '">' + item.priority + '</span>' +
+                        '<div><div class="exec-main">' + item.action + '</div><div class="exec-sub">Owner: ' + item.owner + ' | ' + item.unlocks + '</div></div>' +
+                        '<span class="exec-kicker">Decision</span>' +
+                    '</div>';
+                }).join('') + '</div>';
+        }
+
+        var bottlenecksPanel = document.getElementById('executive-bottlenecks-panel');
+        if (bottlenecksPanel) {
+            bottlenecksPanel.innerHTML = '<h3><i data-lucide="circle-alert" style="width:18px;height:18px;color:var(--status-r-color);"></i>Executive Bottlenecks</h3>' +
+                '<div class="exec-list">' + EXECUTIVE_CONTEXT.bottlenecks.map(function(item) {
+                    return '<div class="exec-list-item" onclick="switchTab(\'milestones\');setTimeout(function(){toggleCard(' + item.milestoneId + ');},200)" style="cursor:pointer;">' +
+                        '<span class="exec-kicker">M' + item.milestoneId + '</span>' +
+                        '<div><div class="exec-main">' + item.blocker + '</div><div class="exec-sub">' + item.impact + '</div></div>' +
+                        '<span class="priority-badge p-dep">Open</span>' +
+                    '</div>';
+                }).join('') + '</div>';
+        }
+
+        var healthPanel = document.getElementById('strategic-health-panel');
+        if (healthPanel) {
+            healthPanel.innerHTML = '<h3><i data-lucide="activity" style="width:18px;height:18px;color:var(--primary-blue);"></i>Strategic Health Snapshot</h3>' +
+                '<div class="exec-health-grid">' + EXECUTIVE_CONTEXT.strategicHealth.map(function(item) {
+                    return '<div class="exec-health-item">' +
+                        '<div class="exec-health-area">' + item.area + '</div>' +
+                        '<div class="exec-health-state"><strong>' + item.health + '</strong> / ' + item.trend + '</div>' +
+                        '<div class="exec-sub">' + item.note + '</div>' +
+                    '</div>';
+                }).join('') + '</div>';
+        }
+    }
+
     // --- RENDERERS ---
     function renderFocusSection() {
         var focusEl = document.getElementById('focus-section');
@@ -2341,11 +2661,14 @@
             var daysLabel = item.days < 0 ? Math.abs(item.days) + 'd overdue' : item.days + 'd left';
             var dotColor = item.days < 0 ? 'var(--status-r-color)' : 'var(--status-a-color)';
             var assignee = item.m.assignee || 'Unassigned';
+            var executiveCtx = getExecutiveContext(item.m.id);
+            var waitingLine = executiveCtx.waitingOn ? '<div style="font-size:11px;color:#C2410C;">Waiting On: ' + executiveCtx.waitingOn + '</div>' : '';
             return '<div class="focus-item today-focus-highlight" onclick="switchTab(\'milestones\');setTimeout(function(){toggleCard(' + item.m.id + ');}, 200)">' +
                 '<div style="width:10px;height:10px;border-radius:50%;background:' + dotColor + ';flex-shrink:0;"></div>' +
                 '<div style="flex:1;">' +
                     '<div style="font-weight:600;">' + item.m.title + '</div>' +
                     '<div style="font-size:11px;color:var(--text-muted);">Lead: ' + assignee + '</div>' +
+                    waitingLine +
                 '</div>' +
                 '<div style="font-size:12px;color:var(--text-muted);">' + (item.days === 1 ? 'Due Tomorrow' : item.days === 0 ? 'Due TODAY' : daysLabel) + '</div>' +
                 '</div>';
@@ -2406,6 +2729,8 @@
         }
 
         renderFocusSection();
+        renderExecutiveDashboardSections();
+        if (window.lucide) lucide.createIcons();
 
         // Area Progress
         const areaCounts = {};
@@ -2509,6 +2834,12 @@
             const sMeta = STATUS_MAP[st];
             const comments = (appState[m.id] && appState[m.id].comments) ? appState[m.id].comments : [];
             const noteFilter = activeNoteFilters[m.id] || 'all';
+            const noteInputLabel = noteFilter === 'coach' ? 'Saving as Coach note' : 'Saving as Team note';
+            const executiveCtx = getExecutiveContext(m.id);
+            const dependencyChips = dependencyBadgesHTML(executiveCtx);
+            const dependencyNote = executiveCtx.dependencyReason
+                ? '<div class="dependency-note"><strong>Decision Required:</strong> ' + executiveCtx.dependencyReason + (executiveCtx.decisionOwner ? ' <strong>Waiting on:</strong> ' + executiveCtx.decisionOwner + '.' : '') + '</div>'
+                : '';
             const strategyNorthStar = getMetaValue(meta, 'strategyNorthStar');
             const responsiblePerson = getMetaValue(meta, 'responsiblePerson');
             const responsibleMode = getMetaValue(meta, 'responsiblePersonMode');
@@ -2585,6 +2916,7 @@
                     <div class="m-id">${m.id}</div>
                     <div class="m-title">${m.title}</div>
                     <div class="m-header-badges">
+                        ${executivePriorityBadgesHTML(executiveCtx)}
                         ${overdueChip}
                         <div class="badge-area" style="background:#f0f9ff; color:#0369a1; border-color:#bae6fd;">Lead: ${m.assignee || 'Unassigned'}</div>
                         <div class="badge-area">Area: ${m.area}</div>
@@ -2604,6 +2936,8 @@
                 
                 <div class="m-content">
                     <div class="m-content-inner">
+                        ${dependencyChips ? '<div class="dependency-strip">' + dependencyChips + '</div>' : ''}
+                        ${dependencyNote}
                         <!-- Guidance Box -->
                         <div style="margin: 0 24px 20px; background: #f0f9ff; border-radius: var(--radius-md); padding: 16px; border-left: 4px solid var(--primary-blue); font-size: 14px;">
                             <strong style="color: var(--primary-blue); display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
@@ -2674,10 +3008,7 @@
                                     ${commentsHTML}
                                 </div>
                                 <div class="comment-input-area">
-                                    <select id="comment-type-${m.id}" class="note-type-select" aria-label="Note type">
-                                        <option value="team" selected>Team</option>
-                                        <option value="coach">Coach</option>
-                                    </select>
+                                    <span id="comment-type-helper-${m.id}" class="note-type-helper">${noteInputLabel}</span>
                                     <input type="text" id="comment-in-${m.id}" placeholder="Type a note..." onkeypress="if(event.key==='Enter') triggerAddComment(${m.id})">
                                     <button class="save-note-btn" onclick="triggerAddComment(${m.id})">Save</button>
                                 </div>
@@ -2768,8 +3099,10 @@
         if (r.status === 'P') return 6; // On Hold
         if (r.status === 'C' || r.status === 'D') return 8; // Removed
         if (r.isOverdue)      return 0; // Overdue — top
+        if (r.executivePriority && r.executivePriority.indexOf('P1') !== -1) return 1;
         if (r.daysLeft <= 14) return 1; // Due soon
         if (r.status === 'R') return 1; // Jeopardy
+        if (r.executivePriority && r.executivePriority.indexOf('P2') !== -1) return 2;
         if (r.status === 'A') return 2; // Action needed
         return 3;                        // On track / Not started
     }
@@ -2778,6 +3111,7 @@
     function priorityBadgeHTML(r) {
         if (r.status === 'B') return '<span class="priority-badge p-done">Done</span>';
         if (r.status === 'P') return '<span class="priority-badge p-none">On Hold</span>';
+        if (r.executivePriority) return executivePriorityBadgesHTML({ priority: r.executivePriority });
         if (r.isOverdue)      return '<span class="priority-badge p-critical">⚠ Overdue</span>';
         if (r.daysLeft <= 7)  return '<span class="priority-badge p-action">Due Soon</span>';
         if (r.daysLeft <= 14) return '<span class="priority-badge p-watch">Watch</span>';
@@ -2857,6 +3191,7 @@
             var comments = (appState[m.id] && appState[m.id].comments) ? appState[m.id].comments : [];
             var daysLeft = calcDays(m.short.due);
             var lastUpdated = (appState[m.id] && appState[m.id].lastUpdated) ? appState[m.id].lastUpdated : null;
+            var executiveCtx = getExecutiveContext(m.id);
             // Split assignee for partial owner matching: "Joy & Dr. Tebeila" -> ["Joy", "Dr. Tebeila"]
             var assigneeParts = (m.assignee || 'Unassigned').split(' & ').map(function(s) { return s.trim(); });
             return {
@@ -2874,6 +3209,10 @@
                 daysLeft: daysLeft,
                 notesCount: comments.length,
                 lastUpdated: lastUpdated,
+                executivePriority: executiveCtx.priority || '',
+                waitingOn: executiveCtx.waitingOn || '',
+                dependencyReason: executiveCtx.dependencyReason || '',
+                scopedFocus: executiveCtx.scopedFocus || '',
                 isOverdue: st !== 'B' && st !== 'P' && st !== 'C' && st !== 'D' && daysLeft < 0
             };
         });
@@ -2975,7 +3314,8 @@
             var rowClass = r.isOverdue ? 'ob-row-overdue' : '';
             return '<tr class="' + rowClass + '" onclick="switchTab(\'milestones\');setTimeout(function(){toggleCard(' + r.id + ');},200)" title="Click to open full goal details">' +
                 '<td>' + priorityBadgeHTML(r) + '</td>' +
-                '<td><span class="pt-id" style="margin-right:8px;">' + r.id + '</span><span class="pt-title">' + r.title + '</span></td>' +
+                '<td><div class="pt-title-wrap"><div><span class="pt-id" style="margin-right:8px;">' + r.id + '</span><span class="pt-title">' + r.title + '</span></div>' +
+                    '<div class="pt-badge-row">' + (r.waitingOn ? '<span class="priority-badge p-dep">Waiting On: ' + r.waitingOn + '</span>' : '') + (r.scopedFocus ? '<span class="priority-badge p-scope">Scope: ' + r.scopedFocus + '</span>' : '') + '</div></div></td>' +
                 '<td><span class="pt-owner-pill"><i data-lucide="user" style="width:12px;height:12px;"></i>' + r.assignee + '</span></td>' +
                 '<td><span class="pt-area-tag">' + r.area + '</span></td>' +
                 '<td style="position:relative;" onclick="event.stopPropagation();">' +
@@ -3000,7 +3340,7 @@
                 '<div class="pm-card-top">' +
                     '<div>' +
                         '<div class="pm-card-title">' + r.title + '</div>' +
-                        '<div style="margin-top:4px;">' + priorityBadgeHTML(r) + '</div>' +
+                        '<div class="pt-badge-row" style="margin-top:4px;">' + priorityBadgeHTML(r) + (r.waitingOn ? '<span class="priority-badge p-dep">Waiting On: ' + r.waitingOn + '</span>' : '') + '</div>' +
                     '</div>' +
                     '<span class="ob-status-pill" style="background:' + r.statusBg + ';color:' + r.statusColor + ';font-size:10px;padding:3px 10px;">' +
                         '<span class="ob-status-dot" style="background:' + r.statusColor + ';width:6px;height:6px;"></span>' + r.statusLabel +
@@ -3038,8 +3378,10 @@
                             '<option value="all"' + (areaVal === 'all' ? ' selected' : '') + '>All Areas</option>' +
                             '<option value="Governance"' + (areaVal === 'Governance' ? ' selected' : '') + '>Governance</option>' +
                             '<option value="Leadership"' + (areaVal === 'Leadership' ? ' selected' : '') + '>Leadership</option>' +
+                            '<option value="Finance"' + (areaVal === 'Finance' ? ' selected' : '') + '>Finance</option>' +
                             '<option value="HR"' + (areaVal === 'HR' ? ' selected' : '') + '>HR</option>' +
                             '<option value="Marketing"' + (areaVal === 'Marketing' ? ' selected' : '') + '>Marketing</option>' +
+                            '<option value="Operations"' + (areaVal === 'Operations' ? ' selected' : '') + '>Operations</option>' +
                             '<option value="Technology"' + (areaVal === 'Technology' ? ' selected' : '') + '>Technology</option>' +
                         '</select>' +
                         '<select class="pf-select" id="pf-status" onchange="renderProjects()">' +
@@ -3114,8 +3456,7 @@
     }
 
     function triggerAddComment(id) {
-        const typeEl = document.getElementById(`comment-type-${id}`);
-        const type = typeEl && typeEl.value === 'coach' ? 'coach' : 'team';
+        const type = activeNoteFilters[id] === 'coach' ? 'coach' : 'team';
         addComment(id, type);
     }
 
@@ -3238,11 +3579,12 @@
         let content, mime, filename;
         
         if (format === 'csv') {
-            const head = ['ID', 'Milestone', 'Area', 'Status', 'Short Term Due', 'Medium Term Due', 'Long Term Due', 'NotesCount'].join(',');
+            const head = ['ID', 'Milestone', 'Area', 'Status', 'Short Term Due', 'Medium Term Due', 'Long Term Due', 'NotesCount', 'ExecutivePriority', 'WaitingOn', 'DecisionOwner'].join(',');
             const rows = INIT_DATA.map(m => {
                 const st = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
                 const cCount = (appState[m.id] && appState[m.id].comments) ? appState[m.id].comments.length : 0;
-                return `"${m.id}","${m.title}","${m.area}","${st}","${m.short.due}","${m.medium.due}","${m.long.due}","${cCount}"`;
+                const executiveCtx = getExecutiveContext(m.id);
+                return `"${m.id}","${m.title}","${m.area}","${st}","${m.short.due}","${m.medium.due}","${m.long.due}","${cCount}","${executiveCtx.priority || ''}","${executiveCtx.waitingOn || ''}","${executiveCtx.decisionOwner || ''}"`;
             });
             content = [head, ...rows].join('\n');
             mime = 'text/csv';
@@ -3252,7 +3594,8 @@
             INIT_DATA.forEach(m => {
                 const stKey = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
                 const st = STATUS_MAP[stKey].label;
-                content += `[${m.id}] ${m.title}\nArea: ${m.area} | Status: ${st}\n\n`;
+                const executiveCtx = getExecutiveContext(m.id);
+                content += `[${m.id}] ${m.title}\nArea: ${m.area} | Status: ${st}\nPriority: ${executiveCtx.priority || 'None'} | Waiting On: ${executiveCtx.waitingOn || 'None'}\n\n`;
             });
             mime = 'text/plain';
             filename = 'Dr_Tebeila_Summary.txt';
