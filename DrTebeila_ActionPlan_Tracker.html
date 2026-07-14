@@ -1876,6 +1876,32 @@
                 <div class="exec-panel" id="leadership-actions-panel"></div>
                 <div class="exec-panel" id="executive-bottlenecks-panel"></div>
                 <div class="exec-panel full" id="strategic-health-panel"></div>
+                <div class="exec-panel full" id="oce-roadmap-panel">
+                    <h3><i data-lucide="route" style="width:18px;height:18px;color:var(--primary-blue);"></i>O.C.E Programme Roadmap</h3>
+                    <div style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">Business Optimisation, Continuity &amp; Efficiency Project — separating the person from the business. <strong>Phase One is active and tracked as goals 11–16.</strong> Later phases are context/backlog only.</div>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
+                        <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:var(--radius-md);padding:14px;">
+                            <div style="font-weight:700;color:#4338ca;font-size:13px;margin-bottom:6px;">Phase 1 · Separate Person from Business <span style="background:#4338ca;color:#fff;padding:1px 7px;border-radius:99px;font-size:10px;margin-left:4px;">ACTIVE</span></div>
+                            <div style="font-size:12px;color:var(--text-muted);">Balance-sheet/asset assessment, obtain &amp; verify all company docs, compliance (CIPC/CIPRO, VAT/tax, licensing), asset register, HR contract prep, billing (Medis Elite) &amp; medical-aid assessment.</div>
+                        </div>
+                        <div style="background:var(--bg-color);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:14px;">
+                            <div style="font-weight:700;font-size:13px;margin-bottom:6px;">Phase 2 · Prepare for Migration</div>
+                            <div style="font-size:12px;color:var(--text-muted);">Finalise all compliance, finalise asset register, HR contracts for migration, assess billing system, amend/finalise property leases.</div>
+                        </div>
+                        <div style="background:var(--bg-color);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:14px;">
+                            <div style="font-weight:700;font-size:13px;margin-bottom:6px;">Phase 3 · Implementation</div>
+                            <div style="font-size:12px;color:var(--text-muted);">Billing &amp; HR migration, other admin-system migration, Dr Eddie (UK) contract, Refodile branch resuscitation, sales/marketing/retention &amp; relationship plan.</div>
+                        </div>
+                        <div style="background:var(--bg-color);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:14px;">
+                            <div style="font-weight:700;font-size:13px;margin-bottom:6px;">Phase 4 · Systems Review</div>
+                            <div style="font-size:12px;color:var(--text-muted);">Review systems for optimal performance, facilitate Refodile branch resuscitation, implement marketing/retention/relationship plan.</div>
+                        </div>
+                        <div style="background:var(--bg-color);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:14px;">
+                            <div style="font-weight:700;font-size:13px;margin-bottom:6px;">Close-Out &amp; Monthly Review</div>
+                            <div style="font-size:12px;color:var(--text-muted);">Review monthly operational &amp; financial performance for 3 months, then conclude the project. <em>(Source labelled this a second "Phase 4"; disambiguated here as the close-out stage.)</em></div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="dashboard-grid">
@@ -1958,11 +1984,18 @@
                 </div>
 
                 <div class="filter-group">
+                    <select class="filter-select" id="filter-phase" onchange="renderMilestones()">
+                        <option value="all">All Programmes</option>
+                        <option value="Strategic Plan">Strategic Plan</option>
+                        <option value="O.C.E — Phase One">O.C.E — Phase One</option>
+                    </select>
                     <select class="filter-select" id="filter-area" onchange="renderMilestones()">
                         <option value="all">All Functional Areas</option>
                         <option value="Governance">Governance</option>
                         <option value="Leadership">Leadership</option>
                         <option value="Finance">Finance</option>
+                        <option value="Compliance">Compliance</option>
+                        <option value="Assets">Assets</option>
                         <option value="HR">HR</option>
                         <option value="Marketing">Marketing</option>
                         <option value="Operations">Operations</option>
@@ -2122,6 +2155,55 @@
             short: { text: "Confirm deployment for 2x laptops, business phone, and tracker access", due: "2026-05-12" },
             medium: { text: "Set up business environment on Dr. Tebeila's new phone and laptop", due: "2026-05-26" },
             long: { text: "Confirm operational plan for the new dental studio", due: "2026-06-08" }
+        },
+        // ============================================================
+        // O.C.E PROJECT — PHASE ONE (Separate Person from Business)
+        // Added 2026-07-14 from "O.C.E Project — Phase One" (30 Jun 2026).
+        // New IDs 11–16; IDs 1–10 (Strategic Plan) left untouched.
+        // Each is a WORKSTREAM; individual line-items [DMx/ILx/FTx/NDUx]
+        // are carried as static short/medium/long text.
+        // ============================================================
+        {
+            id: 11, title: "O.C.E · Company Documents & Directorship Verification", area: "Governance", assignee: "Dominique Monamodi",
+            programme: "O.C.E — Phase One", phase: "Phase 1", support: "Refilwe, Ally, Innocentia Leketi",
+            short: { text: "Submit company documents to Innocentia (IL): Tebeila Inc; Tebeila Admin Co (rent-paying entity for PnP); and the 2 incorporated entities linked to Dr Matima & Dr Mashike. Also provide practice numbers of all Incs to IL. [DM1, DM3]", due: "2026-07-06" },
+            medium: { text: "Contact the old directors of Tebeila Admin Co. [DM2]", due: "2026-07-07" },
+            long: { text: "Process the change of directorship of Tebeila Admin Co through CIPC/CIPRO. [DM5]", due: "2026-07-09" }
+        },
+        {
+            id: 12, title: "O.C.E · Compliance — CIPC/CIPRO, VAT/Tax & Dental Licensing", area: "Compliance", assignee: "Innocentia Leketi",
+            programme: "O.C.E — Phase One", phase: "Phase 1", support: "Dr. Tebeila",
+            short: { text: "Ascertain CIPC/CIPRO compliance for all entities. [IL3]", due: "2026-07-09" },
+            medium: { text: "Ascertain VAT & tax compliance for all entities; use the signed-off financial statements provided by Dr. Tebeila to support this. [IL4, FT7]", due: "2026-07-09" },
+            long: { text: "Ascertain incorporated-entity dental licensing compliance. [IL5]", due: "2026-07-10" }
+        },
+        {
+            id: 13, title: "O.C.E · Asset Register & Ownership-Migration Prep", area: "Assets", assignee: "Dominique Monamodi",
+            programme: "O.C.E — Phase One", phase: "Phase 1", support: "Innocentia Leketi",
+            short: { text: "Provide the draft asset register to Innocentia (IL). [DM4]", due: "2026-07-08" },
+            medium: { text: "Verify all dental & office equipment against the sole-proprietor balance sheet to identify business assets (Phase 1 asset assessment).", due: "2026-07-10" },
+            long: { text: "Prepare the plan to migrate dental & office equipment from Dr. Tebeila's sole prop into Tebeila Admin Co (Phase 2 readiness; per asset-ownership organogram).", due: "2026-07-10" }
+        },
+        {
+            id: 14, title: "O.C.E · HR, Labour Contracts, Staff One-on-Ones & Remuneration", area: "HR", assignee: "Dr. Tebeila & Innocentia Leketi",
+            programme: "O.C.E — Phase One", phase: "Phase 1", support: "Joy",
+            short: { text: "Dr. Tebeila to schedule staff one-on-ones; IL to draft the Dr Moreko feedback letter for Dr. Tebeila; DM to provide the current labour organogram to IL. [FT4, IL1, DM7]", due: "2026-07-03" },
+            medium: { text: "Dr. Tebeila to send communication/feedback to Dr Moreko; IL to assess Dr Moreko's remuneration; Dr. Tebeila to provide signed-off financial statements to IL. [FT1, IL2, FT7]", due: "2026-07-07" },
+            long: { text: "Complete staff one-on-ones; review labour contracts (Dr. Tebeila with IL); finalise Dr Moreko remuneration; engage Dr Morweng and Dr Makima. [FT5, FT3, IL8, FT2, FT6]", due: "2026-07-10" }
+        },
+        {
+            id: 15, title: "O.C.E · Medical-Aid List & Billing (Medis Elite) Assessment", area: "Finance", assignee: "Innocentia Leketi & Ndumiso",
+            programme: "O.C.E — Phase One", phase: "Phase 1", support: "Dominique Monamodi",
+            short: { text: "DM to provide the medical-aid list to Innocentia (IL). [DM6]", due: "2026-07-10" },
+            medium: { text: "IL to assess the medical-aid list and identify outstanding-payment reconciliation readiness. [IL6]", due: "2026-07-10" },
+            long: { text: "IL and Ndumiso to familiarise with the Medis Elite billing software and assess it for migration (links to Goal 9 — Intelligence System). [IL7, NDU3]", due: "2026-07-10" }
+        },
+        {
+            id: 16, title: "O.C.E · Tracker Governance & Weekly Accountability", area: "Governance", assignee: "Ndumiso",
+            programme: "O.C.E — Phase One", phase: "Phase 1", support: "All O.C.E owners", recurring: true,
+            short: { text: "Load all O.C.E Phase One tasks and deadlines onto the tracker/dashboard. [NDU1]", due: "2026-07-06" },
+            medium: { text: "Ongoing: follow up with owners on task progress; log completions and reasons for any delay. Owners update Ndumiso directly, especially for interlinked tasks. [NDU2]", due: "2026-07-31" },
+            long: { text: "Maintain live accountability and reporting through Phase One close-out and into Phase Two hand-off (recurring).", due: "2026-08-31" }
         }
     ];
 
@@ -2231,7 +2313,9 @@
     };
 
     function getResponsiblePeopleOptions() {
-        return ['Dr Tebeila', 'Tafadzwa', 'Ndumiso', 'Joy', 'Coach'];
+        // Core owners. O.C.E adds Dominique Monamodi (DM) and Innocentia Leketi (IL).
+        // Supporting people (Refilwe, Ally, Dr Moreko, etc.) use the "Other" free-text field.
+        return ['Dr Tebeila', 'Tafadzwa', 'Ndumiso', 'Joy', 'Coach', 'Dominique Monamodi', 'Innocentia Leketi'];
     }
 
     // --- CLOUD CONFIGURATION ---
@@ -2789,12 +2873,16 @@
     function renderMilestones() {
         const areaF = document.getElementById('filter-area').value;
         const statusF = document.getElementById('filter-status').value;
+        const phaseEl = document.getElementById('filter-phase');
+        const phaseF = phaseEl ? phaseEl.value : 'all';
 
         const filtered = INIT_DATA.filter(m => {
             const st = (appState[m.id] && appState[m.id].status) ? appState[m.id].status : 'Grey';
+            const prog = m.programme || 'Strategic Plan';
             const matchArea = areaF === 'all' || m.area === areaF;
             const matchStatus = statusF === 'all' || st === statusF;
-            return matchArea && matchStatus;
+            const matchPhase = phaseF === 'all' || prog === phaseF;
+            return matchArea && matchStatus && matchPhase;
         });
 
         // Sort: overdue (not achieved/postponed) first, then the rest
@@ -2918,8 +3006,10 @@
                     <div class="m-header-badges">
                         ${executivePriorityBadgesHTML(executiveCtx)}
                         ${overdueChip}
+                        ${m.programme ? `<div class="badge-area" style="background:#eef2ff; color:#4338ca; border-color:#c7d2fe;">${m.programme}</div>` : ''}
                         <div class="badge-area" style="background:#f0f9ff; color:#0369a1; border-color:#bae6fd;">Lead: ${m.assignee || 'Unassigned'}</div>
                         <div class="badge-area">Area: ${m.area}</div>
+                        ${m.support ? `<div class="badge-area" style="background:#f0fdf4; color:#15803d; border-color:#bbf7d0;">Support: ${m.support}</div>` : ''}
                         ${commentBadge}
                         <div class="badge-status" 
                              style="background:${sMeta.bg}; color:${sMeta.color};"
@@ -3181,9 +3271,11 @@
         const areaFilter = document.getElementById('pf-area');
         const statusFilter = document.getElementById('pf-status');
         const ownerFilter = document.getElementById('pf-owner');
+        const phaseFilterEl = document.getElementById('pf-phase');
         const areaVal = areaFilter ? areaFilter.value : 'all';
         const statusVal = statusFilter ? statusFilter.value : 'all';
         const ownerVal = ownerFilter ? ownerFilter.value : 'all';
+        const phaseVal = phaseFilterEl ? phaseFilterEl.value : 'all';
 
         // Build enriched data
         let rows = INIT_DATA.map(function(m) {
@@ -3200,6 +3292,7 @@
                 area: m.area,
                 assignee: m.assignee || 'Unassigned',
                 assigneeParts: assigneeParts,
+                programme: m.programme || 'Strategic Plan',
                 status: st,
                 statusLabel: STATUS_MAP[st].label,
                 statusColor: STATUS_MAP[st].color,
@@ -3233,7 +3326,8 @@
             var matchStatus = statusVal === 'all' || r.status === statusVal;
             // Partial owner match: filter matches if owner part is in the assigneeParts array
             var matchOwner = ownerVal === 'all' || r.assigneeParts.indexOf(ownerVal) !== -1;
-            return matchArea && matchStatus && matchOwner;
+            var matchPhase = phaseVal === 'all' || r.programme === phaseVal;
+            return matchArea && matchStatus && matchOwner && matchPhase;
         });
 
         // Apply sorting
@@ -3374,11 +3468,18 @@
                         '<span class="board-count">' + rows.length + ' of ' + INIT_DATA.length + ' goals</span>' +
                     '</div>' +
                     '<div class="projects-filters">' +
+                        '<select class="pf-select" id="pf-phase" onchange="renderProjects()">' +
+                            '<option value="all"' + (phaseVal === 'all' ? ' selected' : '') + '>All Programmes</option>' +
+                            '<option value="Strategic Plan"' + (phaseVal === 'Strategic Plan' ? ' selected' : '') + '>Strategic Plan</option>' +
+                            '<option value="O.C.E — Phase One"' + (phaseVal === 'O.C.E — Phase One' ? ' selected' : '') + '>O.C.E — Phase One</option>' +
+                        '</select>' +
                         '<select class="pf-select" id="pf-area" onchange="renderProjects()">' +
                             '<option value="all"' + (areaVal === 'all' ? ' selected' : '') + '>All Areas</option>' +
                             '<option value="Governance"' + (areaVal === 'Governance' ? ' selected' : '') + '>Governance</option>' +
                             '<option value="Leadership"' + (areaVal === 'Leadership' ? ' selected' : '') + '>Leadership</option>' +
                             '<option value="Finance"' + (areaVal === 'Finance' ? ' selected' : '') + '>Finance</option>' +
+                            '<option value="Compliance"' + (areaVal === 'Compliance' ? ' selected' : '') + '>Compliance</option>' +
+                            '<option value="Assets"' + (areaVal === 'Assets' ? ' selected' : '') + '>Assets</option>' +
                             '<option value="HR"' + (areaVal === 'HR' ? ' selected' : '') + '>HR</option>' +
                             '<option value="Marketing"' + (areaVal === 'Marketing' ? ' selected' : '') + '>Marketing</option>' +
                             '<option value="Operations"' + (areaVal === 'Operations' ? ' selected' : '') + '>Operations</option>' +
