@@ -1,0 +1,19 @@
+{
+  "_comment": "SYNTHETIC test state. Not practice data. Notes below are invented for QA only.",
+  "1":  { "status": "A", "comments": [{ "text": "Synthetic QA note: waiting on document upload.", "date": "02 Nov 2026, 09:15", "type": "team" }], "metadata": { "reasonForDelay": "Synthetic reason for QA", "correctiveAction": "Synthetic corrective action" }, "lastUpdated": "2026-11-10T08:00:00.000Z" },
+  "2":  { "status": "G", "comments": [{ "text": "Synthetic QA note: coach check-in placeholder.", "date": "03 Nov 2026, 14:00", "type": "coach" }, { "text": "Synthetic QA note: team follow-up placeholder.", "date": "05 Nov 2026, 10:30", "type": "team" }], "metadata": { "strategyNorthStar": "Synthetic north star" }, "lastUpdated": "2026-11-09T12:00:00.000Z" },
+  "3":  { "status": "R", "comments": [], "metadata": {}, "lastUpdated": "2026-11-01T12:00:00.000Z" },
+  "4":  { "status": "Grey", "comments": [], "metadata": {} },
+  "5":  { "status": "P", "comments": [], "metadata": {} },
+  "6":  { "status": "B", "comments": [{ "text": "Synthetic QA note: completed placeholder.", "date": "10 May 2026, 16:45", "type": "team" }], "metadata": { "achievedDate": "2026-05-10", "successEvidence": "Synthetic evidence note" }, "lastUpdated": "2026-05-10T14:45:00.000Z" },
+  "7":  { "status": "G", "comments": [], "metadata": {} },
+  "8":  { "status": "P", "comments": [], "metadata": {} },
+  "9":  { "status": "D", "comments": [], "metadata": {} },
+  "10": { "status": "B", "comments": [], "metadata": { "achievedDate": "2026-06-01" } },
+  "11": { "status": "G", "comments": [], "metadata": {} },
+  "12": { "status": "A", "comments": [], "metadata": {} },
+  "13": { "status": "Grey", "comments": [], "metadata": {} },
+  "14": { "status": "G", "comments": [], "metadata": { "responsiblePerson": "Coach", "responsiblePersonMode": "known" } },
+  "15": { "status": "Grey", "comments": [], "metadata": {} },
+  "16": { "status": "C", "comments": [], "metadata": {} }
+}
