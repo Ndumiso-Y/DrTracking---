@@ -7,6 +7,7 @@ Every run blocks the live database and its client library, so no practice record
 |---|---|---|
 | Functional regression (`qa/regression.js`) | 60/62 passed | 62/62 passed |
 | Accessibility and resilience (`qa/a11y.js`) | not run (new checks) | 18/18 passed |
+| Themes: switching, isolation, layout, text contrast (`qa/themes.js`) | n/a (new feature) | 21/21 passed |
 | Logic unchanged (`qa/compare-logic.js`) | n/a | 45/45 unchanged |
 
 The redesign was run six times in a row with the same result. The two baseline failures are pre-existing: the old layout scrolled sideways by 13px at 390px wide and 28px at 360px wide. The redesign fixes both.
@@ -16,8 +17,11 @@ The redesign was run six times in a row with the same result. The two baseline f
 ```bash
 node qa/regression.js
 node qa/a11y.js
+node qa/themes.js
 node qa/compare-logic.js
 node qa/capture.js after
+node qa/capture.js after index.html midnight
+node qa/capture.js after index.html contrast
 ```
 
 Needs Node and Playwright with Chromium. If your network blocks unpkg.com, set `LUCIDE_LOCAL` to a local copy of `lucide.min.js` so icons load.
@@ -124,6 +128,34 @@ PASS  fresh browser: honest empty states (no notes, 0 achieved, 0%)
 18/18 passed
 ```
 
+## Themes: redesign
+
+```
+PASS  default appearance is Light (Aurora)
+PASS  "Light" button applies and marks its theme
+PASS  "Dark" button applies and marks its theme
+PASS  "High contrast" button applies and marks its theme
+PASS  chosen appearance survives a reload
+PASS  appearance is stored separately and tracker data is untouched
+PASS  saving a status in another theme writes the same record shape
+PASS  appearance switch works from the keyboard
+PASS  no script errors while switching
+PASS  Light at 1440px: no sideways page scroll
+PASS  Light at 1440px: text contrast at least 4.5:1 on 1305 text elements
+PASS  Light at 390px: no sideways page scroll
+PASS  Light at 390px: text contrast at least 4.5:1 on 1206 text elements
+PASS  Dark at 1440px: no sideways page scroll
+PASS  Dark at 1440px: text contrast at least 4.5:1 on 1306 text elements
+PASS  Dark at 390px: no sideways page scroll
+PASS  Dark at 390px: text contrast at least 4.5:1 on 1207 text elements
+PASS  High contrast at 1440px: no sideways page scroll
+PASS  High contrast at 1440px: text contrast at least 7:1 on 1308 text elements
+PASS  High contrast at 390px: no sideways page scroll
+PASS  High contrast at 390px: text contrast at least 7:1 on 1209 text elements
+
+21/21 passed
+```
+
 ## Logic comparison: redesign vs baseline
 
 ```
@@ -180,5 +212,6 @@ IDENTICAL  cloud configuration lines
 
 - **Cloud sync against the real database.** Deliberately not exercised. The sync code is byte-identical to the baseline (see the comparison above), but it has not been run against Supabase in this work.
 - **Safari, Firefox and real phones.** Only Chromium was used. Glass blur has a solid fallback for browsers without `backdrop-filter`, which was not visually checked.
+- **The contrast audit skips** faded rows (Cancelled and Discontinued goals on the timeline), icons, and the gradient page title, which is large text.
 - **Screen reader behaviour.** Names, roles and keyboard paths were checked; no screen reader was run.
 - **Practice and team photos.** Blocked in every capture to keep people out of the evidence, so the gallery was only checked for layout.

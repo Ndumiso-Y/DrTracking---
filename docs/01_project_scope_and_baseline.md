@@ -44,6 +44,15 @@ No finding blocked the design work. Each one below is a decision for the owner.
 ### Honesty of notification wording
 The app shows "your coach has been notified" and "your coach receives a notification", but no notification is sent: the code only writes to the browser console. This branch rewords those two lines so they no longer claim delivery. The behaviour is unchanged.
 
+### Who can comment and who can edit (as built today)
+The page has no sign-in and no roles, in the live version or the archived one.
+- Anyone who opens the page can change any status, fill in any accountability field, and add, edit or delete any note.
+- A note stores three things: its text, a date, and a type ("team" or "coach"). The type comes from the filter the person has selected when saving, not from who they are. No author is recorded.
+- Each save sends the goal's whole row (status, all notes, accountability fields, time). If two people add notes to the same goal at nearly the same moment, the later save can overwrite the earlier one.
+- If rules exist about who may write, they can only be in the Supabase table's access policies, which are not visible from the code.
+
+This redesign does not change any of the above.
+
 ### Security and privacy observations (not changed, owner decision)
 - **No sign-in.** Anyone with the page link can open the tracker. Whether they can also change records depends on the Supabase access rules for `dr_tracking`, which could not be inspected from the code.
 - **Notes are inserted into the page without escaping.** Combined with an open table, a crafted note could run script in other users' browsers. Recommend escaping in a separate, accepted change.

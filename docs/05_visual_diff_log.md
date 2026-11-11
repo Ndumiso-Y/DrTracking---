@@ -9,6 +9,23 @@ Compared in a real browser (Chromium via Playwright) at 1672 × 941, the size of
 | 2 | Action rail left a gap beside the area panel. Status legend wrapped below the ring. Tooth art sat under the utility bar and read as a blob. | Area panel spans the full row. Ring and legend resized to sit side by side. Tooth repositioned and reshaped. |
 | 3 | Legend labels wrapped at 1440. Board goal column too narrow and owner pills wrapped badly. Phone navigation hid the active item. | Column ratios rebalanced. Goal column widened, number badge aligned beside the title. Active item scrolls into view, with a fade hint at the edge. |
 
+## Second design round (owner feedback)
+The first build followed the approved image closely and the owner found it dull and too close to the old tracker. Three bolder directions were shown as concept screenshots. The owner chose:
+- **Light (Aurora)** as the main look,
+- **Dark (Midnight)** as the dark option,
+- **High contrast** kept as an option for visually impaired users.
+
+This supersedes the approved image on colour. The points below are now owner-directed departures from it:
+| Area | Approved image | Now |
+|---|---|---|
+| Overall colour | Pale grey, single green accent | Colourful: practice blue and green, colour-coded metric cards, solid priority and overdue badges, gradient timeline bars |
+| Page title | Plain dark text | Blue-to-green gradient text (Light) |
+| Active navigation | Grey glass pill | Brand gradient pill |
+| Header band | None ("no loud blue headers" in the brief) | Navy-to-emerald banner on the Overview in the Dark theme only, by owner choice |
+| Themes | One look | Three, with a switch in the top bar |
+
+High contrast was rebuilt as a real accessibility mode rather than the dark concept shown: solid surfaces, larger text, 7:1 text contrast, borders on every pill, a thick focus ring, and no glow or decoration.
+
 ## Remaining differences from the approved image
 | Area | Approved image | This build | Reason |
 |---|---|---|---|
