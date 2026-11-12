@@ -22,7 +22,7 @@ Requested by the owner before release: is the tracker easy to use, with the most
 ## Fixed in this round (display and ease of use only; data handling unchanged)
 | Fix | Result |
 |---|---|
-| Minimum text size raised | Smallest label is now 12px (11px only inside three tiny tags); nothing under 10px |
+| Minimum text size raised | Labels are at least 12px. The only smaller text is inside small badges and owner initials (10 to 11px). Nothing is under 10px. |
 | Larger controls | Every button, menu and field is at least 44px on touch screens; 36–40px with a mouse |
 | Phone navigation moved to a bar at the bottom | All five views visible at once, under the thumb, each 54px tall |
 | All Notes sorted by the date on each note | Truly newest first; undated notes keep their old place after the dated ones |
