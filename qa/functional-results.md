@@ -6,7 +6,8 @@ Every run blocks the live database and its client library, so no practice record
 | Suite | Baseline (`ea552b8`) | Redesign |
 |---|---|---|
 | Functional regression (`qa/regression.js`) | 60/62 passed | 62/62 passed |
-| Accessibility and resilience (`qa/a11y.js`) | not run (new checks) | 18/18 passed |
+| Cloud path with a stand-in database (`qa/cloud-path.js`) | 19/19 passed | 19/19 passed |
+| Accessibility, ease of use and resilience (`qa/a11y.js`) | not run (new checks) | 26/26 passed |
 | Themes: switching, isolation, layout, text contrast (`qa/themes.js`) | n/a (new feature) | 21/21 passed |
 | Logic unchanged (`qa/compare-logic.js`) | n/a | 45/45 unchanged |
 
@@ -17,6 +18,7 @@ The redesign was run six times in a row with the same result. The two baseline f
 ```bash
 node qa/regression.js
 node qa/a11y.js
+node qa/cloud-path.js
 node qa/themes.js
 node qa/compare-logic.js
 node qa/capture.js after
@@ -103,6 +105,32 @@ FAIL  no horizontal page overflow at 360px  -> 28px
 60/62 passed
 ```
 
+## Cloud path with a stand-in database: redesign
+
+```
+PASS  connects and reports Synced
+PASS  Goals view shows the notes that came from the database
+PASS  All Notes shows every note from the database (6)
+PASS  All Notes includes team, coach, older (no type) and edited notes
+PASS  a note opened from All Notes leads to its goal
+PASS  Ownership Board shows the note counts from the database
+PASS  statuses from the database drive the Overview numbers
+PASS  adding a note sends one save to the database
+PASS  the save has exactly the expected fields
+PASS  the save keeps the existing notes and appends the new one
+PASS  the save keeps status and accountability details
+PASS  the new note appears in All Notes straight away, newest first
+PASS  a status change is saved for the right goal
+PASS  a live update from another device appears in All Notes without reloading
+PASS  no script errors in cloud mode
+PASS  database cannot be reached: the page says so and still works
+PASS  database cannot be reached: no notes are shown anywhere, because none are stored in this browser
+PASS  database answers with an error: the page says so and still works
+PASS  database answers with an error: no notes are shown anywhere, because none are stored in this browser
+
+19/19 passed
+```
+
 ## Accessibility and resilience: redesign
 
 ```
@@ -121,11 +149,19 @@ PASS  timeline: 13-month scale kept (Apr 2026 to Apr 2027) and the today marker 
 PASS  timeline on a phone: scrolls sideways inside its own frame, goal names stay pinned, frame is keyboard-focusable
 PASS  phone navigation keeps the active item on screen
 PASS  phone navigation targets are at least 40px tall
+PASS  phone: all five views sit in a bar at the bottom of the screen, each at least 44px tall
+PASS  phone: every button, menu and field is at least 44px on its shorter side
+PASS  phone: no text smaller than 10px
+PASS  All Notes lists notes newest first by their saved date
+PASS  opening a goal from another view scrolls it into view
+PASS  switching view starts at the top of the page
+PASS  Overview shows today's date instead of a greeting, with no emoji
+PASS  the two least-used sections are folded away but one click opens them
 PASS  reduced-motion setting removes transitions and animations
 PASS  with the icon library blocked, the overview still renders fully and navigation keeps its icons
 PASS  fresh browser: honest empty states (no notes, 0 achieved, 0%)
 
-18/18 passed
+26/26 passed
 ```
 
 ## Themes: redesign
@@ -210,7 +246,7 @@ IDENTICAL  cloud configuration lines
 
 ## Not covered by automated tests
 
-- **Cloud sync against the real database.** Deliberately not exercised. The sync code is byte-identical to the baseline (see the comparison above), but it has not been run against Supabase in this work.
+- **Cloud sync against the real database.** Not exercised: the real database is blocked in every test, and it is not reachable from the build environment. The read, save and live-update paths were run against a stand-in database inside the browser instead (`qa/cloud-path.js`), and the sync code is byte-identical to the baseline.
 - **Safari, Firefox and real phones.** Only Chromium was used. Glass blur has a solid fallback for browsers without `backdrop-filter`, which was not visually checked.
 - **The contrast audit skips** faded rows (Cancelled and Discontinued goals on the timeline), icons, and the gradient page title, which is large text.
 - **Screen reader behaviour.** Names, roles and keyboard paths were checked; no screen reader was run.

@@ -64,6 +64,46 @@ const check = (name, ok, detail = '') => { out.push(ok); console.log(`${ok ? 'PA
   check('phone navigation targets are at least 40px tall', tap);
   await s.browser.close();
 
+  // ---- Ease of use on a phone (thumb reach, target size, readable text)
+  s = await openTracker({ width: 390, height: 844 }); p = s.page;
+  const ease = await p.evaluate(() => {
+    const tabs = document.querySelector('.tabs').getBoundingClientRect();
+    const btns = [...document.querySelectorAll('.tab-btn')].map((b) => b.getBoundingClientRect());
+    return { bottom: Math.round(window.innerHeight - tabs.bottom), allVisible: btns.every((b) => b.left >= 0 && b.right <= window.innerWidth && b.height >= 44), labels: [...document.querySelectorAll('.tab-short')].map((e) => e.textContent).join(',') };
+  });
+  check('phone: all five views sit in a bar at the bottom of the screen, each at least 44px tall', ease.bottom === 0 && ease.allVisible && ease.labels === 'Overview,Board,Goals,Timeline,Notes', JSON.stringify(ease));
+  let smallest = 999, smallName = '', tiny = 0;
+  for (const t of ['dashboard', 'projects', 'milestones', 'timeline', 'notes']) {
+    await gotoTab(p, t);
+    if (t === 'milestones') { await p.evaluate(() => toggleCard(1)); await p.waitForTimeout(400); }
+    const r = await p.evaluate(() => {
+      let min = 999, name = '', tiny = 0;
+      const roots = [document.querySelector('.sidebar'), document.querySelector('.app-header'), document.querySelector('.page.active')];
+      roots.forEach((root) => root.querySelectorAll('button, select, input, textarea').forEach((el) => { const b = el.getBoundingClientRect(); if (!b.width) return; const m = Math.min(b.width, b.height); if (m < min) { min = m; name = el.className || el.tagName; } }));
+      roots.forEach((root) => root.querySelectorAll('*').forEach((el) => { if (!el.getClientRects().length || el.closest('svg')) return; if (![...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim().length > 1)) return; if (parseFloat(getComputedStyle(el).fontSize) < 10) tiny++; }));
+      return { min, name, tiny };
+    });
+    if (r.min < smallest) { smallest = r.min; smallName = t + ' .' + r.name; }
+    tiny += r.tiny;
+  }
+  check('phone: every button, menu and field is at least 44px on its shorter side', smallest >= 43.5, `${Math.round(smallest)}px ${smallName}`);
+  check('phone: no text smaller than 10px', tiny === 0, tiny + ' elements');
+  await s.browser.close();
+
+  // ---- All Notes order and goal reveal
+  s = await openTracker({ width: 1440, height: 900 }); p = s.page;
+  await gotoTab(p, 'notes');
+  const order = await p.evaluate(() => [...document.querySelectorAll('#notes-container .note-meta')].map((e) => e.textContent.trim().slice(0, 11)));
+  check('All Notes lists notes newest first by their saved date', order.join('|') === '05 Nov 2026|03 Nov 2026|02 Nov 2026|10 May 2026', order.join('|'));
+  await p.evaluate(() => document.querySelectorAll('#notes-container .note-goal')[3].click()); await p.waitForTimeout(500);
+  check('opening a goal from another view scrolls it into view', await p.evaluate(() => { const b = document.querySelector('.milestone-card.open').getBoundingClientRect(); return b.top >= 0 && b.top < window.innerHeight - 100; }));
+  await p.evaluate(() => window.scrollTo(0, 800)); await p.evaluate(() => switchTab('timeline'));
+  check('switching view starts at the top of the page', await p.evaluate(() => window.scrollY === 0));
+  await gotoTab(p, 'dashboard');
+  check('Overview shows today\'s date instead of a greeting, with no emoji', await p.evaluate(() => { const t = document.getElementById('page-greeting').textContent; return /\d{4}/.test(t) && !/good (morning|afternoon|evening)|👋/i.test(document.getElementById('view-dashboard').textContent); }));
+  check('the two least-used sections are folded away but one click opens them', await p.evaluate(() => { const d = [...document.querySelectorAll('#view-dashboard details.fold')]; if (d.length !== 2 || d.some((x) => x.open)) return false; d[0].querySelector('summary').click(); return d[0].open && d[0].querySelector('.guide-step').getBoundingClientRect().height > 0; }));
+  await s.browser.close();
+
   // ---- Reduced motion
   s = await openTracker({ width: 1440, height: 900, reducedMotion: true }); p = s.page;
   const dur = await p.evaluate(() => { switchTab('milestones'); const c = getComputedStyle(document.querySelector('.m-content')); const pg = getComputedStyle(document.querySelector('.page.active')); return [parseFloat(c.transitionDuration), parseFloat(pg.animationDuration)]; });

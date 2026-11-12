@@ -23,7 +23,7 @@
         :root {
             /* Type */
             --font: 'Outfit', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-            --fs-xs: 11px; --fs-sm: 12.5px; --fs-base: 14px; --fs-md: 15px;
+            --fs-xs: 12px; --fs-sm: 13px; --fs-base: 14px; --fs-md: 15px;
             --fs-lg: 17px; --fs-xl: 22px; --fs-2xl: 30px; --fs-metric: 34px;
 
             /* Ink */
@@ -860,6 +860,61 @@
         .theme-btn[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); font-weight: 600; }
         @media (max-width: 1100px) { .theme-btn span { display: none; } .theme-btn { padding: 5px 10px; } }
 
+        /* ---------------------------------------------------------------
+           EASE OF USE: readable minimums, large touch targets, thumb-reach navigation
+           --------------------------------------------------------------- */
+        .page-eyebrow { font-size: var(--fs-sm); font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+        .oce-flag, .comment-tag, .gantt-today-flag { font-size: 11px; }
+        .initials b { width: 24px; height: 24px; font-size: 10px; }
+        .tab-short { display: none; }
+        .util-pill.plan-window { background: transparent; border-color: transparent; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; padding-left: 0; padding-right: 4px; }
+        .milestone-card { scroll-margin-top: 16px; }
+        .icon-btn { width: 36px; height: 36px; }
+        .nf-btn { min-height: 36px; }
+        .ob-status-pill, .badge-status { min-height: 34px; }
+        .status-btn-selector { min-height: 40px; }
+        .theme-btn { min-height: 36px; }
+        .btn-sm { min-height: 38px; }
+        details.fold > summary { list-style: none; cursor: pointer; margin-bottom: 0; }
+        details.fold > summary::-webkit-details-marker { display: none; }
+        details.fold[open] > summary { margin-bottom: var(--sp-4); }
+        .fold-hint { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-size: var(--fs-sm); font-weight: 500; color: var(--muted); }
+        .fold-hint::before { content: "Show"; }
+        details.fold[open] .fold-hint::before { content: "Hide"; }
+        .fold-hint::after { content: ""; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translateY(-2px); transition: transform .2s ease; }
+        details.fold[open] .fold-hint::after { transform: rotate(-135deg) translateY(-2px); }
+        @media (pointer: coarse), (max-width: 860px) {
+            .icon-btn { width: 44px; height: 44px; }
+            .nf-btn, .theme-btn, .btn-sm, .status-btn-selector, .save-note-btn, .btn,
+            .pf-select, .filter-select, .acc-input, .comment-input-area input { min-height: 44px; }
+            .ob-status-pill, .badge-status { min-height: 40px; padding-left: 14px; padding-right: 14px; }
+            .theme-btn { min-width: 44px; justify-content: center; }
+            .note-goal { padding: 8px 0; }
+        }
+        /* Phones and small tablets: the five views move to a bar at the bottom, under the thumb */
+        @media (max-width: 860px) {
+            .sidebar { position: static; -webkit-backdrop-filter: none; backdrop-filter: none; padding-bottom: var(--sp-3); }
+            .tabs {
+                position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+                display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; overflow: visible;
+                padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px));
+                background: var(--tabbar-bg, rgba(255, 255, 255, 0.94)); border-top: 1px solid var(--hairline-strong);
+                box-shadow: 0 -10px 30px -18px rgba(15, 40, 80, 0.45);
+                -webkit-mask-image: none; mask-image: none;
+            }
+            .tab-btn { position: relative; flex-direction: column; gap: 3px; width: auto; min-height: 54px; padding: 7px 2px 5px; justify-content: center; text-align: center; font-size: 11.5px; border-radius: 14px; }
+            .tab-btn svg { width: 22px; height: 22px; }
+            .tab-label { display: none; }
+            .tab-short { display: block; line-height: 1.1; }
+            .tab-badge { position: absolute; top: 3px; left: calc(50% + 6px); min-width: 20px; height: 18px; padding: 0 5px; font-size: 10.5px; }
+            .main-content { padding-bottom: 104px; }
+            #toast-container { bottom: 92px; }
+            .milestone-card { scroll-margin-top: 12px; }
+            :root[data-theme="midnight"] { --tabbar-bg: #0A1D33; }
+            :root[data-theme="midnight"] .tabs { border-top-color: rgba(255, 255, 255, 0.14); }
+            :root[data-theme="contrast"] { --tabbar-bg: #000000; }
+        }
+
         /* ===============================================================
            THEME: MIDNIGHT (the dark option) — navy sidebar, bold banner, crisp white cards
            =============================================================== */
@@ -915,7 +970,7 @@
            strong borders, no transparency or glow, thick focus ring
            =============================================================== */
         :root[data-theme="contrast"] {
-            --fs-xs: 13px; --fs-sm: 14.5px; --fs-base: 16px; --fs-md: 17px; --fs-lg: 19px;
+            --fs-xs: 13.5px; --fs-sm: 15px; --fs-base: 16px; --fs-md: 17px; --fs-lg: 19px;
             --ink: #FFFFFF; --ink-2: #F1F5F9; --muted: #D5DDE8; --faint: #C2CCDA; --on-ink: #000000;
             --bg-0: #000000; --bg-1: #05080D; --bg-2: #1B2431;
             --glass: #0E141D; --glass-strong: #161E2A; --glass-soft: #0A0F16; --glass-inset: #131A25;
@@ -991,25 +1046,25 @@
         <nav class="tabs" aria-label="Views">
             <button class="tab-btn active" onclick="switchTab('dashboard', this)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
-                <span class="tab-label">Overview</span>
+                <span class="tab-label">Overview</span><span class="tab-short" aria-hidden="true">Overview</span>
             </button>
             <button class="tab-btn" onclick="switchTab('projects', this)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                <span class="tab-label">Ownership Board</span>
+                <span class="tab-label">Ownership Board</span><span class="tab-short" aria-hidden="true">Board</span>
                 <span class="tab-badge hidden" id="overdue-badge-ob" title="Overdue goals">0</span>
             </button>
             <button class="tab-btn" onclick="switchTab('milestones', this)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/></svg>
-                <span class="tab-label">Goals</span>
+                <span class="tab-label">Goals</span><span class="tab-short" aria-hidden="true">Goals</span>
                 <span class="tab-badge hidden" id="overdue-badge" title="Overdue goals">0</span>
             </button>
             <button class="tab-btn" onclick="switchTab('timeline', this)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2.5"/><path d="M8 8h7"/><path d="M10 12h7"/><path d="M7 16h6"/></svg>
-                <span class="tab-label">Timeline</span>
+                <span class="tab-label">Timeline</span><span class="tab-short" aria-hidden="true">Timeline</span>
             </button>
             <button class="tab-btn" onclick="switchTab('notes', this)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                <span class="tab-label">All Notes</span>
+                <span class="tab-label">All Notes</span><span class="tab-short" aria-hidden="true">Notes</span>
             </button>
         </nav>
 
@@ -1059,7 +1114,7 @@
                         <span>High contrast</span>
                     </button>
                 </div>
-                <div class="sync-indicator" id="sync-indicator">
+                <div class="sync-indicator" id="sync-indicator" title="Shows whether your changes are saved to the shared cloud database, or only in this browser">
                     <div class="sync-dot" id="sync-dot"></div>
                     <span id="sync-label">Local mode</span>
                 </div>
@@ -1086,7 +1141,7 @@
                     <path d="M100 38 C84 26 46 22 32 60 C23 92 36 122 44 152 C52 184 54 220 68 222 C82 224 80 178 100 178 C120 178 118 224 132 222 C146 220 148 184 156 152 C164 122 177 92 168 60 C154 22 116 26 100 38 Z" fill="url(#toothBody)" stroke="rgba(255,255,255,0.95)" stroke-width="2"/>
                     <path d="M100 38 C84 26 46 22 32 60 C23 92 36 122 44 152 C52 184 54 220 68 222 C82 224 80 178 100 178 C120 178 118 224 132 222 C146 220 148 184 156 152 C164 122 177 92 168 60 C154 22 116 26 100 38 Z" fill="url(#toothGlow)"/>
                 </svg>
-                <p class="page-greeting" id="page-greeting">Welcome, Dr. Tebeila 👋</p>
+                <p class="page-greeting page-eyebrow" id="page-greeting"></p>
                 <h1 class="page-title is-gradient">Strategic Action Plan Tracker</h1>
                 <p class="page-sub">Track goals, execution, and key actions for the practice's strategic plan. <span class="util-sep">•</span> Coachee: Dr. Founa Tebeila</p>
             </div>
@@ -1176,19 +1231,19 @@
             <div class="dashboard-grid">
 
                 <!-- COACH'S GUIDANCE CARD -->
-                <div class="panel wide">
-                    <div class="panel-head"><i data-lucide="clipboard-list"></i>How to use this tracker</div>
+                <details class="panel wide fold">
+                    <summary class="panel-head"><i data-lucide="clipboard-list"></i>How to use this tracker<span class="fold-hint"></span></summary>
                     <p class="guide-lead">This is your Clinic Command Center for the June 8 execution window. It keeps decisions, dependencies, accountability, and Control Room follow-through visible.</p>
                     <div class="guide-grid">
                         <div class="guide-step"><b>1. Check Overview</b><span>See your progress at a glance — stats and the "Today's Focus" list show exactly where to act.</span></div>
                         <div class="guide-step"><b>2. Update Goals</b><span>Click "Goals" tab to expand each item and update its status or leave a note for your coach.</span></div>
                         <div class="guide-step"><b>3. Celebrate Wins</b><span>Mark goals as "Achieved" so your coach can see and celebrate your progress.</span></div>
                     </div>
-                </div>
+                </details>
 
                 <!-- Practice Gallery Section -->
-                <div class="progress-card wide">
-                    <div class="card-header">Practice &amp; Team Gallery</div>
+                <details class="progress-card wide fold">
+                    <summary class="panel-head"><i data-lucide="image"></i>Practice &amp; Team Gallery<span class="fold-hint"></span></summary>
                     <div class="gallery-grid">
                         <div class="gallery-tile">
                             <img src="DrTebeila.png" alt="Dr Tebeila &amp; Team" class="gallery-img" loading="lazy" onerror="this.style.display='none'">
@@ -1199,7 +1254,7 @@
                             <div class="gallery-cap">State-of-the-Art Dental Studio</div>
                         </div>
                     </div>
-                </div>
+                </details>
 
                 <!-- Export Actions -->
                 <div class="actions-row">
@@ -2044,8 +2099,7 @@
     function renderShellMeta(totals) {
         var greet = document.getElementById('page-greeting');
         if (greet) {
-            var h = new Date().getHours();
-            greet.textContent = (h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening') + ', Dr. Tebeila 👋';
+            greet.textContent = new Date().toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
         }
         var pctDone = totals.total ? Math.round((totals.B / totals.total) * 100) : 0;
         var fill = document.getElementById('plan-meter-fill');
@@ -2099,8 +2153,8 @@
             for (let i = 0; i < steps; i++) bars += `<i class="${i < on ? 'on' : ''}" style="height:${30 + i * 10}%"></i>`;
             return `<span class="stat-meter ${tone}" title="${label}" aria-hidden="true">${bars}</span>`;
         };
-        const statCard = (tone, icon, label, value, sub, meterHTML) => `
-                <div class="stat-card">
+        const statCard = (tone, icon, label, value, sub, meterHTML, hint) => `
+                <div class="stat-card" title="${hint}">
                     <div class="stat-head"><i data-lucide="${icon}" class="${tone}"></i><span class="stat-label">${label}</span></div>
                     <div class="stat-num">${value}</div>
                     <div class="stat-sub">${sub}</div>
@@ -2114,16 +2168,20 @@
             statsContainer.innerHTML =
                 statCard('tone-neutral', 'target', 'Active Goals', activeGoals,
                     `of ${totals.total} goals in the plan`,
-                    meter(activeGoals, totals.total, 'tone-neutral', `${activeGoals} of ${totals.total} goals are active`)) +
+                    meter(activeGoals, totals.total, 'tone-neutral', `${activeGoals} of ${totals.total} goals are active`),
+                    'Goals in the plan that are not Cancelled or Discontinued') +
                 statCard('tone-info', 'circle-check', 'Achieved', totals.B,
                     `${completionRate}% of goals${earlyCompletions > 0 ? ` · ${earlyCompletions} early` : ''}`,
-                    meter(totals.B, totals.total, 'tone-info', `${totals.B} of ${totals.total} goals achieved`)) +
+                    meter(totals.B, totals.total, 'tone-info', `${totals.B} of ${totals.total} goals achieved`),
+                    'Goals marked Completed') +
                 statCard(gapTone, 'file-warning', 'Reporting Gaps', accountabilityGaps,
-                    overdueOpen > 0 ? `of ${overdueOpen} overdue goals` : 'no overdue goals',
-                    meter(accountabilityGaps, overdueOpen, gapTone, `${accountabilityGaps} of ${overdueOpen} overdue goals have no reason for delay`)) +
+                    overdueOpen > 0 ? `of ${overdueOpen} overdue · no reason given` : 'no overdue goals',
+                    meter(accountabilityGaps, overdueOpen, gapTone, `${accountabilityGaps} of ${overdueOpen} overdue goals have no reason for delay`),
+                    'Overdue goals where nobody has written a Reason for Delay yet') +
                 statCard('tone-warn', 'triangle-alert', 'Action Needed', actionNeeded,
                     `${pctOfGoals(actionNeeded)}% of goals`,
-                    meter(actionNeeded, totals.total, 'tone-warn', `${actionNeeded} of ${totals.total} goals need action`));
+                    meter(actionNeeded, totals.total, 'tone-warn', `${actionNeeded} of ${totals.total} goals need action`),
+                    'Goals marked Action Needed or Escalate to Coach');
         }
 
         renderShellMeta(totals);
@@ -2204,6 +2262,11 @@
         el.classList.toggle('open');
         const header = el.querySelector('.m-header');
         if (header) header.setAttribute('aria-expanded', el.classList.contains('open') ? 'true' : 'false');
+        // If the goal was opened from another view and sits off-screen, bring it into view.
+        if (el.classList.contains('open')) {
+            const box = el.getBoundingClientRect();
+            if (box.top < 0 || box.top > window.innerHeight - 120) el.scrollIntoView({ block: 'start' });
+        }
     }
 
     function renderMilestones() {
@@ -2245,7 +2308,7 @@
         if (filtered.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
-                    <div class="empty-state-icon" aria-hidden="true">📋</div>
+                    <div class="empty-state-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></div>
                     <p>No goals found matching your filters.</p>
                 </div>
             `;
@@ -2307,8 +2370,8 @@
                             <div>${c.text}</div>
                         </div>
                         <div style="display: flex; gap: 4px; flex-shrink: 0; flex-direction: column;">
-                            <button class="icon-btn" onclick="editComment(${m.id}, ${idx})" title="Edit this note" aria-label="Edit this note">✎</button>
-                            <button class="icon-btn danger" onclick="deleteComment(${m.id}, ${idx})" title="Delete this note" aria-label="Delete this note">&times;</button>
+                            <button class="icon-btn" onclick="editComment(${m.id}, ${idx})" title="Edit this note" aria-label="Edit this note"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>
+                            <button class="icon-btn danger" onclick="deleteComment(${m.id}, ${idx})" title="Delete this note" aria-label="Delete this note"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>
                         </div>
                     </div>`;}).join('')
                 : `<div class="comment-empty">${comments.length > 0 ? 'No notes match this filter.' : 'No notes yet. Add your thoughts below.'}</div>`;
@@ -2414,7 +2477,7 @@
                             </div>
                             ` : ''}
                             <div class="acc-field" style="grid-column: 1 / -1; align-items:flex-start;">
-                                <button class="save-note-btn" onclick="saveAccountabilityForm(${m.id})">Save</button>
+                                <button class="save-note-btn" onclick="saveAccountabilityForm(${m.id})">Save details</button>
                             </div>
                         </div>
 
@@ -2438,7 +2501,7 @@
                                 <div class="comment-input-area">
                                     <span id="comment-type-helper-${m.id}" class="note-type-helper">${noteInputLabel}</span>
                                     <input type="text" id="comment-in-${m.id}" aria-label="Add a note to goal ${m.id}" placeholder="Type a note..." onkeypress="if(event.key==='Enter') triggerAddComment(${m.id})">
-                                    <button class="save-note-btn" onclick="triggerAddComment(${m.id})">Save</button>
+                                    <button class="save-note-btn" onclick="triggerAddComment(${m.id})">Add note</button>
                                 </div>
                             </div>
                         </div>
@@ -2446,6 +2509,7 @@
                 </div>
             </div>`;
         }).join('');
+        if (window.lucide) lucide.createIcons();
     }
 
     // --- TIMELINE (Gantt) ---
@@ -2950,6 +3014,7 @@
 
     // --- MAIN ---
     function switchTab(tabId, el) {
+        const previousPage = document.querySelector('.page.active');
         // 1. Clear all
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -2972,6 +3037,7 @@
 
         // 4. Update visuals
         refreshUI();
+        if (!previousPage || previousPage.id !== 'view-' + tabId) window.scrollTo(0, 0);
 
         // 5. On small screens the nav scrolls sideways — keep the active item in view
         const activeBtn = document.querySelector('.tab-btn.active');
@@ -3033,7 +3099,22 @@
             });
         });
 
-        allNotes.reverse(); // Newest first
+        // Newest first, by the date saved on each note (e.g. "02 Nov 2026, 09:15", sometimes "... (edited)").
+        // Notes whose date cannot be read keep their old position after the dated ones. Display order only:
+        // each note keeps its own goal and index, so Edit and Delete act on the right note.
+        const noteTime = function(n) {
+            const m = String(n.date || '').match(/(\d{1,2})\s+([A-Za-z]{3})[a-z]*\.?\s+(\d{4})(?:\D+(\d{1,2}):(\d{2}))?/);
+            if (!m) return null;
+            const mon = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'].indexOf(m[2].toLowerCase());
+            return mon < 0 ? null : new Date(+m[3], mon, +m[1], +(m[4] || 0), +(m[5] || 0)).getTime();
+        };
+        allNotes.forEach(function(n, i) { n._time = noteTime(n); n._pos = i; });
+        allNotes.sort(function(a, b) {
+            if (a._time !== null && b._time !== null && a._time !== b._time) return b._time - a._time;
+            if (a._time === null && b._time !== null) return 1;
+            if (b._time === null && a._time !== null) return -1;
+            return b._pos - a._pos;
+        });
 
         if (allNotes.length === 0) {
             container.innerHTML = '<div class="empty-state"><i data-lucide="message-square" style="width:40px;height:40px;opacity:0.3;display:block;margin:0 auto 12px;"></i>No notes have been recorded yet.</div>';
@@ -3055,8 +3136,8 @@
                         </div>
                     </div>
                     <div class="note-actions">
-                        <button class="icon-btn" onclick="editComment(${n.goalId}, ${n.idx})" title="Edit this note" aria-label="Edit this note">✎</button>
-                        <button class="icon-btn danger" onclick="deleteComment(${n.goalId}, ${n.idx})" title="Delete this note" aria-label="Delete this note">&times;</button>
+                        <button class="icon-btn" onclick="editComment(${n.goalId}, ${n.idx})" title="Edit this note" aria-label="Edit this note"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>
+                        <button class="icon-btn danger" onclick="deleteComment(${n.goalId}, ${n.idx})" title="Delete this note" aria-label="Delete this note"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>
                     </div>
                 </div>
                 <div class="note-text">${n.text}</div>

@@ -13,7 +13,20 @@ delete FIXTURE._comment;
 // Optional: path to a local lucide UMD build, for networks where unpkg is blocked.
 const LUCIDE_LOCAL = process.env.LUCIDE_LOCAL || '';
 
-async function openTracker({ width = 1440, height = 900, file = 'index.html', seed = true, reducedMotion = false, scale = 1 } = {}) {
+// A stand-in for the Supabase client, used ONLY by qa/cloud-path.js. It never talks to a network:
+// select() returns the rows it was given (or fails, to imitate a paused project), upsert() records
+// what the page tried to save, and emit() imitates a realtime change arriving from another device.
+function fakeSupabaseScript(cloud) {
+  return `window.__cloud = { rows: ${JSON.stringify(cloud.rows || [])}, fail: ${JSON.stringify(cloud.fail || '')}, upserts: [], handler: null };
+window.supabase = { createClient: function () { return {
+  from: function () { return {
+    select: async function () { if (window.__cloud.fail === 'throw') throw new TypeError('Failed to fetch'); if (window.__cloud.fail === 'error') return { data: null, error: { message: 'project paused' } }; return { data: JSON.parse(JSON.stringify(window.__cloud.rows)), error: null }; },
+    upsert: async function (row, opts) { window.__cloud.upserts.push({ row: JSON.parse(JSON.stringify(row)), opts: opts }); return { error: null }; } }; },
+  channel: function () { return { on: function (ev, filter, cb) { window.__cloud.handler = cb; return this; }, subscribe: function () { return this; } }; } }; } };
+window.__cloud.emit = function (row) { if (window.__cloud.handler) window.__cloud.handler({ new: row }); };`;
+}
+
+async function openTracker({ width = 1440, height = 900, file = 'index.html', seed = true, reducedMotion = false, scale = 1, cloud = null } = {}) {
   const browser = await chromium.launch();
   const context = await browser.newContext({
     viewport: { width, height },
@@ -27,7 +40,8 @@ async function openTracker({ width = 1440, height = 900, file = 'index.html', se
   page.on('console', (m) => { if (m.type() === 'error' && !/net::ERR|Failed to load resource/.test(m.text())) errors.push(m.text()); });
 
   await page.route(/supabase\.co/, (r) => r.abort());                 // live database: never
-  await page.route(/cdn\.jsdelivr\.net\/npm\/@supabase/, (r) => r.abort()); // client library: never
+  if (cloud) await page.route(/cdn\.jsdelivr\.net\/npm\/@supabase/, (r) => r.fulfill({ contentType: 'application/javascript', body: fakeSupabaseScript(cloud) }));
+  else await page.route(/cdn\.jsdelivr\.net\/npm\/@supabase/, (r) => r.abort()); // client library: never
   await page.route(/\.(png|jpe?g)$/i, (r) => r.abort());              // practice/team photos stay out of captures
   if (LUCIDE_LOCAL) {
     const body = fs.readFileSync(LUCIDE_LOCAL);
