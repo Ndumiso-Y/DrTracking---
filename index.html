@@ -863,6 +863,13 @@
         /* ---------------------------------------------------------------
            EASE OF USE: readable minimums, large touch targets, thumb-reach navigation
            --------------------------------------------------------------- */
+        /* Long links or unbroken strings typed into notes and fields wrap instead of pushing the page sideways */
+        .note-text, .comment-entry, .dependency-note, .phase-desc, .exec-main, .exec-sub, .exec-narrative,
+        .m-title, .pt-title, .pm-card-title, .focus-name, .focus-wait, .gantt-goal-title, .note-goal, .toast { overflow-wrap: anywhere; }
+        .comment-entry > div:first-child { min-width: 0; }
+        /* When the cloud cannot be reached the status pill turns into a clear warning (CSS only; the script is unchanged) */
+        .sync-indicator:has(.sync-dot.error) { background: var(--status-r-bg); border-color: var(--status-r-ink); color: var(--status-r-ink); font-weight: 600; white-space: normal; }
+        .sync-indicator:has(.sync-dot.error)::after { content: "· changes are saved on this device only"; font-weight: 500; }
         .page-eyebrow { font-size: var(--fs-sm); font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
         .oce-flag, .comment-tag, .gantt-today-flag { font-size: 11px; }
         .initials b { width: 24px; height: 24px; font-size: 10px; }

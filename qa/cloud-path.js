@@ -14,7 +14,8 @@ const ROWS = [
     comments: [{ text: 'Synthetic older note with no type', date: '14 Apr 2026, 11:20' }, { text: 'Synthetic edited note', date: '20 Apr 2026, 08:05 (edited)', type: 'team' }] },
   { milestone_id: '3', status: 'R', updated_at: null, metadata: {}, comments: null },
   { milestone_id: 6, status: 'B', updated_at: '2026-05-10T14:45:00.000Z', metadata: { achieved_at: '2026-05-10', evidence: 'Synthetic legacy evidence key' },
-    comments: [{ text: 'Synthetic note with symbols: R1,500 & 50% <done> "quoted"', date: '10 May 2026, 16:45', type: 'team' }] },
+    comments: [{ text: 'Synthetic note with symbols: R1,500 & 50% <done> "quoted"', date: '10 May 2026, 16:45', type: 'team' },
+      { text: 'Synthetic note with a long unbroken link https://example.test/' + 'SyntheticUnbrokenSegment'.repeat(8) + ' and more words after it', date: '11 May 2026, 09:00' }] },
   { milestone_id: 14, status: 'G', updated_at: '2026-11-01T08:00:00.000Z', metadata: {}, comments: [{ text: 'Synthetic O.C.E note', date: '01 Nov 2026, 12:00', type: 'coach' }] },
 ];
 const TOTAL = ROWS.reduce((n, r) => n + (r.comments || []).length, 0);
@@ -62,12 +63,26 @@ const TOTAL = ROWS.reduce((n, r) => n + (r.comments || []).length, 0);
   check('no script errors in cloud mode', s.errors.length === 0, s.errors.join(' | '));
   await s.browser.close();
 
+  // ---- 3b. A very long unbroken link inside a note must not push the page sideways on a phone
+  for (const w of [390, 360]) {
+    s = await openTracker({ file, seed: false, width: w, height: 800, cloud: { rows: ROWS } }); p = s.page; await p.waitForTimeout(400);
+    let worst = 0;
+    for (const t of ['notes', 'milestones']) {
+      await gotoTab(p, t);
+      if (t === 'milestones') { await p.evaluate(() => toggleCard(6)); await p.waitForTimeout(350); }
+      worst = Math.max(worst, await p.evaluate(() => document.documentElement.scrollWidth - window.innerWidth));
+    }
+    check(`a long link in a note wraps at ${w}px (no sideways scroll)`, worst <= 1, worst + 'px');
+    await s.browser.close();
+  }
+
   // ---- 4. Database unreachable (for example a paused project)
   for (const [mode, label] of [['throw', 'cannot be reached'], ['error', 'answers with an error']]) {
     s = await openTracker({ file, seed: false, cloud: { rows: ROWS, fail: mode } }); p = s.page;
     await p.waitForTimeout(500);
     const st = await p.evaluate(() => { switchTab('notes'); return { label: document.getElementById('sync-label').textContent, notes: document.getElementById('notes-container').textContent, cards: (switchTab('milestones'), document.querySelectorAll('.milestone-card').length) }; });
     check(`database ${label}: the page says so and still works`, /offline|failed/i.test(st.label) && st.cards === 16, JSON.stringify(st.label));
+    if (file === 'index.html') check(`database ${label}: the status pill becomes a clear warning`, await p.evaluate(() => { const el = document.getElementById('sync-indicator'); return /device only/.test(getComputedStyle(el, '::after').content) && getComputedStyle(el).fontWeight >= 600; }));
     check(`database ${label}: no notes are shown anywhere, because none are stored in this browser`, /No notes have been recorded yet/.test(st.notes));
     await s.browser.close();
   }

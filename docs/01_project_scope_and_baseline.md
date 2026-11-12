@@ -53,6 +53,10 @@ The page has no sign-in and no roles, in the live version or the archived one.
 
 This redesign does not change any of the above.
 
+**Confirmed in the Supabase dashboard on 12 Nov 2026:** Row Level Security is OFF on `dr_tracking` and there are no policies, no users and no real sign-in. Anyone holding the public key in the page can read, change or delete every row. Realtime is on for the table. No backup exists (Free plan), and the project pauses after about a week without traffic; it was found paused and was resumed.
+
+**Risk while the cloud is unreachable:** the page keeps working and saves to the browser only. When the cloud comes back, the next page load takes each goal's data from the cloud, so changes made on a device during the outage are not merged. The redesign now turns the status pill into a clear warning in that state; it does not change the behaviour.
+
 ### Security and privacy observations (not changed, owner decision)
 - **No sign-in.** Anyone with the page link can open the tracker. Whether they can also change records depends on the Supabase access rules for `dr_tracking`, which could not be inspected from the code.
 - **Notes are inserted into the page without escaping.** Combined with an open table, a crafted note could run script in other users' browsers. Recommend escaping in a separate, accepted change.

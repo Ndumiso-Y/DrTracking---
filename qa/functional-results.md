@@ -6,10 +6,12 @@ Every run blocks the live database and its client library, so no practice record
 | Suite | Baseline (`ea552b8`) | Redesign |
 |---|---|---|
 | Functional regression (`qa/regression.js`) | 60/62 passed | 62/62 passed |
-| Cloud path with a stand-in database (`qa/cloud-path.js`) | 19/19 passed | 19/19 passed |
+| Cloud path with a stand-in database (`qa/cloud-path.js`) | 19/21 passed (a long unbroken link in a note pushes the page about 1,200px sideways on a phone) | 23/23 passed |
 | Accessibility, ease of use and resilience (`qa/a11y.js`) | not run (new checks) | 26/26 passed |
 | Themes: switching, isolation, layout, text contrast (`qa/themes.js`) | n/a (new feature) | 21/21 passed |
 | Logic unchanged (`qa/compare-logic.js`) | n/a | 45/45 unchanged |
+
+**Check against the real data (12 Nov 2026, read-only).** The 13 live rows were read once and loaded into the stand-in database, so nothing could be saved back. Result on the redesign at 1440 and 390 wide: all 37 notes shown in Goals and in All Notes, every note matching its record, note counts and Overview numbers correct, no script errors, no save attempted, no sideways scroll. The copy of the rows was deleted afterwards and is not in this repository.
 
 The redesign was run six times in a row with the same result. The two baseline failures are pre-existing: the old layout scrolled sideways by 13px at 390px wide and 28px at 360px wide. The redesign fixes both.
 
@@ -110,7 +112,7 @@ FAIL  no horizontal page overflow at 360px  -> 28px
 ```
 PASS  connects and reports Synced
 PASS  Goals view shows the notes that came from the database
-PASS  All Notes shows every note from the database (6)
+PASS  All Notes shows every note from the database (7)
 PASS  All Notes includes team, coach, older (no type) and edited notes
 PASS  a note opened from All Notes leads to its goal
 PASS  Ownership Board shows the note counts from the database
@@ -123,12 +125,16 @@ PASS  the new note appears in All Notes straight away, newest first
 PASS  a status change is saved for the right goal
 PASS  a live update from another device appears in All Notes without reloading
 PASS  no script errors in cloud mode
+PASS  a long link in a note wraps at 390px (no sideways scroll)
+PASS  a long link in a note wraps at 360px (no sideways scroll)
 PASS  database cannot be reached: the page says so and still works
+PASS  database cannot be reached: the status pill becomes a clear warning
 PASS  database cannot be reached: no notes are shown anywhere, because none are stored in this browser
 PASS  database answers with an error: the page says so and still works
+PASS  database answers with an error: the status pill becomes a clear warning
 PASS  database answers with an error: no notes are shown anywhere, because none are stored in this browser
 
-19/19 passed
+23/23 passed
 ```
 
 ## Accessibility and resilience: redesign
