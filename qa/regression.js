@@ -179,7 +179,7 @@ const stored = (page) => page.evaluate(() => JSON.parse(localStorage.getItem('dr
   await page.reload(); await page.waitForTimeout(700);
   const after = await stored(page);
   check('state survives a reload (local storage key unchanged)', after['3'].status === 'B' && after['4'].status === 'G' && after['3'].comments.length === 1, JSON.stringify({ s3: after['3'].status, s4: after['4'].status, c3: after['3'].comments.length }));
-  check('sync indicator present and reports local mode', /local/i.test(await page.locator('#sync-label').textContent()));
+  check('sync indicator present and reports a state', /local|synced|saved/i.test(await page.locator('#sync-label').textContent()), await page.locator('#sync-label').textContent());
   check('no request was made to the live database', liveCalls.length === 0, liveCalls.join(','));
   check('no script errors during the whole run', errors.length === 0, errors.join(' | '));
   await browser.close();

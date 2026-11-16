@@ -3,13 +3,16 @@
 Run on 2026-11-11 with Playwright (Chromium), synthetic data from `qa/fixtures/synthetic-state.json`, in local mode.
 Every run blocks the live database and its client library, so no practice record was read or changed.
 
-| Suite | Baseline (`ea552b8`) | Redesign |
+| Suite | Baseline (`ea552b8`) | Current build |
 |---|---|---|
 | Functional regression (`qa/regression.js`) | 60/62 passed | 62/62 passed |
+| Sign-in (`qa/auth.js`) | n/a (no sign-in existed) | 27/27 passed |
 | Cloud path with a stand-in database (`qa/cloud-path.js`) | 19/21 passed (a long unbroken link in a note pushes the page about 1,200px sideways on a phone) | 23/23 passed |
 | Accessibility, ease of use and resilience (`qa/a11y.js`) | not run (new checks) | 26/26 passed |
-| Themes: switching, isolation, layout, text contrast (`qa/themes.js`) | n/a (new feature) | 21/21 passed |
+| Themes: switching, isolation, layout, text contrast incl. the sign-in screen (`qa/themes.js`) | n/a (new feature) | 27/27 passed |
 | Logic unchanged (`qa/compare-logic.js`) | n/a | 45/45 unchanged |
+
+**Real library check (16 Nov 2026).** The vendored Supabase library was run against the real project, signed out, with a made-up email and wrong password: the page stayed locked, made no data request, sent one sign-in request, and showed "That email or password is not right." No account was created.
 
 **Check against the real data (12 Nov 2026, read-only).** The 13 live rows were read once and loaded into the stand-in database, so nothing could be saved back. Result on the redesign at 1440 and 390 wide: all 37 notes shown in Goals and in All Notes, every note matching its record, note counts and Overview numbers correct, no script errors, no save attempted, no sideways scroll. The copy of the rows was deleted afterwards and is not in this repository.
 
@@ -19,6 +22,7 @@ The redesign was run six times in a row with the same result. The two baseline f
 
 ```bash
 node qa/regression.js
+node qa/auth.js
 node qa/a11y.js
 node qa/cloud-path.js
 node qa/themes.js
@@ -28,7 +32,7 @@ node qa/capture.js after index.html midnight
 node qa/capture.js after index.html contrast
 ```
 
-Needs Node and Playwright with Chromium. If your network blocks unpkg.com, set `LUCIDE_LOCAL` to a local copy of `lucide.min.js` so icons load.
+Needs Node and Playwright with Chromium. The tests serve the repository on 127.0.0.1 and swap the Supabase library for a stand-in inside the test browser, so they need no network and no account.
 
 ## Functional regression: redesign
 
@@ -87,7 +91,7 @@ PASS  timeline shows the month scale
 PASS  clicking a timeline bar opens the goal
 PASS  all notes lists every saved note
 PASS  state survives a reload (local storage key unchanged)
-PASS  sync indicator present and reports local mode
+PASS  sync indicator present and reports a state
 PASS  no request was made to the live database
 PASS  no script errors during the whole run
 PASS  no horizontal page overflow at 1440px
@@ -105,6 +109,40 @@ PASS  no horizontal page overflow at 360px
 FAIL  no horizontal page overflow at 390px  -> 13px
 FAIL  no horizontal page overflow at 360px  -> 28px
 60/62 passed
+```
+
+## Sign-in: current build
+
+```
+PASS  not signed in: the sign-in screen is shown and the tracker is hidden
+PASS  not signed in: nothing from the tracker is drawn and the database is not asked for anything
+PASS  not signed in: no goal, owner or note text is visible on screen
+PASS  the cursor starts in the email field
+PASS  empty form: asks for email and password, stays locked
+PASS  wrong password: clear message, still locked, nothing loaded
+PASS  wrong password: the password box is emptied and the message is announced to screen readers
+PASS  unknown email: same message as a wrong password (does not reveal which accounts exist)
+PASS  Show / Hide reveals and hides the password
+PASS  fields work with password managers (autocomplete hints) and have labels
+PASS  right email and password (typed, Tab, Enter): the tracker opens
+PASS  after sign-in the data loads from the database and reports Synced
+PASS  the Sign out button says who is signed in
+PASS  signed in: notes from the database are shown
+PASS  signed in: saving works and sends the same record shape as before
+PASS  reloading keeps you signed in
+PASS  there is a Sign out control
+PASS  Sign out returns to the sign-in screen with the tracker hidden and nothing drawn
+PASS  Sign out clears the copy of the tracker data and the session kept in this browser
+PASS  after signing out, reloading does not let you back in
+PASS  no script errors through sign-in, use and sign-out
+PASS  forced open without signing in: with row-level security the database returns no notes and refuses the save
+PASS  no connection while signing in: says so, button usable again, still locked
+PASS  sign-in service cannot be loaded: explains, offers Try again, and does not open the tracker
+PASS  sign-in screen at 390px: fits, controls at least 40px tall, 16px input text (no zoom jump on iPhone)
+PASS  sign-in screen at 360px: fits, controls at least 40px tall, 16px input text (no zoom jump on iPhone)
+PASS  signed in on a phone: Sign out is reachable and at least 44px
+
+27/27 passed
 ```
 
 ## Cloud path with a stand-in database: redesign
@@ -183,19 +221,25 @@ PASS  saving a status in another theme writes the same record shape
 PASS  appearance switch works from the keyboard
 PASS  no script errors while switching
 PASS  Light at 1440px: no sideways page scroll
-PASS  Light at 1440px: text contrast at least 4.5:1 on 1305 text elements
+PASS  Light at 1440px: text contrast at least 4.5:1 on 1310 text elements
 PASS  Light at 390px: no sideways page scroll
 PASS  Light at 390px: text contrast at least 4.5:1 on 1206 text elements
 PASS  Dark at 1440px: no sideways page scroll
-PASS  Dark at 1440px: text contrast at least 4.5:1 on 1306 text elements
+PASS  Dark at 1440px: text contrast at least 4.5:1 on 1311 text elements
 PASS  Dark at 390px: no sideways page scroll
 PASS  Dark at 390px: text contrast at least 4.5:1 on 1207 text elements
 PASS  High contrast at 1440px: no sideways page scroll
-PASS  High contrast at 1440px: text contrast at least 7:1 on 1308 text elements
+PASS  High contrast at 1440px: text contrast at least 7:1 on 1313 text elements
 PASS  High contrast at 390px: no sideways page scroll
 PASS  High contrast at 390px: text contrast at least 7:1 on 1209 text elements
+PASS  Light at 1440px: sign-in screen text contrast at least 4.5:1 (10 elements, error shown) and no sideways scroll
+PASS  Light at 390px: sign-in screen text contrast at least 4.5:1 (10 elements, error shown) and no sideways scroll
+PASS  Dark at 1440px: sign-in screen text contrast at least 4.5:1 (10 elements, error shown) and no sideways scroll
+PASS  Dark at 390px: sign-in screen text contrast at least 4.5:1 (10 elements, error shown) and no sideways scroll
+PASS  High contrast at 1440px: sign-in screen text contrast at least 7:1 (10 elements, error shown) and no sideways scroll
+PASS  High contrast at 390px: sign-in screen text contrast at least 7:1 (10 elements, error shown) and no sideways scroll
 
-21/21 passed
+27/27 passed
 ```
 
 ## Logic comparison: redesign vs baseline

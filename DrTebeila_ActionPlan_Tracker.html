@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth="pending">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,10 +9,10 @@
     <!-- Presentation layer: Executive Glass UI (v2026-11). Logic and data handling unchanged. -->
     <script>(function(){try{var t=localStorage.getItem('dr_tebeila_theme');if(t==='midnight'||t==='contrast')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Supabase Client Library -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Supabase Client Library (pinned copy in vendor/, see vendor/README.md) -->
+    <script src="vendor/supabase.js"></script>
+    <!-- Lucide Icons (pinned copy in vendor/) -->
+    <script src="vendor/lucide.min.js"></script>
     <style>
         /* =====================================================================
            EXECUTIVE GLASS UI — design system (v2026-11)
@@ -861,6 +861,61 @@
         @media (max-width: 1100px) { .theme-btn span { display: none; } .theme-btn { padding: 5px 10px; } }
 
         /* ---------------------------------------------------------------
+           ACCESS: sign-in screen. data-auth on <html> is pending → locked → open.
+           --------------------------------------------------------------- */
+        .auth-wait, .auth-gate { display: none; min-height: 100vh; min-height: 100dvh; place-items: center; padding: var(--sp-6) var(--sp-4); }
+        :root[data-auth="pending"] .auth-wait { display: grid; }
+        :root[data-auth="locked"] .auth-gate { display: grid; }
+        :root:not([data-auth="open"]) .app-shell { display: none; }
+        .auth-noscript { padding: var(--sp-6); text-align: center; font-weight: 600; }
+        .auth-wait { align-content: center; justify-items: center; gap: var(--sp-3); color: var(--muted); font-size: var(--fs-md); }
+        .auth-wait .brand-mark { width: 46px; height: 52px; }
+        .auth-card {
+            width: min(430px, 100%); padding: 36px 32px 28px;
+            background: var(--glass-strong); border: 1px solid var(--glass-border); border-radius: 24px; box-shadow: var(--shadow-2);
+            -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
+        }
+        .auth-brand { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: 28px; }
+        .auth-title { font-size: 30px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; }
+        .auth-sub { color: var(--muted); font-size: var(--fs-md); margin: 6px 0 var(--sp-6); }
+        .auth-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--sp-4); }
+        .auth-field label { font-size: var(--fs-sm); font-weight: 600; color: var(--ink-2); }
+        .auth-field input {
+            width: 100%; min-height: 50px; padding: 10px 14px; font-size: 16px;
+            background: var(--surface-solid); border: 1.5px solid var(--hairline-strong); border-radius: 12px; color: var(--ink);
+            transition: border-color .16s ease, box-shadow .16s ease;
+        }
+        .auth-field input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+        .auth-pass { position: relative; }
+        .auth-pass input { padding-right: 84px; }
+        .auth-show { position: absolute; right: 5px; top: 5px; min-width: 64px; height: 40px; padding: 0 12px; border: 0; border-radius: 9px; background: var(--glass-inset); color: var(--ink-2); font-size: var(--fs-sm); font-weight: 600; }
+        .auth-show:hover { background: var(--hover); }
+        .auth-error { min-height: 22px; margin: 2px 0 var(--sp-3); font-size: var(--fs-sm); font-weight: 600; color: var(--status-r-ink); }
+        .auth-submit { width: 100%; min-height: 50px; border: 0; border-radius: 12px; background: var(--accent-grad); color: var(--on-accent); font-size: var(--fs-md); font-weight: 600; transition: filter .16s ease; }
+        .auth-submit:hover { filter: brightness(1.06); }
+        .auth-submit:disabled { opacity: .72; cursor: progress; }
+        .auth-help { margin-top: var(--sp-4); text-align: center; font-size: var(--fs-sm); color: var(--muted); }
+        .auth-gate[data-mode="unavailable"] .auth-field, .auth-gate[data-mode="unavailable"] .auth-help { display: none; }
+        .util-btn {
+            display: inline-flex; align-items: center; gap: var(--sp-2); min-height: 40px; padding: 8px var(--sp-4);
+            background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--r-pill); box-shadow: var(--shadow-1);
+            -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
+            font-size: var(--fs-sm); font-weight: 500; color: var(--ink-2); white-space: nowrap;
+        }
+        .util-btn svg { width: 16px; height: 16px; }
+        .util-btn:hover { background: var(--surface-solid); color: var(--ink); }
+        @media (max-width: 1100px) { .util-btn span { display: none; } .util-btn { padding: 8px 12px; min-width: 44px; justify-content: center; } }
+        :root[data-theme="midnight"] .auth-gate, :root[data-theme="midnight"] .auth-wait { background: linear-gradient(160deg, #081627 0%, #0C2540 55%, #0B3F4C 100%); }
+        :root[data-theme="midnight"] .auth-wait { color: rgba(255, 255, 255, 0.85); }
+        :root[data-theme="midnight"] .auth-card { background: #FFFFFF; }
+        :root[data-theme="midnight"] .auth-card .brand-name { color: var(--ink); }
+        :root[data-theme="midnight"] .auth-card .brand-name span { color: var(--ink-2); }
+        :root[data-theme="midnight"] .auth-card .brand-mark { color: var(--accent-ink); }
+        :root[data-theme="midnight"] .auth-wait .brand-mark { color: #5EEAD4; }
+        :root[data-theme="contrast"] .auth-card { border: 2px solid var(--glass-border); }
+        @media print { .auth-gate, .auth-wait { display: none !important; } }
+
+        /* ---------------------------------------------------------------
            EASE OF USE: readable minimums, large touch targets, thumb-reach navigation
            --------------------------------------------------------------- */
         /* Long links or unbroken strings typed into notes and fields wrap instead of pushing the page sideways */
@@ -892,7 +947,7 @@
         details.fold[open] .fold-hint::after { transform: rotate(-135deg) translateY(-2px); }
         @media (pointer: coarse), (max-width: 860px) {
             .icon-btn { width: 44px; height: 44px; }
-            .nf-btn, .theme-btn, .btn-sm, .status-btn-selector, .save-note-btn, .btn,
+            .nf-btn, .theme-btn, .btn-sm, .status-btn-selector, .save-note-btn, .btn, .util-btn,
             .pf-select, .filter-select, .acc-input, .comment-input-area input { min-height: 44px; }
             .ob-status-pill, .badge-status { min-height: 40px; padding-left: 14px; padding-right: 14px; }
             .theme-btn { min-width: 44px; justify-content: center; }
@@ -1041,6 +1096,37 @@
     <!-- TOAST NOTIFICATION CONTAINER -->
     <div id="toast-container" role="status" aria-live="polite"></div>
 
+    <!-- ACCESS: the tracker is not rendered until someone has signed in (see "ACCESS (sign-in)" in the script) -->
+    <noscript><p class="auth-noscript">This tracker needs JavaScript switched on in your browser.</p></noscript>
+    <div class="auth-wait" id="auth-wait" role="status">
+        <svg class="brand-mark" viewBox="0 0 200 240" fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="round" aria-hidden="true"><path d="M100 38 C84 26 46 22 32 60 C23 92 36 122 44 152 C52 184 54 220 68 222 C82 224 80 178 100 178 C120 178 118 224 132 222 C146 220 148 184 156 152 C164 122 177 92 168 60 C154 22 116 26 100 38 Z"/></svg>
+        <p>Checking your sign-in…</p>
+    </div>
+    <section class="auth-gate" id="auth-gate" data-mode="signin" aria-label="Sign in">
+        <form class="auth-card" id="auth-form" novalidate onsubmit="return handleSignIn(event)">
+            <div class="auth-brand">
+                <svg class="brand-mark" viewBox="0 0 200 240" fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="round" aria-hidden="true"><path d="M100 38 C84 26 46 22 32 60 C23 92 36 122 44 152 C52 184 54 220 68 222 C82 224 80 178 100 178 C120 178 118 224 132 222 C146 220 148 184 156 152 C164 122 177 92 168 60 C154 22 116 26 100 38 Z"/></svg>
+                <div class="brand-name">Dr. Tebeila <span>Dental Practice</span></div>
+            </div>
+            <h1 class="auth-title">Sign in</h1>
+            <p class="auth-sub">Strategic Action Plan Tracker. This workspace is private to the practice team.</p>
+            <div class="auth-field">
+                <label for="auth-email">Email</label>
+                <input type="email" id="auth-email" name="email" autocomplete="username" inputmode="email" autocapitalize="none" spellcheck="false" required>
+            </div>
+            <div class="auth-field">
+                <label for="auth-password">Password</label>
+                <div class="auth-pass">
+                    <input type="password" id="auth-password" name="password" autocomplete="current-password" required>
+                    <button type="button" class="auth-show" id="auth-show" aria-pressed="false" aria-label="Show password" onclick="togglePasswordVisibility()">Show</button>
+                </div>
+            </div>
+            <p class="auth-error" id="auth-error" role="alert"></p>
+            <button type="submit" class="auth-submit" id="auth-submit">Sign in</button>
+            <p class="auth-help">Forgotten your password, or need access? Ask the practice administrator.</p>
+        </form>
+    </section>
+
     <div class="app-shell">
 
     <!-- SIDEBAR: brand + primary navigation -->
@@ -1125,6 +1211,10 @@
                     <div class="sync-dot" id="sync-dot"></div>
                     <span id="sync-label">Local mode</span>
                 </div>
+                <button type="button" class="util-btn" id="sign-out-btn" onclick="handleSignOut()" title="Sign out">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
+                    <span>Sign out</span>
+                </button>
             </div>
         </div>
     </header>
@@ -3283,7 +3373,132 @@
     if (saved) {
         appState = JSON.parse(saved);
     }
-    initApp();
+
+    // --- ACCESS (sign-in) ---
+    // The tracker opens only for a signed-in Supabase user. Signing in changes nothing about how data is
+    // loaded or saved: initApp(), saveState() and the live-update subscription are untouched and run exactly
+    // as before. The Supabase client simply attaches the signed-in user's session to those same requests,
+    // which is what lets the database's row-level security tell team members from everyone else.
+    let appStarted = false;
+
+    function setAccessState(state) {
+        document.documentElement.setAttribute('data-auth', state);
+    }
+
+    function showSignIn(mode, message) {
+        const gate = document.getElementById('auth-gate');
+        const err = document.getElementById('auth-error');
+        const btn = document.getElementById('auth-submit');
+        if (gate) gate.setAttribute('data-mode', mode);
+        if (err) err.textContent = message || '';
+        if (btn) { btn.disabled = false; btn.textContent = mode === 'unavailable' ? 'Try again' : 'Sign in'; }
+        setAccessState('locked');
+        const first = document.getElementById(mode === 'unavailable' ? 'auth-submit' : 'auth-email');
+        if (first) first.focus();
+    }
+
+    function openTrackerFor(session) {
+        const who = session && session.user && session.user.email ? session.user.email : '';
+        const out = document.getElementById('sign-out-btn');
+        if (out) out.title = who ? 'Signed in as ' + who + '. Sign out' : 'Sign out';
+        setAccessState('open');
+        if (!appStarted) {
+            appStarted = true;
+            initApp();
+        }
+    }
+
+    async function handleSignIn(event) {
+        if (event) event.preventDefault();
+        const gate = document.getElementById('auth-gate');
+        if (!supabaseClient || (gate && gate.getAttribute('data-mode') === 'unavailable')) {
+            window.location.reload();
+            return false;
+        }
+        const emailEl = document.getElementById('auth-email');
+        const passEl = document.getElementById('auth-password');
+        const err = document.getElementById('auth-error');
+        const btn = document.getElementById('auth-submit');
+        const email = emailEl.value.trim();
+        const password = passEl.value;
+        if (!email || !password) {
+            err.textContent = 'Enter your email and password.';
+            (email ? passEl : emailEl).focus();
+            return false;
+        }
+        btn.disabled = true;
+        btn.textContent = 'Signing in…';
+        err.textContent = '';
+        try {
+            const res = await supabaseClient.auth.signInWithPassword({ email: email, password: password });
+            const session = res && res.data ? res.data.session : null;
+            if (!res || res.error || !session) {
+                const status = res && res.error ? res.error.status : 0;
+                err.textContent = status === 429
+                    ? 'Too many attempts. Wait a minute, then try again.'
+                    : (status >= 500 ? 'Sign-in is not available right now. Please try again in a moment.' : 'That email or password is not right. Please try again.');
+                btn.disabled = false;
+                btn.textContent = 'Sign in';
+                passEl.value = '';
+                passEl.focus();
+                return false;
+            }
+            passEl.value = '';
+            openTrackerFor(session);
+        } catch (e) {
+            err.textContent = 'Could not reach the sign-in service. Check your connection and try again.';
+            btn.disabled = false;
+            btn.textContent = 'Sign in';
+        }
+        return false;
+    }
+
+    // Signing out locks this device: the session is ended, the copy of the tracker data kept in this
+    // browser is cleared (the cloud copy is untouched), and the page returns to the sign-in screen.
+    function clearDeviceCopy() {
+        try {
+            localStorage.removeItem('dr_tebeila_app_v2');
+            Object.keys(localStorage).forEach(function(k) { if (/^sb-.*-auth-token/.test(k)) localStorage.removeItem(k); });
+        } catch (e) { /* storage unavailable */ }
+    }
+
+    async function handleSignOut() {
+        try { if (supabaseClient) await supabaseClient.auth.signOut(); } catch (e) { /* still lock this device */ }
+        clearDeviceCopy();
+        window.location.reload();
+    }
+
+    function togglePasswordVisibility() {
+        const passEl = document.getElementById('auth-password');
+        const btn = document.getElementById('auth-show');
+        if (!passEl || !btn) return;
+        const show = passEl.type === 'password';
+        passEl.type = show ? 'text' : 'password';
+        btn.textContent = show ? 'Hide' : 'Show';
+        btn.setAttribute('aria-pressed', show ? 'true' : 'false');
+        btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+    }
+
+    async function startWithAccessGate() {
+        if (!supabaseClient) {
+            showSignIn('unavailable', 'The sign-in service could not be loaded. Check your connection and try again.');
+            return;
+        }
+        let session = null;
+        try {
+            const res = await supabaseClient.auth.getSession();
+            session = res && res.data ? res.data.session : null;
+        } catch (e) { session = null; }
+        if (session) openTrackerFor(session); else showSignIn('signin', '');
+        try {
+            supabaseClient.auth.onAuthStateChange(function(event) {
+                // Session ended elsewhere (signed out in another tab, or access removed): lock this one too.
+                if (event === 'SIGNED_OUT' && appStarted) { clearDeviceCopy(); window.location.reload(); }
+            });
+        } catch (e) { /* listener not available */ }
+    }
+
+    startWithAccessGate();
 </script>
 
 </body>

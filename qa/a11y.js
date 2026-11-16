@@ -111,16 +111,13 @@ const check = (name, ok, detail = '') => { out.push(ok); console.log(`${ok ? 'PA
   await s.browser.close();
 
   // ---- Icon library unavailable (CDN down): page must still work
-  const saved = process.env.LUCIDE_LOCAL; delete require.cache[require.resolve('./harness')];
-  process.env.LUCIDE_LOCAL = ''; const h2 = require('./harness');
-  s = await h2.openTracker({ width: 1440, height: 900 }); p = s.page;
-  await p.route(/unpkg\.com/, (r) => r.abort()); await p.reload(); await p.waitForTimeout(700);
+  s = await openTracker({ width: 1440, height: 900, icons: false }); p = s.page;
   const noIcons = await p.evaluate(() => ({ lucide: !!window.lucide, stats: document.querySelectorAll('#stats-container .stat-num').length, focus: document.querySelectorAll('#focus-section .focus-item').length, nav: document.querySelectorAll('.tab-btn svg').length, panels: document.getElementById('leadership-actions-panel').textContent.length > 20 }));
   check('with the icon library blocked, the overview still renders fully and navigation keeps its icons', !noIcons.lucide && noIcons.stats === 4 && noIcons.focus === 3 && noIcons.nav === 5 && noIcons.panels && s.errors.length === 0, JSON.stringify(noIcons) + s.errors.join('|'));
-  await s.browser.close(); process.env.LUCIDE_LOCAL = saved || '';
+  await s.browser.close();
 
   // ---- Empty state (fresh browser, nothing saved)
-  s = await h2.openTracker({ width: 1440, height: 900, seed: false }); p = s.page;
+  s = await openTracker({ width: 1440, height: 900, seed: false }); p = s.page;
   const empty = await p.evaluate(() => { switchTab('notes'); const n = document.getElementById('notes-container').textContent; switchTab('dashboard'); return { notes: /No notes have been recorded yet/.test(n), achieved: document.querySelectorAll('#stats-container .stat-num')[1].textContent.trim(), pct: document.getElementById('plan-meter-value').textContent }; });
   check('fresh browser: honest empty states (no notes, 0 achieved, 0%)', empty.notes && empty.achieved === '0' && empty.pct === '0%', JSON.stringify(empty));
   await s.browser.close();

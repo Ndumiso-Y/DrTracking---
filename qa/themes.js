@@ -31,7 +31,7 @@ const AUDIT = (minRatio) => {
   };
   const fails = {}; let checked = 0, skipped = 0;
   const view = document.querySelector('.page.active');
-  const roots = [document.querySelector('.sidebar'), document.querySelector('.app-header'), view];
+  const roots = [document.querySelector('.sidebar'), document.querySelector('.app-header'), view, document.getElementById('auth-gate')].filter(Boolean);
   roots.forEach((root) => root.querySelectorAll('*').forEach((el) => {
     if (!el.getClientRects().length || el.closest('.sr-only, svg, .is-faded')) return;
     const own = [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim().length > 1);
@@ -92,6 +92,20 @@ const AUDIT = (minRatio) => {
       await s.browser.close();
     }
   }
+  // ---- The sign-in screen in every theme
+  for (const [key, label, min] of THEMES) {
+    for (const w of [1440, 390]) {
+      s = await openTracker({ width: w, height: 844, seed: false, cloud: { session: false, users: { 'team@example.test': 'correct-horse' } } }); p = s.page;
+      await p.evaluate((k) => setTheme(k), key);
+      await p.fill('#auth-email', 'team@example.test'); await p.fill('#auth-password', 'wrong'); await p.locator('#auth-submit').click(); await p.waitForTimeout(250);
+      const a = await p.evaluate(AUDIT, min);
+      const over = await p.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+      const list = Object.entries(a.fails).map(([k, v]) => `.${k} ${v.r}:1 (needs ${v.need}) "${v.text}"`);
+      check(`${label} at ${w}px: sign-in screen text contrast at least ${min}:1 (${a.checked} elements, error shown) and no sideways scroll`, list.length === 0 && over <= 1 && a.checked >= 6, list.join(' | ') + ' overflow ' + over);
+      await s.browser.close();
+    }
+  }
+
   const failed = out.filter((x) => !x).length;
   console.log(`\n${out.length - failed}/${out.length} passed`);
   process.exit(failed ? 1 : 0);
